@@ -1,0 +1,333 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap');
+
+#main-header {
+    background-color: rgb(255, 255, 255);
+    width: 100%;
+    padding: 16px 24px;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+    transition: transform 0.35s ease-in-out, background-color 0.25s ease, box-shadow 0.25s ease;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+@media (min-width: 768px) {
+    #main-header { padding: 16px 40px; }
+}
+
+.nav-scrolled-active {
+    background-color: #ffffff !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.header-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.logo-image {
+    width: 160px;
+    height: 45px;
+    object-fit: contain;
+}
+/* Logo */
+.logo-notch {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 12px;
+    background: white;
+    border-radius: 999px 0 0 999px;
+}
+
+.logo-text-wrapper {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+}
+
+.logo-main {
+    font-weight: 900;
+    font-size: 1.25rem;
+    letter-spacing: -0.5px;
+    color: #000;
+}
+
+.logo-sub {
+    font-weight: 900;
+    font-size: 1.1rem;
+    letter-spacing: -0.5px;
+    color: #000;
+}
+
+.logo-sub sup { font-size: 10px; font-weight: 700; }
+
+/* Desktop Navigation */
+.desktop-nav {
+    display: none;
+    align-items: center;
+    gap: 4px;
+}
+
+@media (min-width: 992px) {
+    .desktop-nav { display: flex; }
+}
+
+.nav-item {
+    position: relative;
+    text-decoration: none;
+    padding: 10px 20px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #52525b;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    overflow: visible;
+    z-index: 1;
+    opacity: 0;
+    transform: translateX(100px);
+    animation: slideFromRight 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+/* Delay for each nav item */
+.nav-item:nth-child(1) { animation-delay: 0.2s; }
+.nav-item:nth-child(2) { animation-delay: 0.35s; }
+.nav-item:nth-child(3) { animation-delay: 0.5s; }
+.nav-item:nth-child(4) { animation-delay: 0.65s; }
+
+/* Keyframes */
+@keyframes slideFromRight {
+    from {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.nav-item:hover { color: #FF7A00; }
+
+/* Force active styles for NavLink */
+.nav-item.active {
+    color: #FF7A00 !important;
+    background: rgba(255, 122, 0, 0.06) !important;
+}
+
+.nav-item.active .overlap-squares {
+    opacity: 1 !important;
+}
+
+.nav-item.active::after {
+    content: '' !important;
+    display: block !important;
+}
+
+.mobile-active {
+    color: #FF7A00 !important;
+    background: rgba(255, 122, 0, 0.08) !important;
+}
+
+/* Header Right */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.contact-btn {
+    background-color: #FF7A00;
+    color: white;
+    padding: 8px 24px;
+    border-radius: 999px;
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-decoration: none;
+    display: none;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: all 0.2s;
+    opacity: 0;
+    transform: translateX(80px);
+    animation: slideFromRight 0.5s 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@media (min-width: 640px) {
+    .contact-btn { display: inline-block; }
+}
+.contact-btn:hover {
+    background-color: #e06b00;
+}
+/* Logo Animation - Left to Right */
+.logo-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    user-select: none;
+    opacity: 0;
+    transform: translateX(-60px);
+    animation: slideFromLeft 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes slideFromLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-60px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+.mobile-menu-btn {
+    display: block;
+    font-size: 1.5rem;
+    color: #000;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+@media (min-width: 992px) {
+    .mobile-menu-btn { display: none; }
+}
+
+/* Mobile Menu */
+.mobile-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: white;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    border-top: 1px solid #e5e5e5;
+    padding: 20px;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.mobile-menu.active { display: flex; }
+
+.mobile-menu a {
+    font-weight: 600;
+    color: #18181b;
+    text-decoration: none;
+    font-size: 1rem;
+    padding: 8px 12px;
+    border-radius: 8px;
+}
+
+.mobile-menu a:hover {
+    color: #FF7A00;
+    background: rgba(255, 122, 0, 0.05);
+}
+
+.mobile-menu .mobile-contact {
+    background-color: #FF7A00;
+    color: white !important;
+    padding: 10px;
+    border-radius: 999px;
+    text-align: center;
+}
+/* Overlap Squares - ye CSS honi chahiye */
+.overlap-squares {
+    position: absolute;
+    top: 50%;
+    left: 90%;
+    transform: translate(-50%, -50%);
+    width: 16px;
+    height: 16px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: -1;
+}
+
+.nav-item.active .overlap-squares { 
+    opacity: 1; 
+}
+
+.square-1 {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border: 2px solid #FF7A00;
+    border-radius: 2px;
+    background: rgba(255, 122, 0, 0.1);
+    top: 0;
+    left: 0;
+    animation: square1Dance 2.5s infinite ease-in-out;
+}
+
+.square-2 {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border: 2px solid #FF7A00;
+    border-radius: 2px;
+    background: rgba(255, 122, 0, 0.15);
+    bottom: 0;
+    right: 0;
+    animation: square2Dance 2.5s infinite ease-in-out;
+}
+
+@keyframes square1Dance {
+    0%, 100% { top: 0; left: 0; }
+    25%, 50% { top: 6px; left: 6px; }
+    75% { top: 0; left: 0; }
+}
+
+@keyframes square2Dance {
+    0%, 100% { bottom: 0; right: 0; }
+    25%, 50% { bottom: 6px; right: 6px; }
+    75% { bottom: 0; right: 0; }
+}
+
+.nav-item.active::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 55%;
+    transform: translateX(-50%);
+    width: 14px;
+    height: 3px;
+    background: #FF7A00;
+    border-radius: 10px;
+    animation: glowPulse 2s infinite;
+    z-index: 2;
+}
+
+@keyframes glowPulse {
+    0%, 100% { box-shadow: 0 0 6px rgba(255,122,0,0.5); width: 14px; }
+    50% { box-shadow: 0 0 16px rgba(255,122,0,0.9); width: 24px; }
+}
+/* Add this for extra smoothness */
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(-100%);
+    }
+}
+
+#main-header.nav-hidden {
+    animation: slideUp 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+#main-header.nav-visible {
+    animation: slideDown 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
