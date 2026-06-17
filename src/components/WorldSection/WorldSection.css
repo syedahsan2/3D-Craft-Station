@@ -1,7 +1,7 @@
 .world-section {
     position: relative;
-    background: radial-gradient(circle at 85% 50%, #B85202 0%, #301400 50%, #080300 100%);
-    min-height: 550px;
+    background: url(../../Home/1495x550.jpeg) no-repeat center center;
+    background-size: cover;
     overflow: hidden;
     display: flex;
     align-items: center;

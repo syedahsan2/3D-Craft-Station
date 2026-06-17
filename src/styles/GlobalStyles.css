@@ -1134,6 +1134,7 @@ body {
     background-color: var(--color-dark-bg);
     overflow: visible;
     z-index: 1;
+    margin-top: 80px;
 }
 .hero-wrapper { display: flex; justify-content: space-between; align-items: center; width: 100%; gap: 50px; }
 .hero-text-block { flex: 1; }
