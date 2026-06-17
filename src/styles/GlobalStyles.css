@@ -661,7 +661,7 @@ body {
    ---------------------------------------- */
 .world-section {
     position: relative;
-    background: url(../../Home/Banner.png);
+    background: url(../../Home/1495x550.jpeg) center center/cover no-repeat;
     min-height: 550px;
     overflow: hidden;
     display: flex;
