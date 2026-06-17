@@ -1,12 +1,11 @@
 .world-section {
     position: relative;
-    background: url(../../Home/1495x550.jpeg) no-repeat center center;
-    background-size: cover;
+    background: url(../../Home/Banner.png);
+    min-height: 550px;
     overflow: hidden;
     display: flex;
     align-items: center;
     width: 100%;
-    max-width: 100%;
     color: white;
 }
 
