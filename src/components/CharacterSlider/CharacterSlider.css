@@ -179,13 +179,14 @@
     height: 210px;
     margin-left: -80px;
     margin-top: -105px;
-    filter: brightness(0.7);
+    filter: brightness(0.5);
     transform: scale(0.9);
+    opacity: 0.8;
 }
 
 .carousel-controls {
     position: absolute;
-    bottom: 30px;
+    bottom: 10px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;

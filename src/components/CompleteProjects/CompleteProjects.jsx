@@ -4,49 +4,49 @@ import './CompleteProjects.css';
 const projectsData = [
     {
         id: 1,
-        title: "3D Character Design",
+        title: "Fantasy Character Design",
         category: "Character Modeling",
-        image: "../../Home/BOTTOM PORTFOLIO_0005_1.jpg",
+        image: "../../Home/1.jpg",
         client: "Game Studio XYZ",
         year: "2024"
     },
     {
         id: 2,
-        title: "Architectural Visualization",
+        title: "Creature Design for Sci-Fi Film",
         category: "3D Rendering",
-        image: "../../Home/BOTTOM PORTFOLIO_0004_2.jpg",
+        image: "../../Home/2.jpg",
         client: "Design Hub",
         year: "2024"
     },
     {
         id: 3,
-        title: "Product Animation",
-        category: "Motion Graphics",
-        image: "../../Home/BOTTOM PORTFOLIO_0003_3.jpg",
+        title: "Product Animation for Marketing",
+        category: "Realistic 3D Portrate",
+        image: "../../Home/3.jpg",
         client: "Brand X",
         year: "2023"
     },
     {
         id: 4,
-        title: "VR Environment",
-        category: "Virtual Reality",
-        image: "../../Home/BOTTOM PORTFOLIO_0002_4.jpg",
+        title: "CAD Modeling for Industrial Design",
+        category: "CAD Modeling",
+        image: "../../Home/4.jpg",
         client: "Tech Innovations",
         year: "2024"
     },
     {
         id: 5,
-        title: "Game Asset Pack",
+        title: "Product Design for Mobile App",
         category: "Game Development",
-        image: "../../Home/BOTTOM PORTFOLIO_0001_5.jpg",
+        image: "../../Home/5.jpg",
         client: "Indie Studio",
         year: "2023"
     },
     {
         id: 6,
-        title: "Medical 3D Model",
+        title: "Mold Design for Manufacturing",
         category: "Scientific Visualization",
-        image: "../../Home/BOTTOM PORTFOLIO_0000_6.jpg",
+        image: "../../Home/6.jpg",
         client: "MediTech",
         year: "2024"
     }

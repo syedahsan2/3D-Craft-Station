@@ -3,7 +3,7 @@ import './CharacterSlider.css';
 
 const slidesData = [
     { 
-        image: '../../../Home/valley_landscape.png',
+        image: '../../../Home/top_cards/1.jpg',
         title: 'Mountain Peak', 
         subtitle: 'Swiss Alps', 
         desc: 'Breathtaking view of the Swiss Alps at golden hour.',
@@ -12,7 +12,7 @@ const slidesData = [
         saves: '156' 
     },
     { 
-        image: '../../../Home/environment_art.png',
+        image: '../../../Home/top_cards/2.jpg',
         title: 'Ocean Horizon', 
         subtitle: 'Maldives', 
         desc: 'Crystal clear waters meet the endless sky.',
@@ -21,7 +21,7 @@ const slidesData = [
         saves: '203' 
     },
     { 
-        image: '../../../Home/character_model.png',
+        image: '../../../Home/top_cards/3.jpg',
         title: 'Forest Light', 
         subtitle: 'Pacific NW', 
         desc: 'Sunlight filters through ancient trees.',
@@ -30,7 +30,7 @@ const slidesData = [
         saves: '98' 
     },
     { 
-        image: '../../../Home/aurora_sky.png',
+        image: '../../../Home/top_cards/4.jpg',
         title: 'Coastal Wave', 
         subtitle: 'Amalfi', 
         desc: 'Dramatic coastline where turquoise waters meet cliffs.',
@@ -39,7 +39,7 @@ const slidesData = [
         saves: '340' 
     },
     { 
-        image: '../../../Home/fantasy_warrior.png',
+        image: '../../../Home/top_cards/5.jpg',
         title: 'Valley Glow', 
         subtitle: 'Yosemite', 
         desc: 'Golden light paints the granite walls.',
@@ -48,7 +48,7 @@ const slidesData = [
         saves: '412' 
     },
     { 
-        image: '../../../Home/misty_mountains.png', 
+        image: '../../../Home/top_cards/6.jpg', 
         title: 'Misty Hills', 
         subtitle: 'Highlands', 
         desc: 'Rolling hills wrapped in morning mist.',
@@ -57,7 +57,7 @@ const slidesData = [
         saves: '67' 
     },
     { 
-        image: '../../../Home/modern_villa.png', 
+        image: '../../../Home/top_cards/7.jpg', 
         title: 'Desert Night', 
         subtitle: 'Sahara', 
         desc: 'Endless dunes under a canopy of stars.',
@@ -66,7 +66,7 @@ const slidesData = [
         saves: '278' 
     },
     { 
-        image: '../../../Home/potrait.png', 
+        image: '../../../Home/top_cards/8.jpg', 
         title: 'Aurora Sky', 
         subtitle: 'Norway', 
         desc: 'Northern lights dance across the arctic sky.',
@@ -75,7 +75,7 @@ const slidesData = [
         saves: '520' 
     },
     { 
-        image: '../../../Home/valley_landscape_2.png', 
+        image: '../../../Home/top_cards/9.jpg', 
         title: 'City Lights', 
         subtitle: 'Tokyo', 
         desc: 'Neon-lit metropolis with futuristic vibes.',
@@ -83,6 +83,34 @@ const slidesData = [
         views: '8.2k', 
         saves: '612' 
     },
+        { 
+        image: '../../../Home/top_cards/10.jpg', 
+        title: 'City Lights', 
+        subtitle: 'Tokyo', 
+        desc: 'Neon-lit metropolis with futuristic vibes.',
+        rating: '4.9', 
+        views: '8.2k', 
+        saves: '612' 
+    },
+        { 
+        image: '../../../Home/top_cards/11.jpg', 
+        title: 'City Lights', 
+        subtitle: 'Tokyo', 
+        desc: 'Neon-lit metropolis with futuristic vibes.',
+        rating: '4.9', 
+        views: '8.2k', 
+        saves: '612' 
+    },
+        { 
+        image: '../../../Home/top_cards/12.jpg', 
+        title: 'City Lights', 
+        subtitle: 'Tokyo', 
+        desc: 'Neon-lit metropolis with futuristic vibes.',
+        rating: '4.9', 
+        views: '8.2k', 
+        saves: '612' 
+    },
+    
     
 ];
 
