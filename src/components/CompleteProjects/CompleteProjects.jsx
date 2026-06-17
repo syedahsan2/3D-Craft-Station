@@ -6,7 +6,7 @@ const projectsData = [
         id: 1,
         title: "3D Character Design",
         category: "Character Modeling",
-        image: "https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=600&q=80",
+        image: "../../Home/BOTTOM PORTFOLIO_0005_1.jpg",
         client: "Game Studio XYZ",
         year: "2024"
     },
@@ -14,7 +14,7 @@ const projectsData = [
         id: 2,
         title: "Architectural Visualization",
         category: "3D Rendering",
-        image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=600&q=80",
+        image: "../../Home/BOTTOM PORTFOLIO_0004_2.jpg",
         client: "Design Hub",
         year: "2024"
     },
@@ -22,7 +22,7 @@ const projectsData = [
         id: 3,
         title: "Product Animation",
         category: "Motion Graphics",
-        image: "https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?auto=format&fit=crop&w=600&q=80",
+        image: "../../Home/BOTTOM PORTFOLIO_0003_3.jpg",
         client: "Brand X",
         year: "2023"
     },
@@ -30,7 +30,7 @@ const projectsData = [
         id: 4,
         title: "VR Environment",
         category: "Virtual Reality",
-        image: "https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?auto=format&fit=crop&w=600&q=80",
+        image: "../../Home/BOTTOM PORTFOLIO_0002_4.jpg",
         client: "Tech Innovations",
         year: "2024"
     },
@@ -38,7 +38,7 @@ const projectsData = [
         id: 5,
         title: "Game Asset Pack",
         category: "Game Development",
-        image: "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?auto=format&fit=crop&w=600&q=80",
+        image: "../../Home/BOTTOM PORTFOLIO_0001_5.jpg",
         client: "Indie Studio",
         year: "2023"
     },
@@ -46,7 +46,7 @@ const projectsData = [
         id: 6,
         title: "Medical 3D Model",
         category: "Scientific Visualization",
-        image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=600&q=80",
+        image: "../../Home/BOTTOM PORTFOLIO_0000_6.jpg",
         client: "MediTech",
         year: "2024"
     }
