@@ -104,11 +104,13 @@ const PortfolioPage = () => {
         { id: 4, size: "tall", img: "../../Portfolio/normal_card/4.jpg", title: "Character Model" },
         { id: 5, size: "tall", img: "../../Portfolio/normal_card/5.jpg", title: "Environment Art" },
         { id: 6, size: "tall", img: "../../Portfolio/tall_card/1.jpg", title: "Valley Landscape" },
+        { id: 10,  img: "../../Portfolio/wide_card/1.jpg", title: "Forest Light" },
+        { id: 11,  img: "../../Portfolio/large_card/1.jpg", title: "Forest Light" },
+        { id: 12,  img: "../../Portfolio/wide_card/2.jpg", title: "Forest Light" },
         { id: 7, size: "bottom-row", img: "../../Portfolio/bottom_row_card/1.jpg", title: "Desert Panorama" },
         { id: 8, size: "bottom-row", img: "../../Portfolio/bottom_row_card/2.jpg", title: "Aurora Sky" },
         { id: 9, size: "bottom-row", img: "../../Portfolio/bottom_row_card/3.jpg", title: "Misty Mountains" },
-        { id: 10,  img: "../../Portfolio/wide_card/1.jpg", title: "Forest Light" },
-        { id: 11,  img: "../../Portfolio/large_card/1.jpg", title: "Forest Light" }
+     
     ];
 
     const getSizeClass = (size) => {
