@@ -1,14 +1,14 @@
 import './FeaturedDesigns.css';
 
 const designsData = [
-  { id: 1, img: "../../Home/fantasy_warrior.png" },
-  { id: 2, img: "../../Home/misty_mountains.png" },
-  { id: 3, img: "../../Home/modern_villa.png" },
-  { id: 4, img: "../../Home/character_model.png" },
-  { id: 5, img: "../../Home/environment_art.png" },
-  { id: 6, img: "../../Home/valley_landscape_2.png" },
-  { id: 7, img: "../../Home/potrait.png" },
-  { id: 8, img: "../../Home/modern_villa.png" }
+  { id: 1, img: "../../Home/feature/1.jpg" },
+  { id: 2, img: "../../Home/feature/2.jpg" },
+  { id: 3, img: "../../Home/feature/3.jpg" },
+  { id: 4, img: "../../Home/feature/4.jpg" },
+  { id: 5, img: "../../Home/feature/5.jpg" },
+  { id: 6, img: "../../Home/feature/6.jpg" },
+  { id: 7, img: "../../Home/feature/7.jpg" },
+  { id: 8, img: "../../Home/feature/8.jpg" }
 ];
 
 const FeaturedDesigns = () => {
