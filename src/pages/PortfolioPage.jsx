@@ -98,17 +98,17 @@ const PortfolioPage = () => {
     };
 
     const portfolioItems = [
-        { id: 1, size: "tall", height: "560px", img: "../../Portfolio/fantasy_warrior.png", title: "Fantasy Warrior" },
-        { id: 2, size: "large", height: "500px", img: "../../Portfolio/modern_villa.png", title: "Modern Villa" },
-        { id: 3, size: "normal", height: "268px", img: "../../Portfolio/product_design.png", title: "Product Design" },
-        { id: 4, size: "normal", height: "268px", img: "../../Portfolio/character_model.png", title: "Character Model" },
-        { id: 5, size: "normal", height: "268px", img: "../../Portfolio/environment_art.png", title: "Environment Art" },
-        { id: 6, size: "tall", height: "560px", img: "../../Portfolio/coastal_view.png", title: "Coastal View" },
-        { id: 7, size: "normal", height: "268px", img: "../../Portfolio/valley_landscape.png", title: "Valley Landscape" },
-        { id: 8, size: "wide", height: "268px", img: "../../Portfolio/desert_panorama.png", title: "Desert Panorama" },
-        { id: 9, size: "bottom-row", height: "420px", img: "../../Portfolio/aurora_sky.png", title: "Aurora Sky" },
-        { id: 10, size: "bottom-row", height: "420px", img: "../../Portfolio/misty_mountains.png", title: "Misty Mountains" },
-        { id: 11, size: "bottom-row", height: "420px", img: "../../Portfolio/forest_light.png", title: "Forest Light" }
+        { id: 1, size: "tall", img: "../../Portfolio/normal_card/1.jpg", title: "Fantasy Warrior" },
+        { id: 2, size: "tall",  img: "../../Portfolio/normal_card/2.jpg", title: "Modern Villa" },
+        { id: 3, size: "tall", img: "../../Portfolio/normal_card/3.jpg", title: "Product Design" },
+        { id: 4, size: "tall", img: "../../Portfolio/normal_card/4.jpg", title: "Character Model" },
+        { id: 5, size: "tall", img: "../../Portfolio/normal_card/5.jpg", title: "Environment Art" },
+        { id: 6, size: "tall", img: "../../Portfolio/tall_card/1.jpg", title: "Valley Landscape" },
+        { id: 7, size: "bottom-row", img: "../../Portfolio/bottom_row_card/1.jpg", title: "Desert Panorama" },
+        { id: 8, size: "bottom-row", img: "../../Portfolio/bottom_row_card/2.jpg", title: "Aurora Sky" },
+        { id: 9, size: "bottom-row", img: "../../Portfolio/bottom_row_card/3.jpg", title: "Misty Mountains" },
+        { id: 10,  img: "../../Portfolio/wide_card/1.jpg", title: "Forest Light" },
+        { id: 11,  img: "../../Portfolio/large_card/1.jpg", title: "Forest Light" }
     ];
 
     const getSizeClass = (size) => {

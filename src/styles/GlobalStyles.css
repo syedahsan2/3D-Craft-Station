@@ -159,7 +159,7 @@ body {
     align-items: center;
     position: relative;
     z-index: 5;
-    background: rgb(228, 228, 228);
+    background: rgba(228, 228, 228, 0.281);
     padding-top: 90px;
 }
 .hero-tag {
