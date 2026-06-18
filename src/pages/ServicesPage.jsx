@@ -169,6 +169,29 @@ const ServicesPage = () => {
                 <h2 className="section-title animate-on-scroll">OUR EXPERTISE</h2>
 
                 <div className="expertise-grid-container">
+
+                    {/* Item 2 - CUSTOM STL DESIGN (Reverse) */}
+                    <div className="expertise-item-row row-inverse animate-on-scroll">
+                        <div className="expertise-info-panel">
+                            <h3 className="panel-heading">
+                                <span className="brand-white">CUSTOM</span><br />
+                                <span className="brand-orange">STL DESIGN</span>
+                            </h3>
+                            <p className="panel-description">
+                                Custom STL files made exactly to your requirements. High-quality, printable, and production-ready designs.
+                            </p>
+                            <button 
+                                className="btn-action-pill"
+                                onClick={() => scrollToSection('contact')}
+                            >
+                                Get in Touch
+                            </button>
+                        </div>
+                        <div className="expertise-frame-panel">
+                            <img src="../../Service/stl_design.png" alt="STL Design" />
+                        </div>
+                    </div>
+
                     {/* Item 1 - CAD DESIGN */}
                     <div className="expertise-item-row animate-on-scroll">
                         <div className="expertise-info-panel">
@@ -191,15 +214,15 @@ const ServicesPage = () => {
                         </div>
                     </div>
 
-                    {/* Item 2 - CUSTOM STL DESIGN (Reverse) */}
-                    <div className="expertise-item-row row-inverse animate-on-scroll">
+                    {/* Item 4 - PRODUCT PROTOTYPE DESIGN (Reverse with glow) */}
+                    <div className="expertise-item-row row-inverse deep-glow-active animate-on-scroll">
                         <div className="expertise-info-panel">
                             <h3 className="panel-heading">
-                                <span className="brand-white">CUSTOM</span><br />
-                                <span className="brand-orange">STL DESIGN</span>
+                                <span className="brand-white">PRODUCT</span><br />
+                                <span className="brand-orange">PROTOTYPE<br />DESIGN</span>
                             </h3>
                             <p className="panel-description">
-                                Custom STL files made exactly to your requirements. High-quality, printable, and production-ready designs.
+                                From concept to realistic product prototype design. Functional, modern, and ready for presentation or production.
                             </p>
                             <button 
                                 className="btn-action-pill"
@@ -209,7 +232,7 @@ const ServicesPage = () => {
                             </button>
                         </div>
                         <div className="expertise-frame-panel">
-                            <img src="../../Service/stl_design.png" alt="STL Design" />
+                            <img src="../../Service/product_prototype.png" alt="Product Prototype" />
                         </div>
                     </div>
 
@@ -235,27 +258,6 @@ const ServicesPage = () => {
                         </div>
                     </div>
 
-                    {/* Item 4 - PRODUCT PROTOTYPE DESIGN (Reverse with glow) */}
-                    <div className="expertise-item-row row-inverse deep-glow-active animate-on-scroll">
-                        <div className="expertise-info-panel">
-                            <h3 className="panel-heading">
-                                <span className="brand-white">PRODUCT</span><br />
-                                <span className="brand-orange">PROTOTYPE<br />DESIGN</span>
-                            </h3>
-                            <p className="panel-description">
-                                From concept to realistic product prototype design. Functional, modern, and ready for presentation or production.
-                            </p>
-                            <button 
-                                className="btn-action-pill"
-                                onClick={() => scrollToSection('contact')}
-                            >
-                                Get in Touch
-                            </button>
-                        </div>
-                        <div className="expertise-frame-panel">
-                            <img src="../../Service/product_prototype.png" alt="Product Prototype" />
-                        </div>
-                    </div>
                 </div>
             </section>
 

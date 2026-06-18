@@ -1130,12 +1130,16 @@ body {
     align-items: center;
     padding: 260px 8% 100px 8%;
     position: relative;
-    background: url(../../Portfolio/Banner.png) no-repeat;
-    background-color: var(--color-dark-bg);
+    background-image: url(../../Portfolio/1440x960.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     overflow: visible;
     z-index: 1;
     margin-top: 80px;
 }
+
+
 .hero-wrapper { display: flex; justify-content: space-between; align-items: center; width: 100%; gap: 50px; }
 .hero-text-block { flex: 1; }
 .hero-text-block h1 {

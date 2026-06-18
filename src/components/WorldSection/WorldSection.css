@@ -1,6 +1,10 @@
+/* ========================================
+   WORLD SECTION - FIXED
+   ======================================== */
+
 .world-section {
     position: relative;
-    background: url(../../Home/1495x550.jpg) center center/cover no-repeat;
+    background: url('/Home/1495x550.jpg') center center/cover no-repeat;
     min-height: 550px;
     overflow: hidden;
     display: flex;
@@ -9,11 +13,17 @@
     color: white;
 }
 
-@media (min-width: 768px) {
+/* ✅ Mobile - Same image with adjusted height & position */
+@media (max-width: 768px) {
     .world-section {
-        min-height: 620px;
+        min-height: 350px;
+        background-position: center 15%;
     }
 }
+
+/* ========================================
+   WORLD CONTAINER
+   ======================================== */
 
 .world-container {
     max-width: 1440px;
@@ -33,6 +43,10 @@
         grid-template-columns: repeat(12, 1fr);
     }
 }
+
+/* ========================================
+   WORLD CONTENT (Text)
+   ======================================== */
 
 .world-content {
     padding-top: 2rem;
@@ -103,6 +117,10 @@
     50% { opacity: 0; }
 }
 
+/* ========================================
+   WORLD BUTTON
+   ======================================== */
+
 .world-btn {
     background-color: #FF7A00;
     color: white;
@@ -144,164 +162,4 @@
 
 .world-btn:hover i {
     transform: translateX(5px);
-}
-
-/* ============ BIG IMAGE - LEFT POSITION ============ */
-.world-image-wrapper {
-    position: relative;
-    width: 100%;
-    height: 380px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: visible;
-    z-index: 1;
-}
-
-@media (min-width: 768px) {
-    .world-image-wrapper {
-        height: 500px;
-    }
-}
-
-@media (min-width: 1024px) {
-    .world-image-wrapper {
-        grid-column: span 6;
-        position: relative;
-        right: auto;
-        left: 0;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-}
-
-.world-image-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: scaleIn 0.8s ease-out;
-}
-
-@keyframes scaleIn {
-    from {
-        opacity: 0;
-        transform: scale(0.7) translateX(-30px);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1) translateX(0);
-    }
-}
-
-/* IMAGE BADA AUR CENTER ME */
-.world-image {
-    width: 100%;
-    height: auto;
-    max-width: 550px;
-    max-height: 450px;
-    object-fit: contain;
-    object-position: center;
-    filter: drop-shadow(0 25px 25px rgb(0 0 0 / 0.15));
-    pointer-events: none;
-    transition: transform 0.5s ease;
-}
-
-@media (min-width: 768px) {
-    .world-image {
-        max-width: 650px;
-        max-height: 550px;
-    }
-}
-
-@media (min-width: 1024px) {
-    .world-image {
-        max-width: 750px;
-        max-height: 650px;
-    }
-}
-
-@media (min-width: 1400px) {
-    .world-image {
-        max-width: 850px;
-        max-height: 750px;
-    }
-}
-
-.world-image-container:hover .world-image {
-    transform: scale(1.05);
-}
-
-/* Float Animation */
-.world-image-container {
-    animation: floatImage 3s ease-in-out infinite;
-}
-
-@keyframes floatImage {
-    0%, 100% {
-        transform: translateY(0px);
-    }
-    50% {
-        transform: translateY(-10px);
-    }
-}
-
-/* Image Glow Effect */
-.image-glow {
-    position: absolute;
-    bottom: 10%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60%;
-    height: 20%;
-    background: radial-gradient(ellipse, rgba(255, 122, 0, 0.4), transparent);
-    filter: blur(25px);
-    pointer-events: none;
-    animation: glowPulse 2s ease-in-out infinite;
-}
-
-@keyframes glowPulse {
-    0%, 100% {
-        opacity: 0.4;
-        transform: translateX(-50%) scale(1);
-    }
-    50% {
-        opacity: 0.7;
-        transform: translateX(-50%) scale(1.05);
-    }
-}
-
-/* Responsive Fixes */
-@media (max-width: 768px) {
-    .world-title {
-        font-size: 1.8rem;
-    }
-    
-    .world-image {
-        max-width: 400px;
-        max-height: 350px;
-    }
-    
-    .world-image-wrapper {
-        height: 350px;
-    }
-}
-
-@media (max-width: 480px) {
-    .world-title {
-        font-size: 1.5rem;
-    }
-    
-    .world-image {
-        max-width: 320px;
-        max-height: 280px;
-    }
-    
-    .world-image-wrapper {
-        height: 300px;
-    }
 }
