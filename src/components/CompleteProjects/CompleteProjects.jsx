@@ -8,7 +8,11 @@ const projectsData = [
         category: "Character Modeling",
         image: "../../Home/1.jpg",
         client: "Game Studio XYZ",
-        year: "2024"
+        year: "2024",
+        desc: "High-quality fantasy character design for AAA games.",
+        rating: "4.9",
+        views: "2.4k",
+        saves: "156"
     },
     {
         id: 2,
@@ -16,7 +20,11 @@ const projectsData = [
         category: "3D Rendering",
         image: "../../Home/2.jpg",
         client: "Design Hub",
-        year: "2024"
+        year: "2024",
+        desc: "Stunning creature design for sci-fi film production.",
+        rating: "4.8",
+        views: "3.1k",
+        saves: "203"
     },
     {
         id: 3,
@@ -24,7 +32,11 @@ const projectsData = [
         category: "Realistic 3D Portrate",
         image: "../../Home/3.jpg",
         client: "Brand X",
-        year: "2023"
+        year: "2023",
+        desc: "Professional product animation for marketing campaigns.",
+        rating: "4.7",
+        views: "1.8k",
+        saves: "98"
     },
     {
         id: 4,
@@ -32,7 +44,11 @@ const projectsData = [
         category: "CAD Modeling",
         image: "../../Home/4.jpg",
         client: "Tech Innovations",
-        year: "2024"
+        year: "2024",
+        desc: "Precise CAD modeling for industrial design projects.",
+        rating: "4.9",
+        views: "5.2k",
+        saves: "340"
     },
     {
         id: 5,
@@ -40,7 +56,11 @@ const projectsData = [
         category: "Game Development",
         image: "../../Home/5.jpg",
         client: "Indie Studio",
-        year: "2023"
+        year: "2023",
+        desc: "Innovative product design for mobile applications.",
+        rating: "5.0",
+        views: "4.7k",
+        saves: "412"
     },
     {
         id: 6,
@@ -48,17 +68,27 @@ const projectsData = [
         category: "Scientific Visualization",
         image: "../../Home/6.jpg",
         client: "MediTech",
-        year: "2024"
+        year: "2024",
+        desc: "Detailed mold design for manufacturing processes.",
+        rating: "4.8",
+        views: "3.9k",
+        saves: "278"
     }
 ];
 
-const CompleteProjects = () => {
+const CompleteProjects = ({ onProjectClick }) => {
     const [filter, setFilter] = useState('all');
     const categories = ['all', ...new Set(projectsData.map(p => p.category))];
 
     const filteredProjects = filter === 'all' 
         ? projectsData 
         : projectsData.filter(p => p.category === filter);
+
+    const handleViewProject = (project) => {
+        if (onProjectClick) {
+            onProjectClick(project);
+        }
+    };
 
     return (
         <section className="projects-section">
@@ -87,7 +117,10 @@ const CompleteProjects = () => {
                             <div className="project-image-wrapper">
                                 <img src={project.image} alt={project.title} className="project-image" />
                                 <div className="project-overlay">
-                                    <button className="project-view-btn">
+                                    <button 
+                                        className="project-view-btn"
+                                        onClick={() => handleViewProject(project)}
+                                    >
                                         <i className="fa-solid fa-eye"></i> View Project
                                     </button>
                                 </div>

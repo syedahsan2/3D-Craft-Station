@@ -164,27 +164,78 @@
     pointer-events: none;
 }
 
-.carousel-card.active-card {
-    width: 240px;
-    height: 300px;
-    margin-left: -120px;
-    margin-top: -150px;
-    z-index: 100;
-    transform: scale(1.1) translateZ(50px);
-    transition: all 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-    z-index: 10;
+/* ========================================
+   CAROUSEL CARDS - FIXED
+   ======================================== */
+
+/* Base Card */
+.carousel-card {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    border-radius: 18px;
+    overflow: hidden;
+    cursor: pointer;
+    
+    /* ✅ SMOOTHER TRANSITION */
+    transition: all 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    will-change: transform, width, height, filter, box-shadow, z-index;
+    
+    /* ✅ Default z-index */
+    z-index: 1;
+    
+    /* ✅ Better rendering */
+    -webkit-font-smoothing: antialiased;
 }
 
+/* ✅ Active Card - TOP LAYER */
+.carousel-card.active-card {
+    width: 250px;
+    height: 310px;
+    margin-left: -125px;
+    margin-top: -155px;
+    
+    /* ✅ Highest z-index - OVERLAP FIX */
+    z-index: 100 !important;
+    
+    transform: scale(1.1) translateZ(50px);
+    filter: brightness(1);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3), 
+                0 0 0 4px rgba(255, 122, 0, 0.4);
+    
+    /* ✅ Smooth transition for active card */
+    transition: all 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ✅ Side Cards - BOTTOM LAYER */
 .carousel-card:not(.active-card) {
     width: 160px;
-    height: 210px;
+    height: 205px;
     margin-left: -80px;
-    margin-top: -105px;
+    margin-top: -102px;
+    
+    /* ✅ Lowest z-index - BEHIND ACTIVE */
+    z-index: 1 !important;
+    
+    transform: scale(0.85);
     filter: brightness(0.5);
-    transform: scale(0.9);
     opacity: 0.7;
-    backface-visibility: hidden;
-    transition: all 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    
+    /* ✅ Disable clicks on side cards */
+    pointer-events: none;
+    
+    /* ✅ Smooth transition for side cards */
+    transition: all 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ✅ Hover on Active Card Only */
+.carousel-card.active-card:hover {
+    transform: scale(1.15) translateZ(60px);
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.4), 
+                0 0 0 4px rgba(255, 122, 0, 0.6);
+    transition: transform 0.3s ease;
 }
 
 .carousel-controls {

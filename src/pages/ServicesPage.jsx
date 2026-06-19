@@ -140,13 +140,13 @@ const ServicesPage = () => {
                     <div className="cards-stack-wrapper animate-on-scroll">
                         <div className="orange-radial-glow"></div>
                         <div className="sculpt-card card-left">
-                            <img src="../../Service/modern_villa.png" alt="3D Model Left" />
+                            <img src="../../Service/card_1.jpg" alt="3D Model Left" />
                         </div>
                         <div className="sculpt-card card-center">
-                            <img src="../../Service/misty_mountains.png" alt="3D Wizard Model" />
+                            <img src="../../Service/card_2.jpg" alt="3D Wizard Model" />
                         </div>
                         <div className="sculpt-card card-right">
-                            <img src="../../Service/Banner.png" alt="3D Model Right" />
+                            <img src="../../Service/card_3.jpg" alt="3D Model Right" />
                         </div>
                     </div>
                 </div>
@@ -210,7 +210,7 @@ const ServicesPage = () => {
                             </button>
                         </div>
                         <div className="expertise-frame-panel">
-                            <img src="../../Service/cad_design.png" alt="CAD Design" />
+                            <img src="../../Service/cad_design.jpg" alt="CAD Design" />
                         </div>
                     </div>
 

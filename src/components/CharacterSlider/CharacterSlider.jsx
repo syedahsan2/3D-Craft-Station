@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
-import './CharacterSlider.css';
+// import './CharacterSlider.css';
 
 const slidesData = [
     { 
