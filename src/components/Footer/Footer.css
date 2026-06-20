@@ -3,6 +3,8 @@
     position: relative;
     overflow: hidden;
     width: 100%;
+    background: #ffffff59;
+    backdrop-filter: blur(10px);
 }
 
 /* Decorative Background */

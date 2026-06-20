@@ -3,6 +3,8 @@
     width: 100%;
     padding: 40px 20px;
     box-sizing: border-box;
+    backdrop-filter: blur(1px);
+    background: #fbfbfb8c;    
 }
 
 /* The actual pill capsule box styling */

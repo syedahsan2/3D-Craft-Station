@@ -3,7 +3,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 
 const slidesData = [
     { 
-        image: '../../../Home/top_cards/1.jpg',
+        image: '../../../Home/top_cards/1.png',
         title: 'Mountain Peak', 
         subtitle: 'Swiss Alps', 
         desc: 'Breathtaking view of the Swiss Alps at golden hour.',
@@ -12,7 +12,7 @@ const slidesData = [
         saves: '156' 
     },
     { 
-        image: '../../../Home/top_cards/2.jpg',
+        image: '../../../Home/top_cards/2.png',
         title: 'Ocean Horizon', 
         subtitle: 'Maldives', 
         desc: 'Crystal clear waters meet the endless sky.',
@@ -21,7 +21,7 @@ const slidesData = [
         saves: '203' 
     },
     { 
-        image: '../../../Home/top_cards/3.jpg',
+        image: '../../../Home/top_cards/3.png',
         title: 'Forest Light', 
         subtitle: 'Pacific NW', 
         desc: 'Sunlight filters through ancient trees.',
@@ -30,7 +30,7 @@ const slidesData = [
         saves: '98' 
     },
     { 
-        image: '../../../Home/top_cards/4.jpg',
+        image: '../../../Home/top_cards/4.png',
         title: 'Coastal Wave', 
         subtitle: 'Amalfi', 
         desc: 'Dramatic coastline where turquoise waters meet cliffs.',
@@ -39,7 +39,7 @@ const slidesData = [
         saves: '340' 
     },
     { 
-        image: '../../../Home/top_cards/5.jpg',
+        image: '../../../Home/top_cards/5.png',
         title: 'Valley Glow', 
         subtitle: 'Yosemite', 
         desc: 'Golden light paints the granite walls.',
@@ -48,7 +48,7 @@ const slidesData = [
         saves: '412' 
     },
     { 
-        image: '../../../Home/top_cards/6.jpg', 
+        image: '../../../Home/top_cards/6.png', 
         title: 'Misty Hills', 
         subtitle: 'Highlands', 
         desc: 'Rolling hills wrapped in morning mist.',
@@ -57,7 +57,7 @@ const slidesData = [
         saves: '67' 
     },
     { 
-        image: '../../../Home/top_cards/7.jpg', 
+        image: '../../../Home/top_cards/7.png', 
         title: 'Desert Night', 
         subtitle: 'Sahara', 
         desc: 'Endless dunes under a canopy of stars.',
@@ -448,10 +448,7 @@ const CharacterSlider = () => {
     return (
         <>
             <div className="bg-shadows">
-                <div className="shadow-char char-1">3D</div>
-                <div className="shadow-char char-2">CS</div>
-                <div className="shadow-char char-3">CR</div>
-                <div className="shadow-char char-4">FT</div>
+                 <img src="../../../Home/top_cards/card_BG.jpeg" alt="Background" />
             </div>
             
             <section className="hero-section">
