@@ -448,7 +448,7 @@ const CharacterSlider = () => {
     return (
         <>
             <div className="bg-shadows">
-                 <img src="../../../Home/top_cards/card_BG.jpeg" alt="Background" />
+                 <img src="../../../Home/top_cards/card_BG.jpeg" alt="Background" className='bg_slider' />
             </div>
             
             <section className="hero-section">

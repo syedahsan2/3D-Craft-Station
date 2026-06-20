@@ -147,7 +147,9 @@ body {
 .shadow-char.char-2 { top: 15%; right: -8%; transform: rotate(10deg); }
 .shadow-char.char-3 { bottom: -15%; left: 8%; transform: rotate(5deg); }
 .shadow-char.char-4 { bottom: -5%; right: -5%; transform: rotate(-8deg); }
-
+.bg_slider{
+    width: 100%;
+}
 /* ----------------------------------------
    #HOME PAGE - HERO SECTION
    ---------------------------------------- */
