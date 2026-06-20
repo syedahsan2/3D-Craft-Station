@@ -448,35 +448,51 @@ const CharacterSlider = () => {
     return (
         <>
             <div className="bg-shadows">
-                 <img src="../../../Home/top_cards/card_BG.jpeg" alt="Background" className='bg_slider' />
             </div>
             
-            <section className="hero-section">
-                <div className="hero-tag">✦ 3D CRAFT STATION ✦</div>
-                <h1>
-                    Immersive <span className="highlight">3D</span><br />
-                    <span className="typewriter-text">
-                        {displayText}
-                        <span className="cursor">|</span>
-                    </span>
-                </h1>
-                <p className="subtitle">Click any card to explore interactive 3D view · Drag to rotate · Scroll to zoom</p>
-                
-                <div className="carousel-section" ref={carouselSectionRef}>
-                    <div className="carousel-container">
-                        <div className="carousel-ring" ref={carouselRingRef}></div>
-                    </div>
-                    <div className="carousel-controls">
-                        <button className="ctrl-btn" onClick={() => rotateCarousel(-1)}>
-                            <i className="fa-solid fa-chevron-left"></i>
-                        </button>
-                        <div className="carousel-dots" ref={carouselDotsRef}></div>
-                        <button className="ctrl-btn" onClick={() => rotateCarousel(1)}>
-                            <i className="fa-solid fa-chevron-right"></i>
-                        </button>
-                    </div>
+       <section className="hero-section">
+            <div className="hero-tag">✦ 3D CRAFT STATION ✦</div>
+            <h1>
+                Immersive <span className="highlight">3D</span><br />
+                <span className="typewriter-text">
+                    {displayText}
+                    <span className="cursor">|</span>
+                </span>
+            </h1>
+            <p className="subtitle">Click any card to explore interactive 3D view · Drag to rotate · Scroll to zoom</p>
+            
+            {/* ✅ Video Background - Sirf Carousel Ke Andar */}
+            <div className="carousel-section" ref={carouselSectionRef}>
+                {/* Video Background */}
+                <div className="carousel-video-bg">
+                    <video 
+                        autoPlay 
+                        loop 
+                        muted 
+                        playsInline
+                        className="carousel-video"
+                    >
+                        <source src="/Home/top_cards/09oo.mp4" type="video/mp4" />
+                        <img src="/Home/top_cards/slider-bg.jpeg" alt="Background" />
+                    </video>
+                    <div className="carousel-video-overlay"></div>
                 </div>
-            </section>
+                
+                {/* Carousel Content */}
+                <div className="carousel-container">
+                    <div className="carousel-ring" ref={carouselRingRef}></div>
+                </div>
+                <div className="carousel-controls">
+                    <button className="ctrl-btn" onClick={() => rotateCarousel(-1)}>
+                        <i className="fa-solid fa-chevron-left"></i>
+                    </button>
+                    <div className="carousel-dots" ref={carouselDotsRef}></div>
+                    <button className="ctrl-btn" onClick={() => rotateCarousel(1)}>
+                        <i className="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
             
             {/* Modal with Image (No 3D Model) */}
             <div className={`modal-overlay ${isModalOpen ? 'active' : ''}`} ref={modalOverlayRef} onClick={closeModal}>

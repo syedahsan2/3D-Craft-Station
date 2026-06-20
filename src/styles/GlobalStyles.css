@@ -195,6 +195,10 @@ body {
 /* ----------------------------------------
    #HOME PAGE - CAROUSEL SLIDER (WITH ZOOM EFFECT)
    ---------------------------------------- */
+/* ========================================
+   CAROUSEL VIDEO BACKGROUND - SIRF CAROUSEL
+   ======================================== */
+
 .carousel-section {
     position: relative;
     width: 100%;
@@ -204,9 +208,39 @@ body {
     justify-content: center;
     perspective: 2000px;
     z-index: 10;
+    overflow: hidden;  /* ✅ Video ko andar hi rakhega */
 }
+
+/* ✅ Video Background - Carousel ke ander */
+.carousel-video-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;  /* ✅ Cards ke neeche */
+    overflow: hidden;
+}
+
+.carousel-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.carousel-video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+/* ✅ Carousel Content - Video ke UPAR */
 .carousel-container {
     position: relative;
+    z-index: 2;  /* ✅ Video se upar */
     width: 100%;
     height: 100%;
     display: flex;
@@ -214,15 +248,22 @@ body {
     justify-content: center;
     transform-style: preserve-3d;
 }
-.carousel-ring {
+
+.carousel-controls {
     position: relative;
-    width: 600px;
-    height: 450px;
-    transform-style: preserve-3d;
-    transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    margin: 0 auto;
+    z-index: 3;  /* ✅ Sab se upar */
 }
 
+/* ✅ Hero Section - Carousel se alag */
+.hero-section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: rgb(228, 228, 228);  /* ✅ Normal background */
+    padding-top: 90px;
+}
 /* ========================================
    CAROUSEL CARDS - SMOOTH + OVERLAP FIX
    ======================================== */

@@ -3,6 +3,21 @@ import './Footer.css';
 const Footer = () => {
     return (
         <footer className="footer-new">
+
+            <div className="footer-video-bg">
+                <video 
+                    autoPlay 
+                    loop 
+                    muted 
+                    playsInline
+                    className="footer-video"
+                >
+                    <source src="/Home/top_cards/09oo.mp4" type="video/mp4" />
+                    <img src="/images/footer-bg.jpg" alt="Background" />
+                </video>
+                <div className="footer-video-overlay"></div>
+            </div>
+
             <div className="footer-new-container">
                 {/* Top Section with Newsletter */}
                 <div className="footer-newsletter">
@@ -22,7 +37,7 @@ const Footer = () => {
                     <div className="footer-col brand-col">
                         <div className="footer-logo">
                             <div className="logo-box-footer">
-                                <img src="/Logo.webp" alt="Logo" style={{ width: '260px' }} />
+                                <img src="/Logo-white.webp" alt="Logo" style={{ width: '260px' }} />
                             </div>
                         </div>
                         <p className="footer-description">
@@ -102,7 +117,6 @@ const Footer = () => {
             </div>
 
             {/* Decorative Elements */}
-            <div className="footer-bg-pattern"></div>
             <div className="footer-glow"></div>
         </footer>
     );
