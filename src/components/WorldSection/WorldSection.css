@@ -4,7 +4,7 @@
 
 .world-section {
     position: relative;
-    background: url('/Home/1495x550.jpg') center center/cover no-repeat;
+    background: radial-gradient(circle at 85% 50%, #d97724 0%, #4a2306 30%, #000000 70%);
     min-height: 550px;
     overflow: hidden;
     display: flex;
@@ -35,7 +35,7 @@
     position: relative;
     z-index: 10;
     align-items: center;
-    padding: 0 1.5rem 25px;
+    padding: 0 1.5rem;
 }
 
 @media (min-width: 1024px) {

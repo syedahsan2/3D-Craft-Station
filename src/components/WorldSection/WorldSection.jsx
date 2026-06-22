@@ -51,22 +51,31 @@ const WorldSection = () => {
         setIsDeleting(false);
     };
 
-  return (
+return (
     <section className="world-section">
-      <div className="world-container">
-        <div className="world-content">
-          <h2 className="world-title">
-            THE WORLD <br /> OF <span className="world-highlight">3D STATION</span>
-          </h2>
-          <button className="world-btn">
-            <span>Explore the universe</span>
-            <i className="fa-solid fa-circle-play"></i>
-          </button>
+        <div className="world-container">
+            <div className="world-content">
+                <h2 className="world-title">
+                    THE WORLD <br /> OF <span className="world-highlight">{displayText}<span className="cursor">|</span></span>
+                </h2>
+                <button className="world-btn">
+                    <span>Explore the universe</span>
+                    <i className="fa-solid fa-circle-play"></i>
+                </button>
+            </div>
+
+            <div className="world-image-wrapper">
+                <div className="world-image-container">
+                    <img 
+                        src="../../Home/Banner_T.png" 
+                        alt="3D Character" 
+                        className="world-image"
+                    />
+                </div>
+            </div>
         </div>
-        {/* ❌ .world-image-wrapper hata do */}
-      </div>
     </section>
-  );
+);
 
 };
 

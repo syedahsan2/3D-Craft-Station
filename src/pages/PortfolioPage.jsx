@@ -132,45 +132,63 @@ const PortfolioPage = () => {
 
     return (
         <>
-            {/* Hero Section */}
-            <section className="portfolio-hero-section">
-                <div className="hero-wrapper">
-                    <div className="hero-text-block animate-on-scroll">
-                        <h1>
-                            <span className="typewriter-line-1">
-                                {lineIndex === 0 ? displayedText : lines[0].text}
-                                {lineIndex === 0 && <span className="cursor">|</span>}
-                            </span>
-                            <br />
-                            <span className="typewriter-line-2" style={{ color: '#ff6600' }}>
-                                {lineIndex === 1 ? displayedText : (lineIndex > 1 ? lines[1].text : '')}
-                                {lineIndex === 1 && <span className="cursor">|</span>}
-                            </span>
-                            <br />
-                            <span className="typewriter-line-3">
-                                {lineIndex === 2 ? displayedText : (lineIndex > 2 ? lines[2].text : '')}
-                                {lineIndex === 2 && <span className="cursor">|</span>}
-                            </span>
-                        </h1>
-                        <p>
-                            From concept to final render, we design unique 3D characters 
-                            that captivate audiences and elevate brands.
-                        </p>
-                        <button className="capsule-btn">Get in Touch</button>
-                    </div>
-                    <div className="hero-artwork animate-on-scroll">
-                        <div className="artwork-render"></div>
-                    </div>
-                </div>
-                
-                {/* Right Arrow */}
-                <div className="carousel-next" onClick={scrollToNext}>
-                    <i className="fa-solid fa-chevron-right"></i>
-                </div>
-                
-                {/* Down Arrow */}
-                <div className="section-pointer-down" onClick={scrollToPortfolio}></div>
-            </section>
+{/* Hero Section - Services Style */}
+<section className="services-hero-section" style={{ paddingTop: '160px', minHeight: '100vh' }}>
+    <div className="hero-container">
+        <div className="hero-content animate-on-scroll">
+            <h1 className="hero-title">
+                <span style={{ color: '#ffffff' }}>
+                    {lineIndex === 0 ? displayedText : lines[0].text}
+                    {lineIndex === 0 && <span className="cursor">|</span>}
+                </span>
+                <br />
+                <span style={{ color: '#ff6600' }}>
+                    {lineIndex === 1 ? displayedText : (lineIndex > 1 ? lines[1].text : '')}
+                    {lineIndex === 1 && <span className="cursor">|</span>}
+                </span>
+                <br />
+                <span style={{ color: '#ffffff' }}>
+                    {lineIndex === 2 ? displayedText : (lineIndex > 2 ? lines[2].text : '')}
+                    {lineIndex === 2 && <span className="cursor">|</span>}
+                </span>
+            </h1>
+            <p className="hero-subtitle">
+                From concept to final render, we design unique 3D characters 
+                that captivate audiences and elevate brands.
+            </p>
+            <button className="btn-expertise" onClick={scrollToPortfolio}>
+                View Our Work
+            </button>
+        </div>
+
+        {/* Single Image */}
+        <div className="animate-on-scroll" style={{ flex: '0.9', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+            <div className="orange-radial-glow"></div>
+            <img 
+                src="../../Portfolio/Banner_R.png" 
+                alt="Portfolio Banner" 
+                style={{
+                    width: '100%',
+                    maxWidth: '500px',
+                    height: 'auto',
+                    objectFit: 'contain',
+                    position: 'relative',
+                    zIndex: 2,
+                    filter: 'drop-shadow(0 15px 30px rgba(0,0,0,0.7))',
+                    transition: 'transform 0.4s ease'
+                }}
+                onMouseEnter={e => e.target.style.transform = 'scale(1.02) translateY(-5px)'}
+                onMouseLeave={e => e.target.style.transform = 'scale(1) translateY(0)'}
+            />
+        </div>
+    </div>
+
+    {/* Chevron Divider */}
+    <div className="chevron-divider-container">
+        <div className="orange-chevron-line"></div>
+        <div className="white-chevron-block" style={{ backgroundColor: '#f7f7f7' }}></div>
+    </div>
+</section>
 
             {/* Portfolio Grid Section */}
             <section className="portfolio-container" ref={portfolioRef}>
