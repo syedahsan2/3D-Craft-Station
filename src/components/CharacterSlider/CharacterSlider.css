@@ -27,7 +27,6 @@
     text-transform: uppercase;
     color: rgba(0, 0, 0, 0.5);
     margin-bottom: 20px;
-    background: rgba(255, 255, 255, 0.5);
     backdrop-filter: blur(10px);
 }
 
@@ -48,9 +47,7 @@
     margin-bottom: 40px;
 }
 
-.typewriter-text {
-    color: #FF7A00;
-}
+.typewriter-text { color: #FF7A00; }
 
 .cursor {
     display: inline-block;
@@ -68,10 +65,8 @@
 /* ========================================
    SLIDER WRAPPER
    ======================================== */
-
 .slider-wrapper {
     position: relative;
-    background: radial-gradient(circle at center, #252525 0%, #0a0a0a 100%);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -80,13 +75,12 @@
     padding: 40px 0;
     width: 100%;
     overflow: hidden;
-    border-radius: 30px;
+    background: rgb(255, 255, 255);
 }
 
 /* ========================================
    VIDEO BACKGROUND
    ======================================== */
-
 .slider-video-bg {
     position: absolute;
     top: 0;
@@ -101,9 +95,8 @@
 .slider-video {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    filter: blur(4px) brightness(0.6);
-    transform: scale(1.05);
+    object-fit: fill;
+    transform: scale(1.0);
 }
 
 .slider-video-overlay {
@@ -112,18 +105,17 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.6);
     z-index: 1;
+    background: rgb(255 255 255 / 64%);
 }
 
 /* ========================================
    VIEWPORT FRAME
    ======================================== */
-
 .viewport-frame {
     position: relative;
     width: 100%;
-    height: 65vh;
+    height: 70vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -145,7 +137,6 @@
 /* ========================================
    CAROUSEL 3D TRACK
    ======================================== */
-
 .carousel-3d-track {
     position: absolute;
     width: 240px;
@@ -156,9 +147,49 @@
 }
 
 /* ========================================
-   CAROUSEL SLIDES
+   CAROUSEL - COMPLETE FIX
    ======================================== */
 
+/* Slider Wrapper */
+.slider-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    padding: 40px 0;
+    width: 100%;
+    overflow: visible;
+    background: rgb(255, 255, 255);
+}
+
+/* Viewport */
+.viewport-frame {
+    position: relative;
+    width: 100%;
+    height: 70vh;
+    min-height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    perspective: 2300px;
+    z-index: 2;
+    padding: 20px 0;
+    overflow: visible;
+}
+
+/* Track */
+.carousel-3d-track {
+    position: absolute;
+    width: 240px;
+    height: 380px;
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    z-index: 5;
+}
+
+/* Cards */
 .carousel-slide {
     position: absolute;
     width: 100%;
@@ -166,47 +197,81 @@
     left: 0;
     top: 0;
     backface-visibility: hidden;
-    border-radius: 0;
     overflow: hidden;
-    border: 5px solid;
-    border-image: linear-gradient(to right, #3a3a3a, #7a7a7a, #2a2a2a, #7a7a7a, #3a3a3a) 1;
+    border: 4px solid #555;
     box-shadow: -4px 0 12px rgba(0,0,0,0.5), 4px 0 12px rgba(0,0,0,0.5);
     transform-origin: center center;
     transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.5s ease, filter 0.5s ease;
     cursor: pointer;
+    background-color: #1a1a1a;
 }
 
 .carousel-slide img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center;
+    display: block;
     filter: grayscale(25%) brightness(80%);
     transition: filter 0.3s;
+}
+
+.carousel-slide.is-active {
+    border-color: #FF7A00;
+    box-shadow: 0 15px 40px rgba(255, 122, 0, 0.4);
+    transform: scale(1.05);
+    z-index: 10;
 }
 
 .carousel-slide.is-active img {
     filter: grayscale(0%) brightness(105%);
 }
 
-.carousel-slide:hover img {
-    filter: grayscale(0%) brightness(105%);
+.carousel-slide:not(.is-active) {
+    transform: scale(0.92);
+    opacity: 0.7;
 }
 
-.carousel-slide:hover {
-    transform: scale(1.02);
+.carousel-slide:not(.is-active) img {
+    filter: brightness(0.6) blur(0.5px);
 }
 
+/* ✅ Mobile */
+@media (max-width: 768px) {
+    .viewport-frame {
+        height: 55vh;
+        min-height: 400px;
+    }
+    .carousel-3d-track {
+        width: 200px;
+        height: 320px;
+    }
+}
+
+@media (max-width: 480px) {
+    .slider-wrapper {
+        min-height: 50vh;
+        padding: 20px 0;
+        overflow: visible;
+    }
+    .viewport-frame {
+        height: 50vh;
+        min-height: 350px;
+    }
+    .carousel-3d-track {
+        width: 160px;
+        height: 260px;
+    }
+}
 /* ========================================
    SLIDE OVERLAY
    ======================================== */
-
 .slide-overlay {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
     padding: 20px 15px;
-    background: linear-gradient(transparent, rgba(0,0,0,0.8));
     z-index: 3;
     opacity: 0;
     transition: opacity 0.4s ease;
@@ -232,23 +297,9 @@
     font-weight: 400;
 }
 
-/* Reflections overlay */
-.carousel-slide::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 50%, rgba(0,0,0,0.2) 100%);
-    z-index: 2;
-    pointer-events: none;
-}
-
 /* ========================================
    CONTROLS
    ======================================== */
-
 .controls-wrapper {
     display: flex;
     gap: 30px;
@@ -292,7 +343,6 @@
 /* ========================================
    MODAL STYLES
    ======================================== */
-
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -540,168 +590,42 @@
 }
 
 /* ========================================
-   RESPONSIVE
+   RESPONSIVE (ALL IN ONE PLACE)
    ======================================== */
-
 @media (max-width: 1024px) {
-    .viewport-frame {
-        height: 55vh;
-    }
-    
-    .carousel-3d-track {
-        width: 200px;
-        height: 320px;
-    }
-    
-    .film-reel-assembly {
-        height: 360px;
-    }
+    .viewport-frame { height: 55vh; }
+    .carousel-3d-track { width: 200px; height: 320px; }
+    .film-reel-assembly { height: 360px; }
 }
 
 @media (max-width: 768px) {
-    .hero-section h1 {
-        font-size: 2.2rem;
-    }
+    .hero-section h1 { font-size: 2.2rem; }
+    .viewport-frame { height: 50vh; }
+    .carousel-3d-track { width: 200px; height: 300px; }
+    .film-reel-assembly { height: 300px; }
+    .slide-title { font-size: 0.9rem; }
+    .slide-subtitle { font-size: 0.7rem; }
+    .nav-btn { padding: 8px 18px; font-size: 12px; }
+    .controls-wrapper { gap: 15px; }
     
-    .viewport-frame {
-        height: 50vh;
-    }
-    
-    .carousel-3d-track {
-        width: 160px;
-        height: 260px;
-    }
-    
-    .film-reel-assembly {
-        height: 300px;
-    }
-    
-    .slide-title {
-        font-size: 0.9rem;
-    }
-    
-    .slide-subtitle {
-        font-size: 0.7rem;
-    }
-    
-    .nav-btn {
-        padding: 8px 18px;
-        font-size: 12px;
-    }
-    
-    .controls-wrapper {
-        gap: 15px;
-    }
-    
-    .modal-container {
-        flex-direction: column;
-        height: 90vh;
-        gap: 15px;
-    }
-    
-    .modal-3d-area {
-        flex: 1;
-        min-height: 300px;
-    }
-    
-    .modal-details {
-        width: 100%;
-        flex: 0 0 auto;
-        max-height: 40%;
-    }
-    
-    .modal-details h2 {
-        font-size: 1.4rem;
-    }
+    .modal-container { flex-direction: column; height: 90vh; gap: 15px; }
+    .modal-3d-area { flex: 1; min-height: 300px; }
+    .modal-details { width: 100%; flex: 0 0 auto; max-height: 40%; }
+    .modal-details h2 { font-size: 1.4rem; }
 }
 
 @media (max-width: 480px) {
-    .hero-section h1 {
-        font-size: 1.8rem;
-    }
+    .hero-section h1 { font-size: 1.8rem; }
+    .hero-section .subtitle { font-size: 0.85rem; padding: 0 10px; }
     
-    .hero-section .subtitle {
-        font-size: 0.85rem;
-        padding: 0 10px;
-    }
-    
-    .slider-wrapper {
-        border-radius: 15px;
-        min-height: 50vh;
-        padding: 20px 0;
-    }
-    
-    .viewport-frame {
-        height: 40vh;
-    }
-    
-    .carousel-3d-track {
-        width: 130px;
-        height: 210px;
-    }
-    
-    .film-reel-assembly {
-        height: 240px;
-    }
-    
-    .slide-overlay {
-        padding: 12px 10px;
-    }
-    
-    .slide-title {
-        font-size: 0.75rem;
-    }
-    
-    .slide-subtitle {
-        font-size: 0.6rem;
-    }
-    
-    .nav-btn {
-        padding: 6px 14px;
-        font-size: 10px;
-    }
-    
-    .controls-wrapper {
-        gap: 10px;
-        margin-top: 15px;
-    }
-    
-    .slide-counter {
-        font-size: 0.7rem;
-        min-width: 40px;
-    }
-}
-/* ========================================
-   VIDEO BACKGROUND - FIXED SIZE
-   ======================================== */
-
-.slider-video-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    overflow: hidden;
-    pointer-events: none;
-}
-
-.slider-video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;  /* ✅ Video cover karega, cut nahi hogi */
-    filter: blur(4px) brightness(0.6);
-}
-
-/* ✅ Mobile pe bhi same height */
-@media (max-width: 768px) {
-    .slider-video-bg {
-        height: 100%;  /* ✅ Parent ke hisaab se */
-    }
-    
-    .slider-video {
-        height: 100%;
-        width: 100%;
-        object-fit: cover;
-    }
+    .slider-wrapper { border-radius: 15px; min-height: 50vh; padding: 20px 0; background: rgb(245, 245, 245); }
+    .viewport-frame { height: 60vh; }
+    .carousel-3d-track { width: 150px; height: 220px; }
+    .film-reel-assembly { height: 240px; }
+    .slide-overlay { padding: 12px 10px; }
+    .slide-title { font-size: 0.75rem; }
+    .slide-subtitle { font-size: 0.6rem; }
+    .nav-btn { padding: 6px 14px; font-size: 10px; }
+    .controls-wrapper { gap: 10px; margin-top: 15px; }
+    .slide-counter { font-size: 0.7rem; min-width: 40px; }
 }

@@ -1,9 +1,59 @@
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import ThankYouModal from '../ThankYouModal/ThankYouModal';
 import './Footer.css';
 
 const Footer = () => {
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [showThankYou, setShowThankYou] = useState(false);
+    const [subscriberEmail, setSubscriberEmail] = useState('');
+
+    // ✅ Newsletter Submit Handler
+    const handleNewsletterSubmit = async (e) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+
+        const form = e.target;
+        const email = form.querySelector('input[type="email"]')?.value;
+
+        if (!email) {
+            alert('Please enter your email address.');
+            setIsSubmitting(false);
+            return;
+        }
+
+        try {
+            const response = await fetch('/backend/newsletter.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                setSubscriberEmail(email);
+                setShowThankYou(true);
+                form.reset();
+            } else {
+                alert('❌ Failed to subscribe. Please try again.');
+            }
+        } catch (error) {
+            alert('❌ Error connecting to server. Please try again.');
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    const closeThankYou = () => {
+        setShowThankYou(false);
+    };
+
     return (
         <footer className="footer-new">
-
+            {/* Video Background */}
             <div className="footer-video-bg">
                 <video 
                     autoPlay 
@@ -12,72 +62,79 @@ const Footer = () => {
                     playsInline
                     className="footer-video"
                 >
-                    <source src="/Home/top_cards/09oo.mp4" type="video/mp4" />
-                    <img src="/images/footer-bg.jpg" alt="Background" />
+                    <source src="/Home/top_cards/banner_last_video.mp4" type="video/mp4" />
+                    <img src="/images/footer-bg.webp" alt="Background" />
                 </video>
                 <div className="footer-video-overlay"></div>
             </div>
 
             <div className="footer-new-container">
-                {/* Top Section with Newsletter */}
+                {/* Newsletter Section */}
                 <div className="footer-newsletter">
                     <div className="newsletter-content">
                         <h3>Subscribe to Our Newsletter</h3>
                         <p>Get the latest 3D designs, offers and updates directly in your inbox</p>
-                        <div className="newsletter-form">
-                            <input type="email" placeholder="Enter your email address" />
-                            <button><i className="fa-solid fa-paper-plane"></i> Subscribe</button>
-                        </div>
+                        <form className="newsletter-form" onSubmit={handleNewsletterSubmit}>
+                            <input 
+                                type="email" 
+                                placeholder="Enter your email address" 
+                                required 
+                                disabled={isSubmitting}
+                            />
+                            <button type="submit" disabled={isSubmitting}>
+                                <i className="fa-solid fa-paper-plane"></i> 
+                                {isSubmitting ? 'Subscribing...' : 'Subscribe'}
+                            </button>
+                        </form>
                     </div>
                 </div>
 
-                {/* Main Footer Content */}
+                {/* Rest of footer... */}
                 <div className="footer-main">
                     {/* Brand Column */}
                     <div className="footer-col brand-col">
                         <div className="footer-logo">
-                            <div className="logo-box-footer">
+                            <Link to="/">
                                 <img src="/Logo-white.webp" alt="Logo" style={{ width: '260px' }} />
-                            </div>
+                            </Link>
                         </div>
                         <p className="footer-description">
                             Premium 3D design studio creating stunning visual experiences for global clients. 
                             We bring imagination to life through cutting-edge 3D technology.
                         </p>
                         <div className="footer-social-links">
-                            <a href="#"><i className="fa-brands fa-facebook-f"></i></a>
-                            <a href="#"><i className="fa-brands fa-instagram"></i></a>
-                            <a href="#"><i className="fa-brands fa-linkedin-in"></i></a>
-                            <a href="#"><i className="fa-brands fa-youtube"></i></a>
-                            <a href="#"><i className="fa-brands fa-behance"></i></a>
+                            <a href="https://www.facebook.com/3dcraftstation/" target="_blank" rel="noopener noreferrer"><i className="fa-brands fa-facebook-f"></i></a>
+                            <a href="https://www.instagram.com/3dcraftstation/" target="_blank" rel="noopener noreferrer"><i className="fa-brands fa-instagram"></i></a>
+                            <a href="#" target="_blank" rel="noopener noreferrer"><i className="fa-brands fa-linkedin-in"></i></a>
+                            <a href="#" target="_blank" rel="noopener noreferrer"><i className="fa-brands fa-youtube"></i></a>
+                            <a href="#" target="_blank" rel="noopener noreferrer"><i className="fa-brands fa-behance"></i></a>
                         </div>
                     </div>
 
-                    {/* Quick Links Column */}
+                    {/* Quick Links */}
                     <div className="footer-col">
                         <h4>Quick Links</h4>
                         <ul>
-                            <li><a href="#"><i className="fa-solid fa-chevron-right"></i> Home</a></li>
-                            <li><a href="#"><i className="fa-solid fa-chevron-right"></i> About Us</a></li>
-                            <li><a href="#"><i className="fa-solid fa-chevron-right"></i> Services</a></li>
-                            <li><a href="#"><i className="fa-solid fa-chevron-right"></i> Portfolio</a></li>
-                            <li><a href="#"><i className="fa-solid fa-chevron-right"></i> Contact</a></li>
+                            <li><Link to="/"><i className="fa-solid fa-chevron-right"></i> Home</Link></li>
+                            <li><Link to="/about"><i className="fa-solid fa-chevron-right"></i> About Us</Link></li>
+                            <li><Link to="/services"><i className="fa-solid fa-chevron-right"></i> Services</Link></li>
+                            <li><Link to="/portfolio"><i className="fa-solid fa-chevron-right"></i> Portfolio</Link></li>
+                            <li><Link to="/contact"><i className="fa-solid fa-chevron-right"></i> Contact</Link></li>
                         </ul>
                     </div>
 
-                    {/* Services Column */}
+                    {/* Services */}
                     <div className="footer-col">
                         <h4>Our Services</h4>
                         <ul>
-                            <li><a href="#"><i className="fa-solid fa-chevron-right"></i> 3D Modeling</a></li>
-                            <li><a href="#"><i className="fa-solid fa-chevron-right"></i> Character Design</a></li>
-                            <li><a href="#"><i className="fa-solid fa-chevron-right"></i> 3D Animation</a></li>
-                            <li><a href="#"><i className="fa-solid fa-chevron-right"></i> Product Visualization</a></li>
-                            <li><a href="#"><i className="fa-solid fa-chevron-right"></i> VR/AR Development</a></li>
+                            <li><Link to="/services#custom-stl-design"><i className="fa-solid fa-chevron-right"></i> Custom STL Design</Link></li>
+                            <li><Link to="/services#cad-design"><i className="fa-solid fa-chevron-right"></i> CAD Design</Link></li>
+                            <li><Link to="/services#product-prototype-design"><i className="fa-solid fa-chevron-right"></i> Product Prototype Design</Link></li>
+                            <li><Link to="/services#3d-model-print"><i className="fa-solid fa-chevron-right"></i> 3D Model Print</Link></li>
                         </ul>
                     </div>
 
-                    {/* Contact Info Column */}
+                    {/* Contact Info */}
                     <div className="footer-col">
                         <h4>Contact Info</h4>
                         <ul className="contact-info">
@@ -91,7 +148,7 @@ const Footer = () => {
                             </li>
                             <li>
                                 <i className="fa-solid fa-envelope"></i>
-                                <span>info@3dstation.com</span>
+                                <a href="mailto:info@3dstation.com">info@3dstation.com</a>
                             </li>
                             <li>
                                 <i className="fa-solid fa-clock"></i>
@@ -107,17 +164,24 @@ const Footer = () => {
                         <p>&copy; 2026 3D CRAFT STATION. All rights reserved.</p>
                     </div>
                     <div className="bottom-links">
-                        <a href="#">Privacy Policy</a>
-                        <a href="#">Terms of Service</a>
-                        <a href="#">Cookie Settings</a>
-                        <a href="#">Sitemap</a>
+                        <Link to="/privacy-policy">Privacy Policy</Link>
+                        <Link to="/terms-of-service">Terms of Service</Link>
+                        <Link to="/cookie-settings">Cookie Settings</Link>
+                        <Link to="/sitemap">Sitemap</Link>
                     </div>
-                    
                 </div>
             </div>
 
             {/* Decorative Elements */}
             <div className="footer-glow"></div>
+
+            {/* ✅ Thank You Modal */}
+            <ThankYouModal 
+                isOpen={showThankYou}
+                onClose={closeThankYou}
+                userEmail={subscriberEmail}
+                type="newsletter"
+            />
         </footer>
     );
 };

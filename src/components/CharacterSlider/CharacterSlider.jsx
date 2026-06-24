@@ -3,7 +3,7 @@ import './CharacterSlider.css';
 
 const slidesData = [
     { 
-        image: '../../../Home/top_cards/1.png',
+        image: '../../../Home/top_cards/1.webp',
         title: 'Mountain Peak', 
         subtitle: 'Swiss Alps', 
         desc: 'Breathtaking view of the Swiss Alps at golden hour.',
@@ -12,7 +12,7 @@ const slidesData = [
         saves: '156' 
     },
     { 
-        image: '../../../Home/top_cards/2.png',
+        image: '../../../Home/top_cards/2.webp',
         title: 'Ocean Horizon', 
         subtitle: 'Maldives', 
         desc: 'Crystal clear waters meet the endless sky.',
@@ -21,7 +21,7 @@ const slidesData = [
         saves: '203' 
     },
     { 
-        image: '../../../Home/top_cards/3.png',
+        image: '../../../Home/top_cards/3.webp',
         title: 'Forest Light', 
         subtitle: 'Pacific NW', 
         desc: 'Sunlight filters through ancient trees.',
@@ -30,7 +30,7 @@ const slidesData = [
         saves: '98' 
     },
     { 
-        image: '../../../Home/top_cards/4.png',
+        image: '../../../Home/top_cards/4.webp',
         title: 'Coastal Wave', 
         subtitle: 'Amalfi', 
         desc: 'Dramatic coastline where turquoise waters meet cliffs.',
@@ -39,7 +39,7 @@ const slidesData = [
         saves: '340' 
     },
     { 
-        image: '../../../Home/top_cards/5.png',
+        image: '../../../Home/top_cards/5.webp',
         title: 'Valley Glow', 
         subtitle: 'Yosemite', 
         desc: 'Golden light paints the granite walls.',
@@ -48,7 +48,7 @@ const slidesData = [
         saves: '412' 
     },
     { 
-        image: '../../../Home/top_cards/6.png', 
+        image: '../../../Home/top_cards/6.webp', 
         title: 'Misty Hills', 
         subtitle: 'Highlands', 
         desc: 'Rolling hills wrapped in morning mist.',
@@ -57,7 +57,7 @@ const slidesData = [
         saves: '67' 
     },
     { 
-        image: '../../../Home/top_cards/7.png', 
+        image: '../../../Home/top_cards/7.webp', 
         title: 'Desert Night', 
         subtitle: 'Sahara', 
         desc: 'Endless dunes under a canopy of stars.',
@@ -66,7 +66,7 @@ const slidesData = [
         saves: '278' 
     },
     { 
-        image: '../../../Home/top_cards/8.jpg', 
+        image: '../../../Home/top_cards/8.webp', 
         title: 'Aurora Sky', 
         subtitle: 'Norway', 
         desc: 'Northern lights dance across the arctic sky.',
@@ -75,7 +75,7 @@ const slidesData = [
         saves: '520' 
     },
     { 
-        image: '../../../Home/top_cards/9.jpg', 
+        image: '../../../Home/top_cards/9.webp', 
         title: 'City Lights', 
         subtitle: 'Tokyo', 
         desc: 'Neon-lit metropolis with futuristic vibes.',
@@ -84,7 +84,7 @@ const slidesData = [
         saves: '612' 
     },
     { 
-        image: '../../../Home/top_cards/10.jpg', 
+        image: '../../../Home/top_cards/10.webp', 
         title: 'Mountain Lake', 
         subtitle: 'Banff', 
         desc: 'Crystal clear lake reflecting majestic peaks.',
@@ -93,7 +93,7 @@ const slidesData = [
         saves: '534' 
     },
     { 
-        image: '../../../Home/top_cards/11.jpg', 
+        image: '../../../Home/top_cards/11.webp', 
         title: 'Wildflower Field', 
         subtitle: 'Tuscany', 
         desc: 'Blooming wildflowers under the Italian sun.',
@@ -102,7 +102,7 @@ const slidesData = [
         saves: '421' 
     },
     { 
-        image: '../../../Home/top_cards/12.jpg', 
+        image: '../../../Home/top_cards/12.webp', 
         title: 'Ancient Temple', 
         subtitle: 'Cambodia', 
         desc: 'Mysterious temple ruins in the jungle.',
@@ -135,10 +135,9 @@ const CharacterSlider = () => {
         'Game Assets'
     ];
 
-    const totalSlides = slidesData.length;
-    const degreeStep = 360 / totalSlides;
-    const radius = 360;
-
+const totalSlides = slidesData.length;
+const degreeStep = 360 / totalSlides;
+const radius = 400;
     // Typewriter effect
     useEffect(() => {
         const currentFullText = typewriterTexts[textIndex];
@@ -176,61 +175,68 @@ const CharacterSlider = () => {
     const dragStartRef = useRef({ x: 0, y: 0 });
     const rotStartRef = useRef({ x: 0, y: 0 });
 
-    // Update active state for each slide
-    const updateActiveState = () => {
-        const slides = trackRef.current?.children;
-        if (!slides) return;
-
-        Array.from(slides).forEach((slide, index) => {
-            const targetAngle = index * degreeStep;
-            let finalAngle = (targetAngle - (currentIndex * degreeStep)) % 360;
-            if (finalAngle < 0) finalAngle += 360;
-
-            if (Math.abs(finalAngle) < 10 || Math.abs(finalAngle - 360) < 10) {
-                slide.style.transform = `rotateY(${targetAngle}deg) translateZ(${radius + 35}px) scale(1.15)`;
-                slide.style.opacity = "1";
-                slide.style.zIndex = "10";
-                slide.classList.add('is-active');
-            } else {
-                slide.style.transform = `rotateY(${targetAngle}deg) translateZ(${radius}px) scale(0.98)`;
-                slide.style.opacity = "0.55";
-                slide.style.zIndex = "1";
-                slide.classList.remove('is-active');
-            }
-        });
-    };
-
-    // Rotate the reel
-    const rotateReel = () => {
-        if (trackRef.current) {
-            const activeAngle = -currentIndex * degreeStep;
-            trackRef.current.style.transform = `rotateY(${activeAngle}deg)`;
-            updateActiveState();
+const updateCarousel = () => {
+    if (!trackRef.current) return;
+    
+    const slides = trackRef.current.children;
+    const angle = -currentIndex * degreeStep;
+    
+    trackRef.current.style.transform = `rotateY(${angle}deg)`;
+    
+    Array.from(slides).forEach((slide, index) => {
+        let diff = (index - currentIndex) % totalSlides;
+        if (diff < -totalSlides/2) diff += totalSlides;
+        if (diff > totalSlides/2) diff -= totalSlides;
+        
+        const isActive = Math.abs(diff) < 0.5 || Math.abs(diff) === 0;
+        
+        if (isActive) {
+            slide.style.transform = `rotateY(${index * degreeStep}deg) translateZ(${radius + 40}px) scale(1.15)`;
+            slide.style.opacity = '1';
+            slide.style.zIndex = '10';
+            slide.style.filter = 'brightness(1)';
+            slide.classList.add('is-active');
+        } else {
+            slide.style.transform = `rotateY(${index * degreeStep}deg) translateZ(${radius}px) scale(0.90)`;
+            slide.style.opacity = '1';  // ✅ Much more visible
+            slide.style.zIndex = '2';
+            slide.style.filter = 'brightness(1)';  // ✅ No blur, just slightly dimmer
+            slide.classList.remove('is-active');
         }
-    };
+    });
+};
 
-    // Next/Previous handlers
+    // Auto rotate
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentIndex((prev) => (prev + 1) % totalSlides);
+        }, 4000);
+        
+        return () => clearInterval(interval);
+    }, [totalSlides]);
+
     const goToNext = () => {
-        setCurrentIndex(prev => (prev + 1) % totalSlides);
+        setCurrentIndex((prev) => (prev + 1) % totalSlides);
     };
 
     const goToPrev = () => {
-        setCurrentIndex(prev => (prev - 1 + totalSlides) % totalSlides);
+        setCurrentIndex((prev) => (prev - 1 + totalSlides) % totalSlides);
     };
 
-    // Update 3D transform
     const update3DTransform = () => {
         if (image3DWrapperRef.current) {
             image3DWrapperRef.current.style.transform = `rotateX(${rotXRef.current}deg) rotateY(${rotYRef.current}deg) scale(${zoomRef.current})`;
         }
     };
 
-    // Initialize on mount and on index change
     useEffect(() => {
-        rotateReel();
+        updateCarousel();
     }, [currentIndex]);
 
-    // Keyboard navigation
+    useEffect(() => {
+        updateCarousel();
+    }, []);
+
     useEffect(() => {
         const handleKeyDown = (e) => {
             if (isModalOpen) {
@@ -244,7 +250,6 @@ const CharacterSlider = () => {
         return () => document.removeEventListener('keydown', handleKeyDown);
     }, [isModalOpen]);
 
-    // Modal image 3D controls (drag to rotate, scroll to zoom)
     useEffect(() => {
         const area = modal3DAreaRef.current;
         if (!area) return;
@@ -330,21 +335,20 @@ const CharacterSlider = () => {
                         <span className="cursor">|</span>
                     </span>
                 </h1>
-                <p className="subtitle">Click any card to explore interactive 3D view · Drag to rotate · Scroll to zoom</p>
+                <p className="subtitle">Bringing ideas to life through high-quality 3D modeling, visualization, and digital artistry.</p>
                 
-                {/* Slider */}
                 <div className="slider-wrapper">
-                    {/* ✅ Video Background - Sirf Slider Ke Andar */}
                     <div className="slider-video-bg">
                         <video 
                             autoPlay 
                             loop 
                             muted 
                             playsInline
+                            preload="metadata"  // ✅ Add this
                             className="slider-video"
                         >
-                            <source src="/Home/top_cards/09oo.mp4" type="video/mp4" />
-                            <img src="/Home/top_cards/slider-bg.jpeg" alt="Background" />
+                            <source src="/Home/top_cards/banner_last video_4.mp4" type="video/mp4" />
+                            <img src="/Home/top_cards/slider-bg.webp" alt="Background" />
                         </video>
                         <div className="slider-video-overlay"></div>
                     </div>
@@ -352,35 +356,31 @@ const CharacterSlider = () => {
                     <div className="viewport-frame">
                         <div className="film-reel-assembly">
                             <div className="carousel-3d-track" ref={trackRef}>
-                                {slidesData.map((slide, index) => (
-                                    <div 
-                                        key={index} 
-                                        className="carousel-slide"
-                                        style={{
-                                            transform: `rotateY(${index * degreeStep}deg) translateZ(${radius}px)`
-                                        }}
-                                        onClick={() => openModal(slide)}
-                                    >
-                                        <img src={slide.image} alt={slide.title} />
-                                        <div className="slide-overlay">
-                                            <span className="slide-title">{slide.title}</span>
-                                            <span className="slide-subtitle">{slide.subtitle}</span>
+                                {slidesData.map((slide, index) => {
+                                    const rotation = index * degreeStep;
+                                    return (
+                                        <div 
+                                            key={index} 
+                                            className="carousel-slide"
+                                            style={{
+                                                transform: `rotateY(${rotation}deg) translateZ(${radius}px)`
+                                            }}
+                                            onClick={() => openModal(slide)}
+                                        >
+                                            <img src={slide.image} alt={slide.title} />
+                                            {/* Slide overlay removed - no text */}
                                         </div>
-                                    </div>
-                                ))}
+                                    );
+                                })}
                             </div>
                         </div>
                     </div>
 
-                    <div className="controls-wrapper">
-                        <button className="nav-btn" onClick={goToPrev}>← PREVIOUS</button>
-                        <span className="slide-counter">{currentIndex + 1} / {totalSlides}</span>
-                        <button className="nav-btn" onClick={goToNext}>NEXT →</button>
-                    </div>
+                    {/* Controls removed - auto rotate only */}
                 </div>
             </section>
             
-            {/* Modal with Image */}
+            {/* Modal */}
             <div className={`modal-overlay ${isModalOpen ? 'active' : ''}`} ref={modalOverlayRef} onClick={closeModal}>
                 <div className="modal-container" onClick={(e) => e.stopPropagation()}>
                     <div className="modal-3d-area" ref={modal3DAreaRef}>

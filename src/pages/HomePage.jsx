@@ -6,6 +6,7 @@ import WorldSection from '../components/WorldSection/WorldSection';
 import FeaturedDesigns from '../components/FeaturedDesigns/FeaturedDesigns';
 import StayConnected from '../components/StayConnected/StayConnected';
 import StatsBanner from '../components/StatsBanner/StatsBanner';
+import { Helmet } from 'react-helmet-async';
 
 const HomePage = () => {
   useEffect(() => {
@@ -30,6 +31,10 @@ const HomePage = () => {
 
   return (
     <>
+      <Helmet>
+        <title>3D Craft Station - Premium 3D Design Studio | Character Modeling & Animation</title>
+        <meta name="description" content="3D Craft Station offers professional 3D modeling, character design, animation & product visualization services. Custom 3D solutions for gaming, film & product design." />
+      </Helmet>
       <main>
         <CharacterSlider />
 

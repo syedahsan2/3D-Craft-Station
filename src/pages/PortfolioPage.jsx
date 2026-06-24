@@ -1,8 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
+import ThankYouModal from '../components/ThankYouModal/ThankYouModal'; 
+import { Helmet } from 'react-helmet-async';
 
 const PortfolioPage = () => {
     const portfolioRef = useRef(null);
-    
+    const [showThankYou, setShowThankYou] = useState(false);
+    const [userName, setUserName] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
     // Typewriter states
     const [displayedText, setDisplayedText] = useState('');
     const [isDeleting, setIsDeleting] = useState(false);
@@ -98,18 +103,18 @@ const PortfolioPage = () => {
     };
 
     const portfolioItems = [
-        { id: 1, size: "tall", img: "../../Portfolio/normal_card/1.jpg", title: "Fantasy Warrior" },
-        { id: 2, size: "tall",  img: "../../Portfolio/normal_card/2.jpg", title: "Modern Villa" },
-        { id: 3, size: "tall", img: "../../Portfolio/normal_card/3.jpg", title: "Product Design" },
-        { id: 4, size: "tall", img: "../../Portfolio/normal_card/4.jpg", title: "Character Model" },
-        { id: 5, size: "tall", img: "../../Portfolio/normal_card/5.jpg", title: "Environment Art" },
-        { id: 6, size: "tall", img: "../../Portfolio/tall_card/1.jpg", title: "Valley Landscape" },
-        { id: 10,  img: "../../Portfolio/wide_card/1.jpg", title: "Forest Light" },
-        { id: 11,  img: "../../Portfolio/large_card/1.jpg", title: "Forest Light" },
-        { id: 12,  img: "../../Portfolio/wide_card/2.jpg", title: "Forest Light" },
-        { id: 7, size: "bottom-row", img: "../../Portfolio/bottom_row_card/1.jpg", title: "Desert Panorama" },
-        { id: 8, size: "bottom-row", img: "../../Portfolio/bottom_row_card/2.jpg", title: "Aurora Sky" },
-        { id: 9, size: "bottom-row", img: "../../Portfolio/bottom_row_card/3.jpg", title: "Misty Mountains" },
+        { id: 1, size: "tall", img: "../../Portfolio/normal_card/1.webp", title: "Fantasy Warrior" },
+        { id: 2, size: "tall",  img: "../../Portfolio/normal_card/2.webp", title: "Modern Villa" },
+        { id: 3, size: "tall", img: "../../Portfolio/normal_card/3.webp", title: "Product Design" },
+        { id: 4, size: "tall", img: "../../Portfolio/normal_card/4.webp", title: "Character Model" },
+        { id: 5, size: "tall", img: "../../Portfolio/normal_card/5.webp", title: "Environment Art" },
+        { id: 6, size: "tall", img: "../../Portfolio/tall_card/1.webp", title: "Valley Landscape" },
+        { id: 10,  img: "../../Portfolio/wide_card/1.webp", title: "Forest Light" },
+        { id: 11,  img: "../../Portfolio/large_card/1.webp", title: "Forest Light" },
+        { id: 12,  img: "../../Portfolio/wide_card/2.webp", title: "Forest Light" },
+        { id: 7, size: "bottom-row", img: "../../Portfolio/bottom_row_card/1.webp", title: "Desert Panorama" },
+        { id: 8, size: "bottom-row", img: "../../Portfolio/bottom_row_card/2.webp", title: "Aurora Sky" },
+        { id: 9, size: "bottom-row", img: "../../Portfolio/bottom_row_card/3.webp", title: "Misty Mountains" },
      
     ];
 
@@ -129,66 +134,109 @@ const PortfolioPage = () => {
         }
         return {};
     };
+    const handleContactSubmit = async (e) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+
+        const form = e.target;
+        const name = form.querySelector('input[name="name"]')?.value || '';
+        const formData = {
+            name: name,
+            email: form.querySelector('input[name="email"]')?.value || '',
+            phone: form.querySelector('input[name="phone"]')?.value || 'Not provided',
+            service: 'Portfolio Inquiry',
+            message: 'Message from Portfolio Page'
+        };
+
+        try {
+            const response = await fetch('/backend/send-email.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+            const data = await response.json();
+
+            if (data.success) {
+                setUserName(name);
+                setShowThankYou(true);
+                form.reset();
+            } else {
+                alert('❌ Failed to send message. Please try again.');
+            }
+        } catch (error) {
+            alert('❌ Error connecting to server.');
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    const closeThankYou = () => {
+        setShowThankYou(false);
+    };
 
     return (
         <>
-{/* Hero Section - Services Style */}
-<section className="services-hero-section" style={{ paddingTop: '160px', minHeight: '100vh' }}>
-    <div className="hero-container">
-        <div className="hero-content animate-on-scroll">
-            <h1 className="hero-title">
-                <span style={{ color: '#ffffff' }}>
-                    {lineIndex === 0 ? displayedText : lines[0].text}
-                    {lineIndex === 0 && <span className="cursor">|</span>}
-                </span>
-                <br />
-                <span style={{ color: '#ff6600' }}>
-                    {lineIndex === 1 ? displayedText : (lineIndex > 1 ? lines[1].text : '')}
-                    {lineIndex === 1 && <span className="cursor">|</span>}
-                </span>
-                <br />
-                <span style={{ color: '#ffffff' }}>
-                    {lineIndex === 2 ? displayedText : (lineIndex > 2 ? lines[2].text : '')}
-                    {lineIndex === 2 && <span className="cursor">|</span>}
-                </span>
-            </h1>
-            <p className="hero-subtitle">
-                From concept to final render, we design unique 3D characters 
-                that captivate audiences and elevate brands.
-            </p>
-            <button className="btn-expertise" onClick={scrollToPortfolio}>
-                View Our Work
-            </button>
-        </div>
+              <Helmet>
+        <title>3D Portfolio - Character Modeling & Design Gallery | 3D Craft Station</title>
+        <meta name="description" content="View 3D Craft Station's portfolio of character models, 3D animations, product designs, and creative visualizations. See our best work." />
+      </Helmet>
+        {/* Hero Section - Services Style */}
+        <section className="services-hero-section" style={{ paddingTop: '160px', minHeight: '100vh' }}>
+            <div className="hero-container">
+                <div className="hero-content animate-on-scroll">
+                    <h1 className="hero-title">
+                        <span style={{ color: '#ffffff' }}>
+                            {lineIndex === 0 ? displayedText : lines[0].text}
+                            {lineIndex === 0 && <span className="cursor">|</span>}
+                        </span>
+                        <br />
+                        <span style={{ color: '#ff6600' }}>
+                            {lineIndex === 1 ? displayedText : (lineIndex > 1 ? lines[1].text : '')}
+                            {lineIndex === 1 && <span className="cursor">|</span>}
+                        </span>
+                        <br />
+                        <span style={{ color: '#ffffff' }}>
+                            {lineIndex === 2 ? displayedText : (lineIndex > 2 ? lines[2].text : '')}
+                            {lineIndex === 2 && <span className="cursor">|</span>}
+                        </span>
+                    </h1>
+                    <p className="hero-subtitle">
+                        From concept to final render, we design unique 3D characters 
+                        that captivate audiences and elevate brands.
+                    </p>
+                    <button className="btn-expertise" onClick={scrollToPortfolio}>
+                        View Our Work
+                    </button>
+                </div>
 
-        {/* Single Image */}
-        <div className="animate-on-scroll" style={{ flex: '0.9', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
-            <div className="orange-radial-glow"></div>
-            <img 
-                src="../../Portfolio/Banner_R.png" 
-                alt="Portfolio Banner" 
-                style={{
-                    width: '100%',
-                    maxWidth: '500px',
-                    height: 'auto',
-                    objectFit: 'contain',
-                    position: 'relative',
-                    zIndex: 2,
-                    filter: 'drop-shadow(0 15px 30px rgba(0,0,0,0.7))',
-                    transition: 'transform 0.4s ease'
-                }}
-                onMouseEnter={e => e.target.style.transform = 'scale(1.02) translateY(-5px)'}
-                onMouseLeave={e => e.target.style.transform = 'scale(1) translateY(0)'}
-            />
-        </div>
-    </div>
+                {/* Single Image */}
+                <div className="animate-on-scroll" style={{ flex: '0.9', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+                    <div className="orange-radial-glow"></div>
+                    <img 
+                        src="../../Portfolio/Banner_R.webp" 
+                        alt="Portfolio Banner" 
+                        style={{
+                            width: '100%',
+                            maxWidth: '500px',
+                            height: 'auto',
+                            objectFit: 'contain',
+                            position: 'relative',
+                            zIndex: 2,
+                            filter: 'drop-shadow(0 15px 30px rgba(0,0,0,0.7))',
+                            transition: 'transform 0.4s ease'
+                        }}
+                        onMouseEnter={e => e.target.style.transform = 'scale(1.02) translateY(-5px)'}
+                        onMouseLeave={e => e.target.style.transform = 'scale(1) translateY(0)'}
+                    />
+                </div>
+            </div>
 
-    {/* Chevron Divider */}
-    <div className="chevron-divider-container">
-        <div className="orange-chevron-line"></div>
-        <div className="white-chevron-block" style={{ backgroundColor: '#f7f7f7' }}></div>
-    </div>
-</section>
+            {/* Chevron Divider */}
+            <div className="chevron-divider-container">
+                <div className="orange-chevron-line"></div>
+                <div className="white-chevron-block" style={{ backgroundColor: '#f7f7f7' }}></div>
+            </div>
+        </section>
 
             {/* Portfolio Grid Section */}
             <section className="portfolio-container" ref={portfolioRef}>
@@ -205,12 +253,6 @@ const PortfolioPage = () => {
                                 className="card-img" 
                                 style={{ backgroundImage: `url('${item.img}')` }}
                             >
-                                <div className="card-overlay">
-                                    <div className="card-info">
-                                        <h3>{item.title}</h3>
-                                        <button className="view-btn">View Project <i className="fa-solid fa-arrow-right"></i></button>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     ))}
@@ -230,7 +272,7 @@ const PortfolioPage = () => {
                         OUR <span className="accent-orange-text">3D EXPERTISE</span>
                     </h2>
 
-                    <form className="inline-capture-form" onSubmit={(e) => e.preventDefault()}>
+                    <form className="inline-capture-form" onSubmit={handleContactSubmit}>
                         <div className="input-pill-group">
                             <input type="text" name="name" className="capsule-input-field" placeholder="NAME" required />
                         </div>
@@ -241,11 +283,20 @@ const PortfolioPage = () => {
                             <input type="tel" name="phone" className="capsule-input-field" placeholder="NUMBER" required />
                         </div>
                         <div className="button-pill-group">
-                            <button type="submit" className="btn-submit-pill">CONTACT</button>
+                            <button type="submit" className="btn-submit-pill" disabled={isSubmitting}>
+                                {isSubmitting ? 'SENDING...' : 'CONTACT'}
+                            </button>
                         </div>
                     </form>
                 </div>
             </section>
+
+            {/* ✅ Thank You Modal */}
+            <ThankYouModal 
+                isOpen={showThankYou}
+                onClose={closeThankYou}
+                userName={userName}
+            />
         </>
     );
 };

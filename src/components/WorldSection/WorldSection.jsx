@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';  // ✅ React Router import
 import './WorldSection.css';
 
 const WorldSection = () => {
     const [displayText, setDisplayText] = useState('');
     const [isDeleting, setIsDeleting] = useState(false);
     const [isTypingComplete, setIsTypingComplete] = useState(false);
+    const navigate = useNavigate(); 
     
     const fullText = "3D STATION";
     const typingSpeed = 100;
@@ -50,7 +52,10 @@ const WorldSection = () => {
         setDisplayText('');
         setIsDeleting(false);
     };
-
+  // ✅ Navigate to Portfolio page
+  const goToPortfolio = () => {
+    navigate('/portfolio');
+  };
 return (
     <section className="world-section">
         <div className="world-container">
@@ -58,7 +63,7 @@ return (
                 <h2 className="world-title">
                     THE WORLD <br /> OF <span className="world-highlight">{displayText}<span className="cursor">|</span></span>
                 </h2>
-                <button className="world-btn">
+                <button className="world-btn" onClick={goToPortfolio}>
                     <span>Explore the universe</span>
                     <i className="fa-solid fa-circle-play"></i>
                 </button>
@@ -67,7 +72,7 @@ return (
             <div className="world-image-wrapper">
                 <div className="world-image-container">
                     <img 
-                        src="../../Home/Banner_T.png" 
+                        src="../../Home/Banner_T.webp" 
                         alt="3D Character" 
                         className="world-image"
                     />

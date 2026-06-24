@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import ThankYouModal from '../components/ThankYouModal/ThankYouModal'; 
+import { Helmet } from 'react-helmet-async';
 
 const ServicesPage = () => {
     const [displayedLine1, setDisplayedLine1] = useState('');
@@ -7,6 +9,10 @@ const ServicesPage = () => {
     const [lineIndex, setLineIndex] = useState(0);
     const [charIndex, setCharIndex] = useState(0);
     const [isDeleting, setIsDeleting] = useState(false);
+    const [showThankYou, setShowThankYou] = useState(false);
+    const [userName, setUserName] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [selectedService, setSelectedService] = useState('');
 
     const lines = [
         { text: "CREATIVE SERVICES", color: "#ffffff", id: 1 },
@@ -103,9 +109,51 @@ const ServicesPage = () => {
             section.scrollIntoView({ behavior: 'smooth' });
         }
     };
+    const handleContactSubmit = async (e) => {
+        e.preventDefault();
+        setIsSubmitting(true);
 
+        const form = e.target;
+        const name = form.querySelector('input[name="name"]')?.value || '';
+        const formData = {
+            name: name,
+            email: form.querySelector('input[name="email"]')?.value || '',
+            phone: form.querySelector('input[name="phone"]')?.value || 'Not provided',
+            service: form.querySelector('select')?.value || 'Services Inquiry',
+            message: 'Message from Services Page'
+        };
+
+        try {
+            const response = await fetch('/backend/send-email.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+            const data = await response.json();
+
+            if (data.success) {
+                setUserName(name);
+                setShowThankYou(true);
+                form.reset();
+            } else {
+                alert('❌ Failed to send message. Please try again.');
+            }
+        } catch (error) {
+            alert('❌ Error connecting to server.');
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    const closeThankYou = () => {
+        setShowThankYou(false);
+    };
     return (
         <>
+            <Helmet>
+                    <title>3D Services - Modeling, Animation, CAD Design | 3D Craft Station</title>
+                    <meta name="description" content="Explore 3D Craft Station's services including character modeling, 3D animation, CAD design, product visualization, and custom STL design." />
+            </Helmet>
             {/* Hero Section */}
             <section className="services-hero-section">
                 <div className="hero-container">
@@ -140,13 +188,13 @@ const ServicesPage = () => {
                     <div className="cards-stack-wrapper animate-on-scroll">
                         <div className="orange-radial-glow"></div>
                         <div className="sculpt-card card-left">
-                            <img src="../../Service/card_1.jpg" alt="3D Model Left" />
+                            <img src="../../Service/card_1.webp" alt="3D Model Left" />
                         </div>
                         <div className="sculpt-card card-center">
-                            <img src="../../Service/card_2.jpg" alt="3D Wizard Model" />
+                            <img src="../../Service/card_2.webp" alt="3D Wizard Model" />
                         </div>
                         <div className="sculpt-card card-right">
-                            <img src="../../Service/card_3.jpg" alt="3D Model Right" />
+                            <img src="../../Service/card_3.webp" alt="3D Model Right" />
                         </div>
                     </div>
                 </div>
@@ -171,7 +219,7 @@ const ServicesPage = () => {
                 <div className="expertise-grid-container">
 
                     {/* Item 2 - CUSTOM STL DESIGN (Reverse) */}
-                    <div className="expertise-item-row row-inverse animate-on-scroll">
+                    <div className="expertise-item-row row-inverse animate-on-scroll" id="custom-stl-design">
                         <div className="expertise-info-panel">
                             <h3 className="panel-heading">
                                 <span className="brand-white">CUSTOM</span><br />
@@ -188,12 +236,12 @@ const ServicesPage = () => {
                             </button>
                         </div>
                         <div className="expertise-frame-panel">
-                            <img src="../../Service/stl_design.png" alt="STL Design" />
+                            <img src="../../Service/stl_design.webp" alt="STL Design" />
                         </div>
                     </div>
 
                     {/* Item 1 - CAD DESIGN */}
-                    <div className="expertise-item-row animate-on-scroll">
+                    <div className="expertise-item-row animate-on-scroll" id="cad-design">
                         <div className="expertise-info-panel">
                             <h3 className="panel-heading">
                                 <span className="brand-orange">CAD</span><br />
@@ -210,12 +258,12 @@ const ServicesPage = () => {
                             </button>
                         </div>
                         <div className="expertise-frame-panel">
-                            <img src="../../Service/cad_design.jpg" alt="CAD Design" />
+                            <img src="../../Service/cad_design.webp" alt="CAD Design" />
                         </div>
                     </div>
 
                     {/* Item 4 - PRODUCT PROTOTYPE DESIGN (Reverse with glow) */}
-                    <div className="expertise-item-row row-inverse deep-glow-active animate-on-scroll">
+                    <div className="expertise-item-row row-inverse deep-glow-active animate-on-scroll" id="product-prototype-design">
                         <div className="expertise-info-panel">
                             <h3 className="panel-heading">
                                 <span className="brand-white">PRODUCT</span><br />
@@ -232,12 +280,12 @@ const ServicesPage = () => {
                             </button>
                         </div>
                         <div className="expertise-frame-panel">
-                            <img src="../../Service/product_prototype.png" alt="Product Prototype" />
+                            <img src="../../Service/prototype.webp" alt="Product Prototype" />
                         </div>
                     </div>
 
                     {/* Item 3 - 3D MODEL PRINT */}
-                    <div className="expertise-item-row animate-on-scroll">
+                    <div className="expertise-item-row animate-on-scroll" id="3d-model-print">
                         <div className="expertise-info-panel">
                             <h3 className="panel-heading">
                                 <span className="brand-orange">3D MODEL</span><br />
@@ -254,7 +302,7 @@ const ServicesPage = () => {
                             </button>
                         </div>
                         <div className="expertise-frame-panel">
-                            <img src="../../Service/3d_print.png" alt="3D Print" />
+                            <img src="../../Service/3D_Printer.webp" alt="3D Print" />
                         </div>
                     </div>
 
@@ -270,7 +318,7 @@ const ServicesPage = () => {
                         OUR <span className="accent-orange-text">3D EXPERTISE</span>
                     </h2>
 
-                    <form className="inline-capture-form" onSubmit={(e) => e.preventDefault()}>
+                    <form className="inline-capture-form" onSubmit={handleContactSubmit}>
                         <div className="input-pill-group">
                             <input type="text" name="name" className="capsule-input-field" placeholder="NAME" required />
                         </div>
@@ -280,12 +328,22 @@ const ServicesPage = () => {
                         <div className="input-pill-group">
                             <input type="tel" name="phone" className="capsule-input-field" placeholder="NUMBER" required />
                         </div>
+                        
                         <div className="button-pill-group">
-                            <button type="submit" className="btn-submit-pill">CONTACT</button>
+                            <button type="submit" className="btn-submit-pill" disabled={isSubmitting}>
+                                {isSubmitting ? 'SENDING...' : 'CONTACT'}
+                            </button>
                         </div>
                     </form>
                 </div>
             </section>
+
+            {/* ✅ Thank You Modal */}
+            <ThankYouModal 
+                isOpen={showThankYou}
+                onClose={closeThankYou}
+                userName={userName}
+            />
         </>
     );
 };

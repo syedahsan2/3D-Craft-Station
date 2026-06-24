@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';  // ✅ React Router import
 import './CompleteProjects.css';
 
 const projectsData = [
@@ -6,7 +7,7 @@ const projectsData = [
         id: 1,
         title: "Fantasy Character Design",
         category: "Character Modeling",
-        image: "../../Home/1.jpg",
+        image: "../../Home/1.webp",
         client: "Game Studio XYZ",
         year: "2024",
         desc: "High-quality fantasy character design for AAA games.",
@@ -18,7 +19,7 @@ const projectsData = [
         id: 2,
         title: "Creature Design for Sci-Fi Film",
         category: "3D Rendering",
-        image: "../../Home/2.jpg",
+        image: "../../Home/2.webp",
         client: "Design Hub",
         year: "2024",
         desc: "Stunning creature design for sci-fi film production.",
@@ -30,7 +31,7 @@ const projectsData = [
         id: 3,
         title: "Product Animation for Marketing",
         category: "Realistic 3D Portrate",
-        image: "../../Home/3.jpg",
+        image: "../../Home/3.webp",
         client: "Brand X",
         year: "2023",
         desc: "Professional product animation for marketing campaigns.",
@@ -42,7 +43,7 @@ const projectsData = [
         id: 4,
         title: "CAD Modeling for Industrial Design",
         category: "CAD Modeling",
-        image: "../../Home/4.jpg",
+        image: "../../Home/4.webp",
         client: "Tech Innovations",
         year: "2024",
         desc: "Precise CAD modeling for industrial design projects.",
@@ -54,7 +55,7 @@ const projectsData = [
         id: 5,
         title: "Product Design for Mobile App",
         category: "Game Development",
-        image: "../../Home/5.jpg",
+        image: "../../Home/5.webp",
         client: "Indie Studio",
         year: "2023",
         desc: "Innovative product design for mobile applications.",
@@ -66,7 +67,7 @@ const projectsData = [
         id: 6,
         title: "Mold Design for Manufacturing",
         category: "Scientific Visualization",
-        image: "../../Home/6.jpg",
+        image: "../../Home/6.webp",
         client: "MediTech",
         year: "2024",
         desc: "Detailed mold design for manufacturing processes.",
@@ -77,6 +78,7 @@ const projectsData = [
 ];
 
 const CompleteProjects = ({ onProjectClick }) => {
+    const navigate = useNavigate();  // ✅ useNavigate hook
     const [filter, setFilter] = useState('all');
     const categories = ['all', ...new Set(projectsData.map(p => p.category))];
 
@@ -88,6 +90,11 @@ const CompleteProjects = ({ onProjectClick }) => {
         if (onProjectClick) {
             onProjectClick(project);
         }
+    };
+
+    // ✅ Navigate to Portfolio page
+    const goToPortfolio = () => {
+        navigate('/portfolio');
     };
 
     return (
@@ -116,14 +123,6 @@ const CompleteProjects = ({ onProjectClick }) => {
                         <div key={project.id} className="project-card">
                             <div className="project-image-wrapper">
                                 <img src={project.image} alt={project.title} className="project-image" />
-                                <div className="project-overlay">
-                                    <button 
-                                        className="project-view-btn"
-                                        onClick={() => handleViewProject(project)}
-                                    >
-                                        <i className="fa-solid fa-eye"></i> View Project
-                                    </button>
-                                </div>
                             </div>
                             <div className="project-info">
                                 <h3 className="project-title">{project.title}</h3>
@@ -138,7 +137,8 @@ const CompleteProjects = ({ onProjectClick }) => {
                 </div>
 
                 <div className="projects-footer">
-                    <button className="projects-loadmore">
+                    {/* ✅ View All Projects Button - Portfolio Link */}
+                    <button className="projects-loadmore" onClick={goToPortfolio}>
                         View All Projects <i className="fa-solid fa-arrow-right"></i>
                     </button>
                 </div>

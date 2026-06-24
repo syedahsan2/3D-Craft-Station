@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react';
+import ThankYouModal from '../components/ThankYouModal/ThankYouModal'; 
+import { Helmet } from 'react-helmet-async';
 
 const AboutPage = () => {
     const [activeCard, setActiveCard] = useState(0);
+    const [showThankYou, setShowThankYou] = useState(false);
+    const [userName, setUserName] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
     
     // Typewriter states
     const [displayedLine1, setDisplayedLine1] = useState('');
@@ -16,7 +21,7 @@ const AboutPage = () => {
         { text: "POWERFUL", color: "#f26522", id: 2 },
         { text: "DESIGNS", color: "#ffffff", id: 3 }
     ];
-
+    
     // Typewriter effect
     useEffect(() => {
         const currentFullText = lines[lineIndex].text;
@@ -48,6 +53,46 @@ const AboutPage = () => {
         
         return () => clearTimeout(timeout);
     }, [charIndex, isDeleting, lineIndex]);
+
+        const handleContactSubmit = async (e) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+
+        const form = e.target;
+        const name = form.querySelector('input[name="name"]')?.value || '';
+        const formData = {
+            name: name,
+            email: form.querySelector('input[name="email"]')?.value || '',
+            phone: form.querySelector('input[name="phone"]')?.value || 'Not provided',
+            service: 'About Page Inquiry',
+            message: 'Message from About Page'
+        };
+
+        try {
+            const response = await fetch('/backend/send-email.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+            const data = await response.json();
+
+            if (data.success) {
+                setUserName(name);
+                setShowThankYou(true);
+                form.reset();
+            } else {
+                alert('❌ Failed to send message. Please try again.');
+            }
+        } catch (error) {
+            alert('❌ Error connecting to server.');
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    const closeThankYou = () => {
+        setShowThankYou(false);
+    };
 
     const updateDisplayedText = (line, length) => {
         switch(line) {
@@ -107,16 +152,20 @@ const AboutPage = () => {
     };
 
     const valueCards = [
-        { id: 0, title: "CREATIVITY FIRST", img: "../../About US/creativity.png" },
-        { id: 1, title: "QUALITY & PRECISION", img: "../../About US/quality.png" },
-        { id: 2, title: "INNOVATION", img: "../../About US/innovation.png" },
-        { id: 3, title: "CLIENT-CENTERED APPROACH", img: "../../About US/client-centered.png" },
-        { id: 4, title: "CONSISTENCY", img: "../../About US/consistency.png" },
-        { id: 5, title: "CONTINUOUS GROWTH", img: "../../About US/continuous-growth.png" }
+        { id: 0, title: "CREATIVITY FIRST", img: "../../About US/creativity.webp" },
+        { id: 1, title: "QUALITY & PRECISION", img: "../../About US/quality.webp" },
+        { id: 2, title: "INNOVATION", img: "../../About US/innovation.webp" },
+        { id: 3, title: "CLIENT-CENTERED APPROACH", img: "../../About US/client-centered.webp" },
+        { id: 4, title: "CONSISTENCY", img: "../../About US/consistency.webp" },
+        { id: 5, title: "CONTINUOUS GROWTH", img: "../../About US/continuous-growth.webp" }
     ];
 
     return (
         <>
+    <Helmet>
+        <title>About Us - 3D Craft Station | Creative 3D Design Studio</title>
+        <meta name="description" content="Learn about 3D Craft Station - a premium 3D design studio creating stunning character models, animations, and product visualizations for global clients." />
+    </Helmet>
             {/* Hero Section */}
             <section className="about-hero-section">
                 <div className="minds-hero-container">
@@ -148,7 +197,7 @@ const AboutPage = () => {
                     <div className="minds-character-spotlight animate-on-scroll">
                         <div className="minds-ambient-orange-lens"></div>
                         <img 
-                            src="../../Common/Banner.png" 
+                            src="../../Common/Banner.webp" 
                             alt="3D Character Model Spotlight" 
                             className="spotlight-asset-img"
                         />
@@ -198,7 +247,6 @@ const AboutPage = () => {
                 </div>
             </section>
 
-            {/* Contact Form Section */}
             <section id="contact" className="form-contact-section">
                 <div className="form-dark-overlay"></div>
                 <div className="form-section-container animate-on-scroll">
@@ -207,7 +255,7 @@ const AboutPage = () => {
                         OUR <span className="accent-orange-text">3D EXPERTISE</span>
                     </h2>
 
-                    <form className="inline-capture-form" onSubmit={(e) => e.preventDefault()}>
+                    <form className="inline-capture-form" onSubmit={handleContactSubmit}>
                         <div className="input-pill-group">
                             <input type="text" name="name" className="capsule-input-field" placeholder="NAME" required />
                         </div>
@@ -218,11 +266,20 @@ const AboutPage = () => {
                             <input type="tel" name="phone" className="capsule-input-field" placeholder="NUMBER" required />
                         </div>
                         <div className="button-pill-group">
-                            <button type="submit" className="btn-submit-pill">CONTACT</button>
+                            <button type="submit" className="btn-submit-pill" disabled={isSubmitting}>
+                                {isSubmitting ? 'SENDING...' : 'CONTACT'}
+                            </button>
                         </div>
                     </form>
                 </div>
             </section>
+
+            {/* ✅ Thank You Modal */}
+            <ThankYouModal 
+                isOpen={showThankYou}
+                onClose={closeThankYou}
+                userName={userName}
+            />
         </>
     );
 };

@@ -192,78 +192,6 @@ body {
     margin-bottom: 40px;
 }
 
-/* ----------------------------------------
-   #HOME PAGE - CAROUSEL SLIDER (WITH ZOOM EFFECT)
-   ---------------------------------------- */
-/* ========================================
-   CAROUSEL VIDEO BACKGROUND - SIRF CAROUSEL
-   ======================================== */
-
-.carousel-section {
-    position: relative;
-    width: 100%;
-    height: 520px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    perspective: 2000px;
-    z-index: 10;
-    overflow: hidden;  /* ✅ Video ko andar hi rakhega */
-}
-
-/* ✅ Video Background - Carousel ke ander */
-.carousel-video-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;  /* ✅ Cards ke neeche */
-    overflow: hidden;
-}
-
-.carousel-video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.carousel-video-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-}
-
-/* ✅ Carousel Content - Video ke UPAR */
-.carousel-container {
-    position: relative;
-    z-index: 2;  /* ✅ Video se upar */
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transform-style: preserve-3d;
-}
-
-.carousel-controls {
-    position: relative;
-    z-index: 3;  /* ✅ Sab se upar */
-}
-
-/* ✅ Hero Section - Carousel se alag */
-.hero-section {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: rgb(228, 228, 228);  /* ✅ Normal background */
-    padding-top: 90px;
-}
 
 
 /* ----------------------------------------
@@ -964,7 +892,7 @@ body {
     align-items: center;
     padding: 260px 8% 100px 8%;
     position: relative;
-    background-image: url(../../Portfolio/1440x960.jpg);
+    background-image: url(../../Portfolio/1440x960.webp);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -1370,7 +1298,7 @@ body {
     width: 100%;
     min-height: 480px;
     padding: 90px 6%;
-    background-image: url('../../Common/Contact_Us.jpg');
+    background-image: url('../../Common/Contact_Us.webp');
     background-size: cover;
     background-position: center 30%;
     background-repeat: no-repeat;
@@ -1806,7 +1734,7 @@ body {
     width: 100%;
     min-height: 460px;
     padding: 110px 8% 140px 8%;
-    background-image: url('../../Common/Contact_Us.jpg');
+    background-image: url('../../Common/Contact_Us.webp');
     background-size: cover;
     background-position: center;
 }
@@ -2174,4 +2102,14 @@ body {
     .expertise-frame-panel img { height: auto; }
     .minds-main-title { font-size: 1.6rem; }
     .value-card { padding: 30px 20px; }
+}
+/* ✅ Thank You Modal Override (If needed) */
+.thankyou-overlay {
+    z-index: 99999 !important;
+}
+
+/* ✅ Ensure form button works */
+.btn-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
