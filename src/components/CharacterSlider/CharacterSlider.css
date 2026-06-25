@@ -13,7 +13,7 @@
     z-index: 5;
     background: rgb(228, 228, 228);
     padding-top: 90px;
-    padding-bottom: 40px;
+    padding-bottom: 0;
     overflow: hidden;
 }
 
@@ -25,7 +25,7 @@
     font-size: 0.8rem;
     letter-spacing: 3px;
     text-transform: uppercase;
-    color: rgba(0, 0, 0, 0.5);
+    color: #f26522;
     margin-bottom: 20px;
     backdrop-filter: blur(10px);
 }
@@ -75,7 +75,6 @@
     padding: 40px 0;
     width: 100%;
     overflow: hidden;
-    background: rgb(255, 255, 255);
 }
 
 /* ========================================
@@ -97,6 +96,7 @@
     height: 100%;
     object-fit: fill;
     transform: scale(1.0);
+    filter: brightness(0.4) blur(1px);
 }
 
 .slider-video-overlay {
@@ -106,7 +106,7 @@
     width: 100%;
     height: 100%;
     z-index: 1;
-    background: rgb(255 255 255 / 64%);
+    background-color: #ffffff8f;
 }
 
 /* ========================================
@@ -161,7 +161,6 @@
     padding: 40px 0;
     width: 100%;
     overflow: visible;
-    background: rgb(255, 255, 255);
 }
 
 /* Viewport */
@@ -198,7 +197,8 @@
     top: 0;
     backface-visibility: hidden;
     overflow: hidden;
-    border: 4px solid #555;
+    border: 4px solid #954731;
+    border-radius: 20px;
     box-shadow: -4px 0 12px rgba(0,0,0,0.5), 4px 0 12px rgba(0,0,0,0.5);
     transform-origin: center center;
     transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.5s ease, filter 0.5s ease;
@@ -628,4 +628,104 @@
     .nav-btn { padding: 6px 14px; font-size: 10px; }
     .controls-wrapper { gap: 10px; margin-top: 15px; }
     .slide-counter { font-size: 0.7rem; min-width: 40px; }
+    .slider-video { object-fit: cover; }
+}
+/* ========================================
+   3D TEXT EFFECT
+   ======================================== */
+
+/* ✅ Hero Heading - 3D Effect */
+.hero-section h1 {
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: #111;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    text-align: center;
+    text-shadow: 
+        0 1px 0 #ccc,
+        0 2px 0 #c9c9c9,
+        0 3px 0 #bbb,
+        0 4px 0 #b9b9b9,
+        0 5px 0 #aaa,
+        0 6px 1px rgba(0,0,0,.1),
+        0 0 5px rgba(0,0,0,.1),
+        0 1px 3px rgba(0,0,0,.3),
+        0 3px 5px rgba(0,0,0,.2),
+        0 5px 10px rgba(0,0,0,.25),
+        0 10px 20px rgba(0,0,0,.15);
+    transform: perspective(800px) rotateX(2deg);
+    letter-spacing: -0.02em;
+}
+
+/* ✅ Highlight Text - 3D Orange */
+.hero-section h1 .highlight {
+    color: #FF7A00;
+    text-shadow: 
+        0 1px 0 #e06b00,
+        0 2px 0 #cc5f00,
+        0 3px 0 #b85400,
+        0 4px 0 #a34800,
+        0 5px 0 #8e3d00,
+        0 6px 1px rgba(0,0,0,.1),
+        0 0 5px rgba(255,122,0,.2),
+        0 1px 3px rgba(255,122,0,.3),
+        0 3px 5px rgba(255,122,0,.2),
+        0 8px 15px rgba(255,122,0,.15);
+}
+
+/* ✅ Typewriter Text - 3D */
+.typewriter-text {
+    color: #FF7A00;
+    display: inline-block;
+    min-width: 200px;
+    text-shadow: 
+        0 1px 0 #e06b00,
+        0 2px 0 #cc5f00,
+        0 3px 0 #b85400,
+        0 4px 1px rgba(0,0,0,.2),
+        0 6px 8px rgba(255,122,0,.15);
+}
+
+/* ✅ Modal Title - 3D */
+.modal-3d-title {
+    font-size: 2rem;
+    font-weight: 900;
+    color: white;
+    margin-bottom: 6px;
+    line-height: 1.2;
+    text-shadow: 
+        0 1px 0 rgba(255,122,0,0.3),
+        0 2px 0 rgba(255,122,0,0.2),
+        0 4px 10px rgba(0,0,0,0.3);
+}
+
+/* ✅ Subtitle - 3D */
+.modal-location span {
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+/* ✅ Responsive */
+@media (max-width: 768px) {
+    .hero-section h1 {
+        font-size: 2.2rem;
+        text-shadow: 
+            0 1px 0 #ccc,
+            0 2px 0 #c9c9c9,
+            0 3px 0 #bbb,
+            0 4px 1px rgba(0,0,0,.1),
+            0 2px 5px rgba(0,0,0,.15);
+        transform: perspective(600px) rotateX(1deg);
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-section h1 {
+        font-size: 1.8rem;
+        text-shadow: 
+            0 1px 0 #ccc,
+            0 2px 0 #c9c9c9,
+            0 3px 1px rgba(0,0,0,.1);
+        transform: none;
+    }
 }

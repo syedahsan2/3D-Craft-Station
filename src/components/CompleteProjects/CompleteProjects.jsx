@@ -127,10 +127,6 @@ const CompleteProjects = ({ onProjectClick }) => {
                             <div className="project-info">
                                 <h3 className="project-title">{project.title}</h3>
                                 <p className="project-category">{project.category}</p>
-                                <div className="project-meta">
-                                    <span><i className="fa-regular fa-building"></i> {project.client}</span>
-                                    <span><i className="fa-regular fa-calendar"></i> {project.year}</span>
-                                </div>
                             </div>
                         </div>
                     ))}

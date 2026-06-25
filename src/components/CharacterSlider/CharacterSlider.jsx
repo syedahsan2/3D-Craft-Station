@@ -118,26 +118,33 @@ const CharacterSlider = () => {
     const modal3DImageRef = useRef(null);
     const image3DWrapperRef = useRef(null);
     const modal3DAreaRef = useRef(null);
+    const sliderRef = useRef(null);
+    const autoRotateRef = useRef(null);
     
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentSlide, setCurrentSlide] = useState(null);
+    const [isDragging, setIsDragging] = useState(false);
+    const [startX, setStartX] = useState(0);
+    const [startIndex, setStartIndex] = useState(0);
+    const [dragOffset, setDragOffset] = useState(0);
     
     const [displayText, setDisplayText] = useState('');
     const [isDeleting, setIsDeleting] = useState(false);
     const [textIndex, setTextIndex] = useState(0);
     
-    const typewriterTexts = [
-        '3D Models',
-        'Character Design',
-        'Environment Art',
-        'Product Visualization',
-        'Game Assets'
-    ];
+const typewriterTexts = [
+    'Custom STL Designs',
+    '3D Printable Models',
+    'Miniatures & Figurines',
+    'Mechanical STL Parts',
+    'Collectibles & Statues'
+];
 
-const totalSlides = slidesData.length;
-const degreeStep = 360 / totalSlides;
-const radius = 400;
+    const totalSlides = slidesData.length;
+    const degreeStep = 360 / totalSlides;
+    const radius = 400;
+
     // Typewriter effect
     useEffect(() => {
         const currentFullText = typewriterTexts[textIndex];
@@ -175,45 +182,159 @@ const radius = 400;
     const dragStartRef = useRef({ x: 0, y: 0 });
     const rotStartRef = useRef({ x: 0, y: 0 });
 
-const updateCarousel = () => {
-    if (!trackRef.current) return;
-    
-    const slides = trackRef.current.children;
-    const angle = -currentIndex * degreeStep;
-    
-    trackRef.current.style.transform = `rotateY(${angle}deg)`;
-    
-    Array.from(slides).forEach((slide, index) => {
-        let diff = (index - currentIndex) % totalSlides;
-        if (diff < -totalSlides/2) diff += totalSlides;
-        if (diff > totalSlides/2) diff -= totalSlides;
+    // ✅ Update carousel with smooth animation
+    const updateCarousel = () => {
+        if (!trackRef.current) return;
         
-        const isActive = Math.abs(diff) < 0.5 || Math.abs(diff) === 0;
+        const slides = trackRef.current.children;
+        const baseAngle = -currentIndex * degreeStep + dragOffset;
         
-        if (isActive) {
-            slide.style.transform = `rotateY(${index * degreeStep}deg) translateZ(${radius + 40}px) scale(1.15)`;
-            slide.style.opacity = '1';
-            slide.style.zIndex = '10';
-            slide.style.filter = 'brightness(1)';
-            slide.classList.add('is-active');
-        } else {
-            slide.style.transform = `rotateY(${index * degreeStep}deg) translateZ(${radius}px) scale(0.90)`;
-            slide.style.opacity = '1';  // ✅ Much more visible
-            slide.style.zIndex = '2';
-            slide.style.filter = 'brightness(1)';  // ✅ No blur, just slightly dimmer
-            slide.classList.remove('is-active');
-        }
-    });
-};
+        trackRef.current.style.transform = `rotateY(${baseAngle}deg)`;
+        
+        Array.from(slides).forEach((slide, index) => {
+            let diff = (index - currentIndex) % totalSlides;
+            if (diff < -totalSlides/2) diff += totalSlides;
+            if (diff > totalSlides/2) diff -= totalSlides;
+            
+            const isActive = Math.abs(diff) < 0.5 || Math.abs(diff) === 0;
+            
+            // ✅ Smooth transition for all cards
+            const transitionStyle = 'transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.5s ease';
+            
+            if (isActive) {
+                slide.style.transform = `rotateY(${index * degreeStep}deg) translateZ(${radius + 40}px) scale(1.15)`;
+                slide.style.opacity = '1';
+                slide.style.zIndex = '10';
+                slide.style.filter = 'brightness(1)';
+                slide.style.transition = transitionStyle;
+                slide.classList.add('is-active');
+            } else {
+                slide.style.transform = `rotateY(${index * degreeStep}deg) translateZ(${radius}px) scale(0.90)`;
+                slide.style.opacity = '1';
+                slide.style.zIndex = '2';
+                slide.style.filter = 'brightness(0.85)';
+                slide.style.transition = transitionStyle;
+                slide.classList.remove('is-active');
+            }
+        });
+    };
 
-    // Auto rotate
+    // ✅ Infinite Loop Auto Rotate - Smooth transition from last to first
     useEffect(() => {
-        const interval = setInterval(() => {
-            setCurrentIndex((prev) => (prev + 1) % totalSlides);
+        // Clear any existing interval
+        if (autoRotateRef.current) {
+            clearInterval(autoRotateRef.current);
+        }
+        
+        autoRotateRef.current = setInterval(() => {
+            if (!isDragging && !isModalOpen) {
+                setCurrentIndex((prev) => {
+                    // ✅ Smooth loop: last se first pe direct jayega
+                    const next = (prev + 1) % totalSlides;
+                    return next;
+                });
+            }
         }, 4000);
         
-        return () => clearInterval(interval);
-    }, [totalSlides]);
+        return () => {
+            if (autoRotateRef.current) {
+                clearInterval(autoRotateRef.current);
+            }
+        };
+    }, [isDragging, isModalOpen, totalSlides]);
+
+    // ✅ DRAG HANDLERS
+    const handleMouseDown = (e) => {
+        setIsDragging(true);
+        setStartX(e.clientX);
+        setStartIndex(currentIndex);
+        setDragOffset(0);
+        document.body.style.cursor = 'grabbing';
+        
+        // Pause auto-rotate on drag
+        if (autoRotateRef.current) {
+            clearInterval(autoRotateRef.current);
+        }
+    };
+
+    const handleMouseMove = (e) => {
+        if (!isDragging) return;
+        const deltaX = e.clientX - startX;
+        const deltaIndex = deltaX / 80;
+        const newDragOffset = deltaIndex * degreeStep;
+        setDragOffset(newDragOffset);
+        
+        if (trackRef.current) {
+            const baseAngle = -startIndex * degreeStep + newDragOffset;
+            trackRef.current.style.transform = `rotateY(${baseAngle}deg)`;
+        }
+    };
+
+    const handleMouseUp = () => {
+        if (!isDragging) return;
+        setIsDragging(false);
+        document.body.style.cursor = '';
+        
+        const snappedIndex = Math.round(startIndex + (dragOffset / degreeStep));
+        const finalIndex = ((snappedIndex % totalSlides) + totalSlides) % totalSlides;
+        setCurrentIndex(finalIndex);
+        setDragOffset(0);
+        
+        // ✅ Restart auto-rotate after drag
+        if (autoRotateRef.current) {
+            clearInterval(autoRotateRef.current);
+        }
+        autoRotateRef.current = setInterval(() => {
+            if (!isDragging && !isModalOpen) {
+                setCurrentIndex((prev) => (prev + 1) % totalSlides);
+            }
+        }, 4000);
+    };
+
+    const handleTouchStart = (e) => {
+        const touch = e.touches[0];
+        setIsDragging(true);
+        setStartX(touch.clientX);
+        setStartIndex(currentIndex);
+        setDragOffset(0);
+        
+        if (autoRotateRef.current) {
+            clearInterval(autoRotateRef.current);
+        }
+    };
+
+    const handleTouchMove = (e) => {
+        if (!isDragging) return;
+        const touch = e.touches[0];
+        const deltaX = touch.clientX - startX;
+        const deltaIndex = deltaX / 80;
+        const newDragOffset = deltaIndex * degreeStep;
+        setDragOffset(newDragOffset);
+        
+        if (trackRef.current) {
+            const baseAngle = -startIndex * degreeStep + newDragOffset;
+            trackRef.current.style.transform = `rotateY(${baseAngle}deg)`;
+        }
+    };
+
+    const handleTouchEnd = () => {
+        if (!isDragging) return;
+        setIsDragging(false);
+        
+        const snappedIndex = Math.round(startIndex + (dragOffset / degreeStep));
+        const finalIndex = ((snappedIndex % totalSlides) + totalSlides) % totalSlides;
+        setCurrentIndex(finalIndex);
+        setDragOffset(0);
+        
+        if (autoRotateRef.current) {
+            clearInterval(autoRotateRef.current);
+        }
+        autoRotateRef.current = setInterval(() => {
+            if (!isDragging && !isModalOpen) {
+                setCurrentIndex((prev) => (prev + 1) % totalSlides);
+            }
+        }, 4000);
+    };
 
     const goToNext = () => {
         setCurrentIndex((prev) => (prev + 1) % totalSlides);
@@ -231,12 +352,13 @@ const updateCarousel = () => {
 
     useEffect(() => {
         updateCarousel();
-    }, [currentIndex]);
+    }, [currentIndex, dragOffset]);
 
     useEffect(() => {
         updateCarousel();
     }, []);
 
+    // Keyboard navigation
     useEffect(() => {
         const handleKeyDown = (e) => {
             if (isModalOpen) {
@@ -250,6 +372,7 @@ const updateCarousel = () => {
         return () => document.removeEventListener('keydown', handleKeyDown);
     }, [isModalOpen]);
 
+    // Modal 3D controls
     useEffect(() => {
         const area = modal3DAreaRef.current;
         if (!area) return;
@@ -335,16 +458,16 @@ const updateCarousel = () => {
                         <span className="cursor">|</span>
                     </span>
                 </h1>
-                <p className="subtitle">Bringing ideas to life through high-quality 3D modeling, visualization, and digital artistry.</p>
+                <p className="subtitle">Custom STL models engineered for high-quality 3D printing, collectibles, prototypes, miniatures, and production-ready designs.</p>
                 
-                <div className="slider-wrapper">
+                <div className="slider-wrapper" ref={sliderRef}>
                     <div className="slider-video-bg">
                         <video 
                             autoPlay 
                             loop 
                             muted 
                             playsInline
-                            preload="metadata"  // ✅ Add this
+                            preload="metadata"
                             className="slider-video"
                         >
                             <source src="/Home/top_cards/banner_last video_4.mp4" type="video/mp4" />
@@ -355,7 +478,17 @@ const updateCarousel = () => {
 
                     <div className="viewport-frame">
                         <div className="film-reel-assembly">
-                            <div className="carousel-3d-track" ref={trackRef}>
+                            <div 
+                                className="carousel-3d-track" 
+                                ref={trackRef}
+                                onMouseDown={handleMouseDown}
+                                onMouseMove={handleMouseMove}
+                                onMouseUp={handleMouseUp}
+                                onMouseLeave={handleMouseUp}
+                                onTouchStart={handleTouchStart}
+                                onTouchMove={handleTouchMove}
+                                onTouchEnd={handleTouchEnd}
+                            >
                                 {slidesData.map((slide, index) => {
                                     const rotation = index * degreeStep;
                                     return (
@@ -363,20 +496,18 @@ const updateCarousel = () => {
                                             key={index} 
                                             className="carousel-slide"
                                             style={{
-                                                transform: `rotateY(${rotation}deg) translateZ(${radius}px)`
+                                                transform: `rotateY(${rotation}deg) translateZ(${radius}px)`,
+                                                transition: isDragging ? 'none' : 'transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.5s ease'
                                             }}
                                             onClick={() => openModal(slide)}
                                         >
                                             <img src={slide.image} alt={slide.title} />
-                                            {/* Slide overlay removed - no text */}
                                         </div>
                                     );
                                 })}
                             </div>
                         </div>
                     </div>
-
-                    {/* Controls removed - auto rotate only */}
                 </div>
             </section>
             
@@ -414,7 +545,7 @@ const updateCarousel = () => {
                     
                     <div className="modal-details">
                         <div className="modal-badge">3D CRAFT STATION</div>
-                        <h2>{currentSlide?.title || '3D Model'}</h2>
+                        <h2 className="modal-3d-title">{currentSlide?.title || '3D Model'}</h2>
                         <div className="modal-location">
                             <i className="fa-solid fa-cube"></i>
                             <span>{currentSlide?.subtitle || 'Premium Quality'}</span>

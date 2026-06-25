@@ -47,11 +47,11 @@ const HomePage = () => {
         </div>
 
         <div className="reveal-section">
-          <WorldSection />
+          <Testimonials />
         </div>
 
         <div className="reveal-section">
-          <Testimonials />
+          <WorldSection />
         </div>
 
         <div className="reveal-section">
