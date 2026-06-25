@@ -16,8 +16,8 @@ try {
     $mail->isSMTP();
     $mail->Host = 'smtp.hostinger.com';  // ✅ APNA HOSTING SMTP
     $mail->SMTPAuth = true;
-    $mail->Username = 'info@3dcraftstation.com';   // ✅ APNI DOMAIN EMAIL
-    $mail->Password = '3D_Station_321';   // ✅ EMAIL PASSWORD
+    $mail->Username = 'info@.com';   // ✅ APNI DOMAIN EMAIL
+    $mail->Password = '';   // ✅ EMAIL PASSWORD
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
     $mail->Port = 587;  // Ya 465 for SSL
 
