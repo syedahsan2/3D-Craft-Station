@@ -2,18 +2,44 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <!-- FIX: Removed maximum-scale and user-scalable to allow zooming -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    
     <title>3D Station | Immersive Character Gallery</title>
     <meta name="description" content="Professional 3D modeling, character design, animation & product visualization services. Custom STL design & 3D printing. Trusted by global clients. Get a free quote today!" />
+    
+    <!-- Favicons -->
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
+    <!-- FIX: Preconnect to Google Fonts for faster loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <script type="importmap">
+    
+    <!-- FIX: Removed duplicate Font Awesome link, kept only one -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
+    <!-- FIX: Added preconnect for CDN to speed up Font Awesome -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+    
+    <!-- Your main CSS -->
+    <link rel="stylesheet" crossorigin href="/assets/index-mTh9Gsya.css" />
+        <script type="text/javascript">
+        var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+        (function() {
+            var s1 = document.createElement("script"),
+                s0 = document.getElementsByTagName("script")[0];
+            s1.async = true;
+            s1.src = 'https://embed.tawk.to/6a3c4a4e2784431d3e92a194/1jrto4gsu';
+            s1.charset = 'UTF-8';
+            s1.setAttribute('crossorigin', '*');
+            s0.parentNode.insertBefore(s1, s0);
+        })();
+    </script>
+     <script type="importmap">
       {
         "imports": {
           "three": "https://unpkg.com/three@0.128.0/build/three.module.js",
@@ -21,6 +47,7 @@
         }
       }
     </script>
+        
   </head>
   <body>
     <div id="root"></div>

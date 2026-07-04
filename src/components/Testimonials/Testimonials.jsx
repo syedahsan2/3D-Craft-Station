@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './Testimonials.css';
 
 const testimonialsData = [
@@ -43,6 +43,94 @@ const testimonialsData = [
 const Testimonials = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+    
+    // ✅ Counter states
+    const [clientsCount, setClientsCount] = useState(0);
+    const [ratingCount, setRatingCount] = useState(0);
+    const [projectsCount, setProjectsCount] = useState(0);
+    const [isCounterStarted, setIsCounterStarted] = useState(false);
+    const sectionRef = useRef(null);
+
+    // ✅ Intersection Observer - Start counter when section is visible
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting && !isCounterStarted) {
+                        setIsCounterStarted(true);
+                    }
+                });
+            },
+            { threshold: 0.3 }
+        );
+
+        if (sectionRef.current) {
+            observer.observe(sectionRef.current);
+        }
+
+        return () => {
+            if (sectionRef.current) {
+                observer.unobserve(sectionRef.current);
+            }
+        };
+    }, [isCounterStarted]);
+
+    // ✅ Counter animation
+    useEffect(() => {
+        if (!isCounterStarted) return;
+
+        const duration = 2000; // 2 seconds
+        const steps = 60;
+        const interval = duration / steps;
+
+        // Happy Clients: 0 → 100
+        let clientsStep = 0;
+        const clientsInterval = setInterval(() => {
+            clientsStep++;
+            const progress = clientsStep / steps;
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const value = Math.round(eased * 100);
+            setClientsCount(value);
+            if (clientsStep >= steps) {
+                clearInterval(clientsInterval);
+                setClientsCount(100);
+            }
+        }, interval);
+
+        // Rating: 0 → 4.9
+        let ratingStep = 0;
+        const ratingInterval = setInterval(() => {
+            ratingStep++;
+            const progress = ratingStep / steps;
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const value = (eased * 4.9).toFixed(1);
+            setRatingCount(parseFloat(value));
+            if (ratingStep >= steps) {
+                clearInterval(ratingInterval);
+                setRatingCount(4.9);
+            }
+        }, interval);
+
+        // Projects Done: 0 → 200
+        let projectsStep = 0;
+        const projectsInterval = setInterval(() => {
+            projectsStep++;
+            const progress = projectsStep / steps;
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const value = Math.round(eased * 200);
+            setProjectsCount(value);
+            if (projectsStep >= steps) {
+                clearInterval(projectsInterval);
+                setProjectsCount(200);
+            }
+        }, interval);
+
+        return () => {
+            clearInterval(clientsInterval);
+            clearInterval(ratingInterval);
+            clearInterval(projectsInterval);
+        };
+    }, [isCounterStarted]);
 
     useEffect(() => {
         if (!isAutoPlaying) return;
@@ -52,7 +140,7 @@ const Testimonials = () => {
         }, 5000);
         
         return () => clearInterval(interval);
-    }, [isAutoPlaying, testimonialsData.length]);
+    }, [isAutoPlaying]);
 
     const goToSlide = (index) => {
         setCurrentIndex(index);
@@ -77,7 +165,7 @@ const Testimonials = () => {
     const currentTestimonial = testimonialsData[currentIndex];
 
     return (
-        <section className="testimonials-section">
+        <section className="testimonials-section" ref={sectionRef}>
             <div className="testimonials-container">
                 <div className="testimonials-header">
                     <span className="testimonials-badge">✦ CLIENT LOVE ✦</span>
@@ -86,7 +174,7 @@ const Testimonials = () => {
                 </div>
 
                 <div className="testimonials-slider">
-                    <button className="slider-nav prev" onClick={prevSlide}>
+                    <button className="slider-nav prev" aria-label="Previous testimonial" onClick={prevSlide}>
                         <i className="fa-solid fa-chevron-left"></i>
                     </button>
 
@@ -103,7 +191,7 @@ const Testimonials = () => {
                                 <div className="testimonial-author">
                                     <img src={currentTestimonial.image} alt={currentTestimonial.name} className="author-image" />
                                     <div className="author-info">
-                                        <h4 className="author-name">{currentTestimonial.name}</h4>
+                                        <p className="author-name">{currentTestimonial.name}</p>
                                         <p className="author-role">{currentTestimonial.role}, {currentTestimonial.company}</p>
                                     </div>
                                 </div>
@@ -126,17 +214,24 @@ const Testimonials = () => {
                     ))}
                 </div>
 
+                {/* ✅ Stats with Counter Animation */}
                 <div className="testimonials-stats">
                     <div className="stat">
-                        <div className="stat-number">100+</div>
+                        <div className="stat-number">
+                            {isCounterStarted ? clientsCount : 0}+
+                        </div>
                         <div className="stat-label">Happy Clients</div>
                     </div>
                     <div className="stat">
-                        <div className="stat-number">4.9</div>
+                        <div className="stat-number">
+                            {isCounterStarted ? ratingCount : 0}
+                        </div>
                         <div className="stat-label">Average Rating</div>
                     </div>
                     <div className="stat">
-                        <div className="stat-number">200+</div>
+                        <div className="stat-number">
+                            {isCounterStarted ? projectsCount : 0}+
+                        </div>
                         <div className="stat-label">Projects Done</div>
                     </div>
                 </div>

@@ -120,30 +120,34 @@ const CharacterSlider = () => {
     const modal3DAreaRef = useRef(null);
     const sliderRef = useRef(null);
     const autoRotateRef = useRef(null);
+    const videoRef = useRef(null); // FIX: video ko ref se access karenge play/pause ke liye
     
-    const [currentIndex, setCurrentIndex] = useState(0);
+    // FIX: 'step' continuously increases/decreases (never wraps).
+    // 'currentIndex' (wrapped 0..totalSlides-1) is derived from it just for
+    // picking which slide's data to show / which dot is active.
+    // This stops the carousel from spinning backwards when looping past the last/first slide.
+    const [step, setStep] = useState(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentSlide, setCurrentSlide] = useState(null);
-    const [isDragging, setIsDragging] = useState(false);
-    const [startX, setStartX] = useState(0);
-    const [startIndex, setStartIndex] = useState(0);
-    const [dragOffset, setDragOffset] = useState(0);
     
     const [displayText, setDisplayText] = useState('');
     const [isDeleting, setIsDeleting] = useState(false);
     const [textIndex, setTextIndex] = useState(0);
     
-const typewriterTexts = [
-    'Custom STL Designs',
-    '3D Printable Models',
-    'Miniatures & Figurines',
-    'Mechanical STL Parts',
-    'Collectibles & Statues'
-];
+    const typewriterTexts = [
+        'Custom STL Designs',
+        '3D Printable Models',
+        'Miniatures & Figurines',
+        'Mechanical STL Parts',
+        'Collectibles & Statues'
+    ];
 
     const totalSlides = slidesData.length;
     const degreeStep = 360 / totalSlides;
     const radius = 400;
+
+    // Wrapped 0..totalSlides-1 index, derived from the continuous step counter
+    const currentIndex = ((step % totalSlides) + totalSlides) % totalSlides;
 
     // Typewriter effect
     useEffect(() => {
@@ -182,12 +186,14 @@ const typewriterTexts = [
     const dragStartRef = useRef({ x: 0, y: 0 });
     const rotStartRef = useRef({ x: 0, y: 0 });
 
-    // ✅ Update carousel with smooth animation
+    // ✅ Update carousel
     const updateCarousel = () => {
         if (!trackRef.current) return;
         
         const slides = trackRef.current.children;
-        const baseAngle = -currentIndex * degreeStep + dragOffset;
+        // FIX: use the unwrapped 'step' here (not the wrapped currentIndex) so the
+        // angle keeps climbing/falling smoothly instead of snapping back across a loop.
+        const baseAngle = -step * degreeStep;
         
         trackRef.current.style.transform = `rotateY(${baseAngle}deg)`;
         
@@ -198,41 +204,31 @@ const typewriterTexts = [
             
             const isActive = Math.abs(diff) < 0.5 || Math.abs(diff) === 0;
             
-            // ✅ Smooth transition for all cards
-            const transitionStyle = 'transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.5s ease';
-            
             if (isActive) {
                 slide.style.transform = `rotateY(${index * degreeStep}deg) translateZ(${radius + 40}px) scale(1.15)`;
                 slide.style.opacity = '1';
                 slide.style.zIndex = '10';
                 slide.style.filter = 'brightness(1)';
-                slide.style.transition = transitionStyle;
                 slide.classList.add('is-active');
             } else {
                 slide.style.transform = `rotateY(${index * degreeStep}deg) translateZ(${radius}px) scale(0.90)`;
                 slide.style.opacity = '1';
                 slide.style.zIndex = '2';
                 slide.style.filter = 'brightness(0.85)';
-                slide.style.transition = transitionStyle;
                 slide.classList.remove('is-active');
             }
         });
     };
 
-    // ✅ Infinite Loop Auto Rotate - Smooth transition from last to first
+    // ✅ Auto Rotate
     useEffect(() => {
-        // Clear any existing interval
         if (autoRotateRef.current) {
             clearInterval(autoRotateRef.current);
         }
         
         autoRotateRef.current = setInterval(() => {
-            if (!isDragging && !isModalOpen) {
-                setCurrentIndex((prev) => {
-                    // ✅ Smooth loop: last se first pe direct jayega
-                    const next = (prev + 1) % totalSlides;
-                    return next;
-                });
+            if (!isModalOpen) {
+                setStep((prev) => prev + 1);
             }
         }, 4000);
         
@@ -241,107 +237,47 @@ const typewriterTexts = [
                 clearInterval(autoRotateRef.current);
             }
         };
-    }, [isDragging, isModalOpen, totalSlides]);
+    }, [isModalOpen, totalSlides]);
 
-    // ✅ DRAG HANDLERS
-    const handleMouseDown = (e) => {
-        setIsDragging(true);
-        setStartX(e.clientX);
-        setStartIndex(currentIndex);
-        setDragOffset(0);
-        document.body.style.cursor = 'grabbing';
-        
-        // Pause auto-rotate on drag
-        if (autoRotateRef.current) {
-            clearInterval(autoRotateRef.current);
-        }
-    };
+    useEffect(() => {
+        updateCarousel();
+    }, [step]);
 
-    const handleMouseMove = (e) => {
-        if (!isDragging) return;
-        const deltaX = e.clientX - startX;
-        const deltaIndex = deltaX / 80;
-        const newDragOffset = deltaIndex * degreeStep;
-        setDragOffset(newDragOffset);
-        
-        if (trackRef.current) {
-            const baseAngle = -startIndex * degreeStep + newDragOffset;
-            trackRef.current.style.transform = `rotateY(${baseAngle}deg)`;
-        }
-    };
+    useEffect(() => {
+        updateCarousel();
+    }, []);
 
-    const handleMouseUp = () => {
-        if (!isDragging) return;
-        setIsDragging(false);
-        document.body.style.cursor = '';
-        
-        const snappedIndex = Math.round(startIndex + (dragOffset / degreeStep));
-        const finalIndex = ((snappedIndex % totalSlides) + totalSlides) % totalSlides;
-        setCurrentIndex(finalIndex);
-        setDragOffset(0);
-        
-        // ✅ Restart auto-rotate after drag
-        if (autoRotateRef.current) {
-            clearInterval(autoRotateRef.current);
-        }
-        autoRotateRef.current = setInterval(() => {
-            if (!isDragging && !isModalOpen) {
-                setCurrentIndex((prev) => (prev + 1) % totalSlides);
-            }
-        }, 4000);
-    };
+    // ✅ FIX: Video sirf tab play ho jab viewport me visible ho.
+    // Scroll ke waqt off-screen video decode/render karte rehna hi hang ki
+    // sabse badi wajah tha - isay pause karne se scroll buttery smooth ho jata hai.
+    useEffect(() => {
+        const video = videoRef.current;
+        if (!video) return;
 
-    const handleTouchStart = (e) => {
-        const touch = e.touches[0];
-        setIsDragging(true);
-        setStartX(touch.clientX);
-        setStartIndex(currentIndex);
-        setDragOffset(0);
-        
-        if (autoRotateRef.current) {
-            clearInterval(autoRotateRef.current);
-        }
-    };
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    video.play().catch(() => {});
+                } else {
+                    video.pause();
+                }
+            },
+            { threshold: 0.1 }
+        );
 
-    const handleTouchMove = (e) => {
-        if (!isDragging) return;
-        const touch = e.touches[0];
-        const deltaX = touch.clientX - startX;
-        const deltaIndex = deltaX / 80;
-        const newDragOffset = deltaIndex * degreeStep;
-        setDragOffset(newDragOffset);
-        
-        if (trackRef.current) {
-            const baseAngle = -startIndex * degreeStep + newDragOffset;
-            trackRef.current.style.transform = `rotateY(${baseAngle}deg)`;
-        }
-    };
+        observer.observe(video);
 
-    const handleTouchEnd = () => {
-        if (!isDragging) return;
-        setIsDragging(false);
-        
-        const snappedIndex = Math.round(startIndex + (dragOffset / degreeStep));
-        const finalIndex = ((snappedIndex % totalSlides) + totalSlides) % totalSlides;
-        setCurrentIndex(finalIndex);
-        setDragOffset(0);
-        
-        if (autoRotateRef.current) {
-            clearInterval(autoRotateRef.current);
-        }
-        autoRotateRef.current = setInterval(() => {
-            if (!isDragging && !isModalOpen) {
-                setCurrentIndex((prev) => (prev + 1) % totalSlides);
-            }
-        }, 4000);
-    };
+        return () => observer.disconnect();
+    }, []);
 
+    // ✅ Next/Prev functions - step simply keeps incrementing/decrementing,
+    // never wraps, so the track always rotates the same physical direction.
     const goToNext = () => {
-        setCurrentIndex((prev) => (prev + 1) % totalSlides);
+        setStep((prev) => prev + 1);
     };
 
     const goToPrev = () => {
-        setCurrentIndex((prev) => (prev - 1 + totalSlides) % totalSlides);
+        setStep((prev) => prev - 1);
     };
 
     const update3DTransform = () => {
@@ -349,14 +285,6 @@ const typewriterTexts = [
             image3DWrapperRef.current.style.transform = `rotateX(${rotXRef.current}deg) rotateY(${rotYRef.current}deg) scale(${zoomRef.current})`;
         }
     };
-
-    useEffect(() => {
-        updateCarousel();
-    }, [currentIndex, dragOffset]);
-
-    useEffect(() => {
-        updateCarousel();
-    }, []);
 
     // Keyboard navigation
     useEffect(() => {
@@ -463,6 +391,7 @@ const typewriterTexts = [
                 <div className="slider-wrapper" ref={sliderRef}>
                     <div className="slider-video-bg">
                         <video 
+                            ref={videoRef}
                             autoPlay 
                             loop 
                             muted 
@@ -470,25 +399,15 @@ const typewriterTexts = [
                             preload="metadata"
                             className="slider-video"
                         >
-                            <source src="/Home/top_cards/banner_last video_4.mp4" type="video/mp4" />
-                            <img src="/Home/top_cards/slider-bg.webp" alt="Background" />
+                            <source src="/Home/top_cards/banner_last_video_4_optimized.webm" type="video/webm" />
+                            <img src="/Home/top_cards/slider-bg.webp" alt="Background" fetchpriority="high" />
                         </video>
                         <div className="slider-video-overlay"></div>
                     </div>
 
                     <div className="viewport-frame">
                         <div className="film-reel-assembly">
-                            <div 
-                                className="carousel-3d-track" 
-                                ref={trackRef}
-                                onMouseDown={handleMouseDown}
-                                onMouseMove={handleMouseMove}
-                                onMouseUp={handleMouseUp}
-                                onMouseLeave={handleMouseUp}
-                                onTouchStart={handleTouchStart}
-                                onTouchMove={handleTouchMove}
-                                onTouchEnd={handleTouchEnd}
-                            >
+                            <div className="carousel-3d-track" ref={trackRef}>
                                 {slidesData.map((slide, index) => {
                                     const rotation = index * degreeStep;
                                     return (
@@ -497,16 +416,42 @@ const typewriterTexts = [
                                             className="carousel-slide"
                                             style={{
                                                 transform: `rotateY(${rotation}deg) translateZ(${radius}px)`,
-                                                transition: isDragging ? 'none' : 'transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.5s ease'
+                                                transition: 'transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.5s ease'
                                             }}
                                             onClick={() => openModal(slide)}
                                         >
-                                            <img src={slide.image} alt={slide.title} />
+                                            <img src={slide.image} alt={slide.title} className="featured-img" loading="lazy" decoding="async" />
                                         </div>
                                     );
                                 })}
                             </div>
                         </div>
+                    </div>
+
+                    {/* ✅ NEXT/PREV BUTTONS */}
+                    <div className="slider-controls">
+                        <button className="slider-btn prev-btn" aria-label="Previous slide" title="Previous slide" onClick={goToPrev}>
+                            <i className="fa-solid fa-chevron-left"></i>
+                        </button>
+                        <div className="slider-indicators">
+                            {slidesData.map((_, index) => (
+                                <span 
+                                    key={index} 
+                                    className={`dot ${index === currentIndex ? 'active' : ''}`}
+                                    onClick={() => {
+                                        // Move to the target slide via the shortest rotation
+                                        // direction, keeping 'step' continuous (no backward snap).
+                                        let diff = (index - currentIndex) % totalSlides;
+                                        if (diff > totalSlides / 2) diff -= totalSlides;
+                                        if (diff < -totalSlides / 2) diff += totalSlides;
+                                        setStep((prev) => prev + diff);
+                                    }}
+                                ></span>
+                            ))}
+                        </div>
+                        <button className="slider-btn next-btn" aria-label="Next slide" onClick={goToNext}>
+                            <i className="fa-solid fa-chevron-right"></i>
+                        </button>
                     </div>
                 </div>
             </section>
@@ -533,7 +478,7 @@ const typewriterTexts = [
                                 </div>
                             )}
                         </div>
-                        <button className="modal-close-x" onClick={closeModal}>
+                        <button className="modal-close-x" aria-label="Close modal" onClick={closeModal}>
                             <i className="fa-solid fa-xmark"></i>
                         </button>
                         <div className="modal-controls-hint">

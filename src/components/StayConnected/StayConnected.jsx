@@ -1,11 +1,10 @@
 import './StayConnected.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFacebookF, faInstagram } from '@fortawesome/free-brands-svg-icons';
 
 const socialLinks = [
-  { id: 1, icon: "fa-brands fa-x-twitter", url: "#" },
-  { id: 2, icon: "fa-brands fa-instagram", url: "#" },
-  { id: 3, icon: "fa-brands fa-facebook-f", url: "#" },
-  { id: 4, icon: "fa-brands fa-youtube", url: "#" },
-  { id: 5, icon: "fa-brands fa-linkedin-in", url: "#" }
+  { id: 1, icon: faFacebookF, url: "https://www.facebook.com/3dcraftstation/", label: "Follow us on Facebook" },
+  { id: 2, icon: faInstagram, url: "https://www.instagram.com/3dcraftstation/", label: "Follow us on Instagram" },
 ];
 
 const StayConnected = () => {
@@ -15,8 +14,15 @@ const StayConnected = () => {
         <h3 className="stay-connected-title">STAY CONNECTED</h3>
         <div className="social-icons">
           {socialLinks.map((social) => (
-            <a key={social.id} href={social.url} className="social-icon" aria-label="Social link">
-              <i className={social.icon}></i>
+            <a 
+              key={social.id} 
+              href={social.url} 
+              className="social-icon" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              aria-label={social.label}
+            >
+              <FontAwesomeIcon icon={social.icon} />
             </a>
           ))}
         </div>

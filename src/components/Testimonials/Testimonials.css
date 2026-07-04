@@ -245,3 +245,61 @@
         gap: 30px;
     }
 }
+/* ========================================
+   TESTIMONIALS - COUNTER ANIMATION
+   ======================================== */
+
+/* ✅ Stat Number Animation */
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #FF7A00;
+    margin-bottom: 5px;
+    transition: all 0.3s ease;
+    min-width: 80px;
+    display: inline-block;
+}
+
+.stat {
+    text-align: center;
+    padding: 10px 20px;
+    transition: all 0.3s ease;
+}
+
+.stat:hover .stat-number {
+    transform: scale(1.1);
+    color: #e06b00;
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    color: #666;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+/* ✅ Pulse effect on counter change */
+@keyframes countPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.stat-number.active {
+    animation: countPulse 0.3s ease;
+}
+
+/* ✅ Responsive */
+@media (max-width: 768px) {
+    .stat-number {
+        font-size: 2rem;
+        min-width: 60px;
+    }
+}
+
+@media (max-width: 480px) {
+    .stat-number {
+        font-size: 1.6rem;
+        min-width: 50px;
+    }
+}

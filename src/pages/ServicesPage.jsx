@@ -280,7 +280,13 @@ const ServicesPage = () => {
                             </button>
                         </div>
                         <div className="expertise-frame-panel">
-                            <img src="../../Service/prototype.webp" alt="Product Prototype" />
+                            <img
+                                src="../../Service/P-P.webp"
+                                alt="Product Prototype"
+                                style={{
+                                    background: "radial-gradient(circle at 85% 15%, #ff5500 0%, #3a1400 30%, #000000 70%)",
+                                }}
+                            />
                         </div>
                     </div>
 
@@ -302,7 +308,7 @@ const ServicesPage = () => {
                             </button>
                         </div>
                         <div className="expertise-frame-panel">
-                            <img src="../../Service/3D_Printer.webp" alt="3D Print" />
+                            <img src="../../Service/Print.png" alt="3D Print" />
                         </div>
                     </div>
 

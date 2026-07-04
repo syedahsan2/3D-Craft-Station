@@ -27,7 +27,8 @@
     text-transform: uppercase;
     color: #f26522;
     margin-bottom: 20px;
-    backdrop-filter: blur(10px);
+    /* FIX: backdrop-filter hataya - performance ke liye. Simple bg use kar rahe hain */
+    background: rgba(255, 255, 255, 0.5);
 }
 
 .hero-section h1 {
@@ -37,9 +38,36 @@
     line-height: 1.2;
     margin-bottom: 20px;
     text-align: center;
+    text-shadow: 
+        0 1px 0 #ccc,
+        0 2px 0 #c9c9c9,
+        0 3px 0 #bbb,
+        0 4px 0 #b9b9b9,
+        0 5px 0 #aaa,
+        0 6px 1px rgba(0,0,0,.1),
+        0 0 5px rgba(0,0,0,.1),
+        0 1px 3px rgba(0,0,0,.3),
+        0 3px 5px rgba(0,0,0,.2),
+        0 5px 10px rgba(0,0,0,.25),
+        0 10px 20px rgba(0,0,0,.15);
+    transform: perspective(800px) rotateX(2deg);
+    letter-spacing: -0.02em;
 }
 
-.hero-section h1 .highlight { color: #FF7A00; }
+.hero-section h1 .highlight {
+    color: #FF7A00;
+    text-shadow: 
+        0 1px 0 #e06b00,
+        0 2px 0 #cc5f00,
+        0 3px 0 #b85400,
+        0 4px 0 #a34800,
+        0 5px 0 #8e3d00,
+        0 6px 1px rgba(0,0,0,.1),
+        0 0 5px rgba(255,122,0,.2),
+        0 1px 3px rgba(255,122,0,.3),
+        0 3px 5px rgba(255,122,0,.2),
+        0 8px 15px rgba(255,122,0,.15);
+}
 
 .hero-section .subtitle {
     color: rgba(0, 0, 0, 0.45);
@@ -47,7 +75,17 @@
     margin-bottom: 40px;
 }
 
-.typewriter-text { color: #FF7A00; }
+.typewriter-text {
+    color: #FF7A00;
+    display: inline-block;
+    min-width: 200px;
+    text-shadow: 
+        0 1px 0 #e06b00,
+        0 2px 0 #cc5f00,
+        0 3px 0 #b85400,
+        0 4px 1px rgba(0,0,0,.2),
+        0 6px 8px rgba(255,122,0,.15);
+}
 
 .cursor {
     display: inline-block;
@@ -72,9 +110,9 @@
     align-items: center;
     justify-content: center;
     min-height: 60vh;
-    padding: 40px 0;
+    padding: 30px 0;
     width: 100%;
-    overflow: hidden;
+    overflow: visible;
 }
 
 /* ========================================
@@ -85,18 +123,27 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    /* height: 100%; */
     z-index: 0;
     overflow: hidden;
     pointer-events: none;
+    /* FIX: 'contain' letterbox gaps ko is bg color se blend karega
+       (hero-section ke bg jaisa hi rang), taake koi bare/black patch na dikhe */
+    background-color: rgb(228, 228, 228);
 }
 
 .slider-video {
     width: 100%;
     height: 100%;
-    object-fit: fill;
+    /* FIX: 'cover' crop kar raha tha (characters cut ho rahe the) kyunki video
+       ka aspect ratio container se match nahi karta. 'contain' poora video
+       bina crop kiye fit karega - letterbox gaps upar wale bg-color se blend ho jate hain */
+    object-fit: contain;
+    object-position: center;
     transform: scale(1.0);
-    filter: brightness(0.4) blur(1px);
+    /* FIX: live blur() filter hataya - yehi sabse bada culprit tha scroll hang ka.
+       Agar blurred look chahiye, video ko pehle se blurred export karo (ffmpeg/Premiere se)
+       aur brightness overlay ke rang se compensate kar rahe hain neeche */
 }
 
 .slider-video-overlay {
@@ -106,7 +153,8 @@
     width: 100%;
     height: 100%;
     z-index: 1;
-    background-color: #ffffff8f;
+    /* FIX: opacity thori badhai taake blur/dim ka effect overlay se hi mil jaye */
+    background-color: rgba(255, 255, 255, 0.78);
 }
 
 /* ========================================
@@ -115,19 +163,21 @@
 .viewport-frame {
     position: relative;
     width: 100%;
-    height: 70vh;
+    height: 55vh;
+    min-height: 400px;
     display: flex;
     align-items: center;
     justify-content: center;
     perspective: 2300px;
     z-index: 2;
     padding: 20px 0;
+    overflow: visible;
 }
 
 .film-reel-assembly {
     position: relative;
     width: 100%;
-    height: 420px;
+    height: 340px;
     transform-style: preserve-3d;
     display: flex;
     align-items: center;
@@ -139,56 +189,19 @@
    ======================================== */
 .carousel-3d-track {
     position: absolute;
-    width: 240px;
-    height: 380px;
+    width: 200px;
+    height: 280px;
     transform-style: preserve-3d;
     transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
     z-index: 5;
+    /* FIX: GPU layer promote karke transform ko compositor thread pe rakha,
+       is se scroll ke waqt main thread pe repaint pressure kam hota hai */
+    will-change: transform;
 }
 
 /* ========================================
-   CAROUSEL - COMPLETE FIX
+   CAROUSEL CARDS
    ======================================== */
-
-/* Slider Wrapper */
-.slider-wrapper {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 60vh;
-    padding: 40px 0;
-    width: 100%;
-    overflow: visible;
-}
-
-/* Viewport */
-.viewport-frame {
-    position: relative;
-    width: 100%;
-    height: 70vh;
-    min-height: 500px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    perspective: 2300px;
-    z-index: 2;
-    padding: 20px 0;
-    overflow: visible;
-}
-
-/* Track */
-.carousel-3d-track {
-    position: absolute;
-    width: 240px;
-    height: 380px;
-    transform-style: preserve-3d;
-    transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-    z-index: 5;
-}
-
-/* Cards */
 .carousel-slide {
     position: absolute;
     width: 100%;
@@ -209,60 +222,31 @@
 .carousel-slide img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    object-position: center;
+    object-fit: contain;
     display: block;
-    filter: grayscale(25%) brightness(80%);
-    transition: filter 0.3s;
+    transition: filter 0.3s, transform 0.5s ease;
+    background: radial-gradient(circle at 85% 15%, #ff5500 0%, #3a1400 30%, #000000 70%);
 }
 
 .carousel-slide.is-active {
     border-color: #FF7A00;
     box-shadow: 0 15px 40px rgba(255, 122, 0, 0.4);
-    transform: scale(1.05);
     z-index: 10;
 }
 
 .carousel-slide.is-active img {
     filter: grayscale(0%) brightness(105%);
+    transform: scale(1.02);
 }
 
 .carousel-slide:not(.is-active) {
-    transform: scale(0.92);
-    opacity: 0.7;
+    opacity: 0.85;
 }
 
 .carousel-slide:not(.is-active) img {
     filter: brightness(0.6) blur(0.5px);
 }
 
-/* ✅ Mobile */
-@media (max-width: 768px) {
-    .viewport-frame {
-        height: 55vh;
-        min-height: 400px;
-    }
-    .carousel-3d-track {
-        width: 200px;
-        height: 320px;
-    }
-}
-
-@media (max-width: 480px) {
-    .slider-wrapper {
-        min-height: 50vh;
-        padding: 20px 0;
-        overflow: visible;
-    }
-    .viewport-frame {
-        height: 50vh;
-        min-height: 350px;
-    }
-    .carousel-3d-track {
-        width: 160px;
-        height: 260px;
-    }
-}
 /* ========================================
    SLIDE OVERLAY
    ======================================== */
@@ -310,8 +294,8 @@
 }
 
 .nav-btn {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
+    /* FIX: backdrop-filter hataya - solid semi-transparent bg kaafi hai visually */
+    background: rgba(30, 30, 30, 0.45);
     color: #e0e0e0;
     border: 1px solid rgba(255,255,255,0.2);
     padding: 12px 30px;
@@ -350,6 +334,8 @@
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.9);
+    /* Modal rarely open hota hai aur full-screen backdrop-filter yahin kaam ka hai,
+       isliye is ek jagah rehne diya hai */
     backdrop-filter: blur(20px);
     z-index: 200;
     display: flex;
@@ -412,13 +398,14 @@
 .image-3d-wrapper img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     border-radius: 16px;
     display: block;
     pointer-events: none;
     user-select: none;
     box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5);
     border: 2px solid rgba(255, 255, 255, 0.15);
+    background: radial-gradient(circle at 85% 15%, #ff5500 0%, #3a1400 30%, #000000 70%);
 }
 
 .modal-controls-hint {
@@ -460,6 +447,7 @@
     align-items: center;
     justify-content: center;
     transition: all 0.3s;
+    /* Modal-specific, close hi rehne diya hai */
     backdrop-filter: blur(10px);
 }
 
@@ -470,12 +458,13 @@
 
 .modal-details {
     width: 350px;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(20, 20, 20, 0.75);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 24px;
     padding: 35px 30px;
     display: flex;
     flex-direction: column;
+    /* Modal-specific, close hi rehne diya hai */
     backdrop-filter: blur(20px);
     height: 100%;
     overflow-y: auto;
@@ -501,6 +490,10 @@
     color: white;
     margin-bottom: 6px;
     line-height: 1.2;
+    text-shadow: 
+        0 1px 0 rgba(255,122,0,0.3),
+        0 2px 0 rgba(255,122,0,0.2),
+        0 4px 10px rgba(0,0,0,0.3);
 }
 
 .modal-location {
@@ -513,6 +506,7 @@
 }
 
 .modal-location i { color: #FF7A00; }
+.modal-location span { text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
 
 .modal-desc {
     color: rgba(255, 255, 255, 0.6);
@@ -590,19 +584,28 @@
 }
 
 /* ========================================
-   RESPONSIVE (ALL IN ONE PLACE)
+   RESPONSIVE
    ======================================== */
 @media (max-width: 1024px) {
-    .viewport-frame { height: 55vh; }
-    .carousel-3d-track { width: 200px; height: 320px; }
-    .film-reel-assembly { height: 360px; }
+    .viewport-frame { height: 50vh; }
+    .carousel-3d-track { width: 180px; height: 250px; }
+    .film-reel-assembly { height: 300px; }
 }
 
 @media (max-width: 768px) {
-    .hero-section h1 { font-size: 2.2rem; }
-    .viewport-frame { height: 50vh; }
-    .carousel-3d-track { width: 200px; height: 300px; }
-    .film-reel-assembly { height: 300px; }
+    .hero-section h1 {
+        font-size: 2.2rem;
+        text-shadow: 
+            0 1px 0 #ccc,
+            0 2px 0 #c9c9c9,
+            0 3px 0 #bbb,
+            0 4px 1px rgba(0,0,0,.1),
+            0 2px 5px rgba(0,0,0,.15);
+        transform: perspective(600px) rotateX(1deg);
+    }
+    .viewport-frame { height: 46vh; }
+    .carousel-3d-track { width: 160px; height: 220px; }
+    .film-reel-assembly { height: 260px; }
     .slide-title { font-size: 0.9rem; }
     .slide-subtitle { font-size: 0.7rem; }
     .nav-btn { padding: 8px 18px; font-size: 12px; }
@@ -615,111 +618,6 @@
 }
 
 @media (max-width: 480px) {
-    .hero-section h1 { font-size: 1.8rem; }
-    .hero-section .subtitle { font-size: 0.85rem; padding: 0 10px; }
-    
-    .slider-wrapper { border-radius: 15px; min-height: 50vh; padding: 20px 0; background: rgb(245, 245, 245); }
-    .viewport-frame { height: 60vh; }
-    .carousel-3d-track { width: 150px; height: 220px; }
-    .film-reel-assembly { height: 240px; }
-    .slide-overlay { padding: 12px 10px; }
-    .slide-title { font-size: 0.75rem; }
-    .slide-subtitle { font-size: 0.6rem; }
-    .nav-btn { padding: 6px 14px; font-size: 10px; }
-    .controls-wrapper { gap: 10px; margin-top: 15px; }
-    .slide-counter { font-size: 0.7rem; min-width: 40px; }
-    .slider-video { object-fit: cover; }
-}
-/* ========================================
-   3D TEXT EFFECT
-   ======================================== */
-
-/* ✅ Hero Heading - 3D Effect */
-.hero-section h1 {
-    font-size: 3.5rem;
-    font-weight: 900;
-    color: #111;
-    line-height: 1.2;
-    margin-bottom: 20px;
-    text-align: center;
-    text-shadow: 
-        0 1px 0 #ccc,
-        0 2px 0 #c9c9c9,
-        0 3px 0 #bbb,
-        0 4px 0 #b9b9b9,
-        0 5px 0 #aaa,
-        0 6px 1px rgba(0,0,0,.1),
-        0 0 5px rgba(0,0,0,.1),
-        0 1px 3px rgba(0,0,0,.3),
-        0 3px 5px rgba(0,0,0,.2),
-        0 5px 10px rgba(0,0,0,.25),
-        0 10px 20px rgba(0,0,0,.15);
-    transform: perspective(800px) rotateX(2deg);
-    letter-spacing: -0.02em;
-}
-
-/* ✅ Highlight Text - 3D Orange */
-.hero-section h1 .highlight {
-    color: #FF7A00;
-    text-shadow: 
-        0 1px 0 #e06b00,
-        0 2px 0 #cc5f00,
-        0 3px 0 #b85400,
-        0 4px 0 #a34800,
-        0 5px 0 #8e3d00,
-        0 6px 1px rgba(0,0,0,.1),
-        0 0 5px rgba(255,122,0,.2),
-        0 1px 3px rgba(255,122,0,.3),
-        0 3px 5px rgba(255,122,0,.2),
-        0 8px 15px rgba(255,122,0,.15);
-}
-
-/* ✅ Typewriter Text - 3D */
-.typewriter-text {
-    color: #FF7A00;
-    display: inline-block;
-    min-width: 200px;
-    text-shadow: 
-        0 1px 0 #e06b00,
-        0 2px 0 #cc5f00,
-        0 3px 0 #b85400,
-        0 4px 1px rgba(0,0,0,.2),
-        0 6px 8px rgba(255,122,0,.15);
-}
-
-/* ✅ Modal Title - 3D */
-.modal-3d-title {
-    font-size: 2rem;
-    font-weight: 900;
-    color: white;
-    margin-bottom: 6px;
-    line-height: 1.2;
-    text-shadow: 
-        0 1px 0 rgba(255,122,0,0.3),
-        0 2px 0 rgba(255,122,0,0.2),
-        0 4px 10px rgba(0,0,0,0.3);
-}
-
-/* ✅ Subtitle - 3D */
-.modal-location span {
-    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-}
-
-/* ✅ Responsive */
-@media (max-width: 768px) {
-    .hero-section h1 {
-        font-size: 2.2rem;
-        text-shadow: 
-            0 1px 0 #ccc,
-            0 2px 0 #c9c9c9,
-            0 3px 0 #bbb,
-            0 4px 1px rgba(0,0,0,.1),
-            0 2px 5px rgba(0,0,0,.15);
-        transform: perspective(600px) rotateX(1deg);
-    }
-}
-
-@media (max-width: 480px) {
     .hero-section h1 {
         font-size: 1.8rem;
         text-shadow: 
@@ -727,5 +625,142 @@
             0 2px 0 #c9c9c9,
             0 3px 1px rgba(0,0,0,.1);
         transform: none;
+    }
+    .hero-section .subtitle { font-size: 0.85rem; padding: 0 10px; }
+    
+    .slider-wrapper { border-radius: 15px; min-height: 40vh; padding: 15px 0; background: rgb(245, 245, 245); }
+    .viewport-frame { height: 38vh; min-height: 260px; }
+    .carousel-3d-track { width: 110px; height: 155px; }
+    .film-reel-assembly { height: 175px; }
+    .slide-overlay { padding: 12px 10px; }
+    .slide-title { font-size: 0.75rem; }
+    .slide-subtitle { font-size: 0.6rem; }
+    .nav-btn { padding: 6px 14px; font-size: 10px; }
+    .controls-wrapper { gap: 10px; margin-top: 15px; }
+    .slider-controls { gap: 12px; margin-top: 12px; }
+    .slide-counter { font-size: 0.7rem; min-width: 40px; }
+    .slider-video { object-fit: cover; }
+    .slider-video-bg{ height: 100%;}
+}
+/* ========================================
+   SLIDER CONTROLS - NEXT/PREV BUTTONS
+   ======================================== */
+
+.slider-controls {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 22px;
+    margin-top: 20px;
+    width: 100%;
+    padding: 0 20px;
+}
+
+.slider-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    /* FIX: backdrop-filter hataya - solid semi-transparent dark bg se same look mil jata hai */
+    background: rgba(30, 30, 30, 0.5);
+    border: 2px solid rgba(255, 122, 0, 0.3);
+    color: #FF7A00;
+    font-size: 1.05rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.slider-btn:hover {
+    background: #FF7A00;
+    color: white;
+    transform: scale(1.1);
+    box-shadow: 0 8px 30px rgba(255, 122, 0, 0.4);
+    border-color: #FF7A00;
+}
+
+.slider-btn:active {
+    transform: scale(0.95);
+}
+
+/* Indicators / Dots */
+.slider-indicators {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 122, 0, 0.2);
+}
+
+.dot:hover {
+    background: rgba(255, 122, 0, 0.5);
+    transform: scale(1.2);
+}
+
+.dot.active {
+    background: #FF7A00;
+    width: 30px;
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(255, 122, 0, 0.5);
+    border-color: #FF7A00;
+}
+
+/* ========================================
+   RESPONSIVE - CONTROLS
+   ======================================== */
+
+@media (max-width: 768px) {
+    .slider-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 0.9rem;
+    }
+    
+    .slider-controls {
+        gap: 20px;
+        margin-top: 20px;
+    }
+    
+    .dot {
+        width: 8px;
+        height: 8px;
+    }
+    
+    .dot.active {
+        width: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .slider-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 0.75rem;
+    }
+    
+    .slider-controls {
+        gap: 15px;
+        margin-top: 15px;
+    }
+    
+    .dot {
+        width: 6px;
+        height: 6px;
+    }
+    
+    .dot.active {
+        width: 20px;
     }
 }
