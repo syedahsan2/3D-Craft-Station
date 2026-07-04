@@ -121,6 +121,7 @@ const CharacterSlider = () => {
     const sliderRef = useRef(null);
     const autoRotateRef = useRef(null);
     const videoRef = useRef(null); // FIX: video ko ref se access karenge play/pause ke liye
+    const isSliderVisibleRef = useRef(true); // FIX: track karta hai carousel viewport me hai ya nahi
     
     // FIX: 'step' continuously increases/decreases (never wraps).
     // 'currentIndex' (wrapped 0..totalSlides-1) is derived from it just for
@@ -144,7 +145,11 @@ const CharacterSlider = () => {
 
     const totalSlides = slidesData.length;
     const degreeStep = 360 / totalSlides;
-    const radius = 400;
+    // FIX: card width chota kiya gaya tha (240px -> 200px) lekin radius wahi
+    // reh gaya tha, jis se gaps unbalanced ho gaye the aur wrap-around par
+    // (last/second-last card) overlap sa hone laga tha. Radius ko naye card
+    // size ke hisaab se proportionally chota kiya taake spacing consistent rahe.
+    const radius = 330;
 
     // Wrapped 0..totalSlides-1 index, derived from the continuous step counter
     const currentIndex = ((step % totalSlides) + totalSlides) % totalSlides;
@@ -227,7 +232,10 @@ const CharacterSlider = () => {
         }
         
         autoRotateRef.current = setInterval(() => {
-            if (!isModalOpen) {
+            // FIX: agar carousel abhi viewport me nahi hai (user neeche scroll kar chuka hai),
+            // toh yahan style/transform updates skip kar dete hain. Pehle ye off-screen bhi
+            // chalta rehta tha, jo scroll ke waqt main thread pe extra kaam daal raha tha.
+            if (!isModalOpen && isSliderVisibleRef.current) {
                 setStep((prev) => prev + 1);
             }
         }, 4000);
@@ -266,6 +274,25 @@ const CharacterSlider = () => {
         );
 
         observer.observe(video);
+
+        return () => observer.disconnect();
+    }, []);
+
+    // ✅ FIX: Poore carousel wrapper ko observe karte hain taake pata chale
+    // jab ye section scroll ho ke viewport se bahar nikal jaye - auto-rotate
+    // ko upar gate kiya hai isi ref ke through.
+    useEffect(() => {
+        const el = sliderRef.current;
+        if (!el) return;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                isSliderVisibleRef.current = entry.isIntersecting;
+            },
+            { threshold: 0 }
+        );
+
+        observer.observe(el);
 
         return () => observer.disconnect();
     }, []);
@@ -399,8 +426,8 @@ const CharacterSlider = () => {
                             preload="metadata"
                             className="slider-video"
                         >
-                            <source src="/Home/top_cards/banner_last_video_4_optimized.webm" type="video/webm" />
-                            <img src="/Home/top_cards/slider-bg.webp" alt="Background" fetchpriority="high" />
+                            <source src="/Home/top_cards/banner_last_video.webm" type="video/webm" />
+                            <img src="/Home/top_cards/slider-bg.webp" alt="Background" fetchpriority="high" className="slider-video" />
                         </video>
                         <div className="slider-video-overlay"></div>
                     </div>
