@@ -145,11 +145,32 @@ const CharacterSlider = () => {
 
     const totalSlides = slidesData.length;
     const degreeStep = 360 / totalSlides;
-    // FIX: card width chota kiya gaya tha (240px -> 200px) lekin radius wahi
-    // reh gaya tha, jis se gaps unbalanced ho gaye the aur wrap-around par
-    // (last/second-last card) overlap sa hone laga tha. Radius ko naye card
-    // size ke hisaab se proportionally chota kiya taake spacing consistent rahe.
-    const radius = 330;
+
+    // FIX: card ka width har breakpoint pe CSS me chota hota hai (200 -> 180 ->
+    // 160 -> 110px) lekin radius (3D circle ki distance) pehle fixed 330 rehta
+    // tha har screen size pe. Chote cards + same badi radius = bohot zyada gap,
+    // especially phone pe. Ab radius bhi screen width ke hisaab se proportionally
+    // chota hota hai, taake card-to-gap ka ratio hamesha consistent rahe.
+    const [radius, setRadius] = useState(330);
+
+    useEffect(() => {
+        const updateRadius = () => {
+            const w = window.innerWidth;
+            if (w <= 480) {
+                setRadius(180);
+            } else if (w <= 768) {
+                setRadius(260);
+            } else if (w <= 1024) {
+                setRadius(295);
+            } else {
+                setRadius(330);
+            }
+        };
+
+        updateRadius();
+        window.addEventListener('resize', updateRadius);
+        return () => window.removeEventListener('resize', updateRadius);
+    }, []);
 
     // Wrapped 0..totalSlides-1 index, derived from the continuous step counter
     const currentIndex = ((step % totalSlides) + totalSlides) % totalSlides;
@@ -249,11 +270,7 @@ const CharacterSlider = () => {
 
     useEffect(() => {
         updateCarousel();
-    }, [step]);
-
-    useEffect(() => {
-        updateCarousel();
-    }, []);
+    }, [step, radius]);
 
     // ✅ FIX: Video sirf tab play ho jab viewport me visible ho.
     // Scroll ke waqt off-screen video decode/render karte rehna hi hang ki
