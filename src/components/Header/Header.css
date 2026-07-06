@@ -7,17 +7,127 @@
     position: fixed;
     top: 0;
     z-index: 1000;
-    transition: transform 0.35s ease-in-out, background-color 0.25s ease, box-shadow 0.25s ease;
+    transition: transform 0.35s ease-in-out, background-color 0.25s ease, box-shadow 0.4s ease;
     font-family: 'Plus Jakarta Sans', sans-serif;
+    
+    /* ✅ MODERN DROP SHADOW - Default (transparent) */
+    box-shadow: 
+        0 1px 3px rgba(0, 0, 0, 0.02),
+        0 4px 12px rgba(0, 0, 0, 0.02),
+        0 8px 30px rgba(0, 0, 0, 0.03);
 }
 
 @media (min-width: 768px) {
     #main-header { padding: 16px 40px; }
 }
 
+/* ✅ SCROLLED STATE - Stronger Shadow */
 .nav-scrolled-active {
     background-color: #ffffff !important;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    box-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.04),
+        0 8px 20px rgba(0, 0, 0, 0.06),
+        0 20px 50px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* ✅ VISIBLE STATE - Smooth Shadow Appear */
+#main-header.nav-visible {
+    box-shadow: 
+        0 1px 3px rgba(0, 0, 0, 0.02),
+        0 4px 12px rgba(0, 0, 0, 0.02),
+        0 8px 30px rgba(0, 0, 0, 0.03);
+}
+
+#main-header.nav-visible.nav-scrolled-active {
+    box-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.04),
+        0 8px 20px rgba(0, 0, 0, 0.06),
+        0 20px 50px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* ✅ HIDDEN STATE - No Shadow */
+#main-header.nav-hidden {
+    box-shadow: none !important;
+}
+
+/* ========================================
+   MODERN DROP SHADOW VARIATIONS
+   ======================================== */
+
+/* 🔥 VARIATION 1: Soft & Elegant */
+.nav-scrolled-active.soft-shadow {
+    box-shadow: 
+        0 4px 12px rgba(0, 0, 0, 0.04),
+        0 16px 40px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* 🔥 VARIATION 2: Bold & Strong */
+.nav-scrolled-active.strong-shadow {
+    box-shadow: 
+        0 4px 6px rgba(0, 0, 0, 0.05),
+        0 12px 30px rgba(0, 0, 0, 0.08),
+        0 30px 60px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* 🔥 VARIATION 3: Orange Glow Shadow (Brand) */
+.nav-scrolled-active.glow-shadow {
+    box-shadow: 
+        0 4px 12px rgba(255, 122, 0, 0.08),
+        0 16px 40px rgba(255, 122, 0, 0.06),
+        0 30px 60px rgba(255, 122, 0, 0.04) !important;
+}
+
+/* 🔥 VARIATION 4: Minimal (Recommended) */
+.nav-scrolled-active.minimal-shadow {
+    box-shadow: 
+        0 2px 8px rgba(0, 0, 0, 0.04),
+        0 8px 24px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* ========================================
+   ORANGE GLOW SHADOW - RECOMMENDED
+   ======================================== */
+
+/* ✅ Best for Brand Identity */
+#main-header.nav-scrolled-active {
+    box-shadow: 
+        0 2px 4px rgba(255, 122, 0, 0.08),
+        0 8px 20px rgba(255, 122, 0, 0.06),
+        0 20px 50px rgba(255, 122, 0, 0.04) !important;
+}
+
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0.8;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(-100%);
+        opacity: 0.8;
+    }
+}
+
+#main-header.nav-hidden {
+    animation: slideUp 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+#main-header.nav-visible {
+    animation: slideDown 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
 .header-inner {

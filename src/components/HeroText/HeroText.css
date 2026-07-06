@@ -1,0 +1,192 @@
+/* ========================================
+   HERO TEXT - COMPONENT
+   ======================================== */
+
+.hero-text-wrapper {
+    position: relative;
+    z-index: 5;
+    text-align: center;
+    padding: 20px 20px 0 20px;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* ✅ Desktop */
+@media (min-width: 1024px) {
+    .hero-text-wrapper {
+        padding-top: 40px;
+    }
+}
+
+/* ✅ Tablet */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .hero-text-wrapper {
+        padding-top: 30px;
+    }
+}
+
+/* ✅ Mobile */
+@media (max-width: 767px) {
+    .hero-text-wrapper {
+        padding-top: 50px;
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+}
+
+/* ========================================
+   HERO TAG
+   ======================================== */
+
+.hero-tag {
+    display: inline-block;
+    padding: 6px 18px;
+    border: 1.5px solid rgba(0, 0, 0, 0.15);
+    border-radius: 50px;
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #f26522;
+    margin-bottom: 20px;
+    backdrop-filter: blur(10px);
+}
+
+@media (max-width: 480px) {
+    .hero-tag {
+        font-size: 0.65rem;
+        padding: 4px 12px;
+        letter-spacing: 2px;
+    }
+}
+
+/* ========================================
+   HERO TITLE
+   ======================================== */
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: #111 !important;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    text-align: center;
+    text-shadow: 
+        0 1px 0 #ccc,
+        0 2px 0 #c9c9c9,
+        0 3px 0 #bbb,
+        0 4px 0 #b9b9b9,
+        0 5px 0 #aaa,
+        0 6px 1px rgba(0,0,0,.1),
+        0 0 5px rgba(0,0,0,.1),
+        0 1px 3px rgba(0,0,0,.3),
+        0 3px 5px rgba(0,0,0,.2),
+        0 5px 10px rgba(0,0,0,.25),
+        0 10px 20px rgba(0,0,0,.15);
+    transform: perspective(800px) rotateX(2deg);
+    letter-spacing: -0.02em;
+}
+
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.2rem;
+        text-shadow: 
+            0 1px 0 #ccc,
+            0 2px 0 #c9c9c9,
+            0 3px 0 #bbb,
+            0 4px 1px rgba(0,0,0,.1),
+            0 2px 5px rgba(0,0,0,.15);
+        transform: perspective(600px) rotateX(1deg);
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 1.8rem;
+        text-shadow: 
+            0 1px 0 #ccc,
+            0 2px 0 #c9c9c9,
+            0 3px 1px rgba(0,0,0,.1);
+        transform: none;
+    }
+}
+
+.hero-title .highlight {
+    color: #FF7A00;
+    text-shadow: 
+        0 1px 0 #e06b00,
+        0 2px 0 #cc5f00,
+        0 3px 0 #b85400,
+        0 4px 0 #a34800,
+        0 5px 0 #8e3d00,
+        0 6px 1px rgba(0,0,0,.1),
+        0 0 5px rgba(255,122,0,.2),
+        0 1px 3px rgba(255,122,0,.3),
+        0 3px 5px rgba(255,122,0,.2),
+        0 8px 15px rgba(255,122,0,.15);
+}
+
+/* ========================================
+   TYPEWRITER TEXT
+   ======================================== */
+
+.typewriter-text {
+    color: #FF7A00;
+    display: inline-block;
+    min-width: 200px;
+    text-shadow: 
+        0 1px 0 #e06b00,
+        0 2px 0 #cc5f00,
+        0 3px 0 #b85400,
+        0 4px 1px rgba(0,0,0,.2),
+        0 6px 8px rgba(255,122,0,.15);
+}
+
+@media (max-width: 480px) {
+    .typewriter-text {
+        min-width: 140px;
+    }
+}
+
+.cursor {
+    display: inline-block;
+    width: 3px;
+    margin-left: 5px;
+    animation: blink 0.8s infinite;
+    color: #FF7A00;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* ========================================
+   HERO SUBTITLE
+   ======================================== */
+
+.hero-subtitle {
+    color: rgba(0, 0, 0, 0.45);
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+    text-align: center;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+    .hero-subtitle {
+        font-size: 0.95rem;
+        padding: 0 10px;
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-subtitle {
+        font-size: 0.85rem;
+        padding: 0 10px;
+    }
+}

@@ -6,6 +6,7 @@ import WorldSection from '../components/WorldSection/WorldSection';
 import FeaturedDesigns from '../components/FeaturedDesigns/FeaturedDesigns';
 import StayConnected from '../components/StayConnected/StayConnected';
 import StatsBanner from '../components/StatsBanner/StatsBanner';
+import HeroText from '../components/HeroText/HeroText';
 import { Helmet } from 'react-helmet-async';
 
 const HomePage = () => {
@@ -36,6 +37,9 @@ const HomePage = () => {
         <meta name="description" content="3D Craft Station offers professional 3D modeling, character design, animation & product visualization services. Custom 3D solutions for gaming, film & product design." />
       </Helmet>
       <main>
+        <div className="reveal-section">
+        <HeroText />
+        </div>
         <CharacterSlider />
 
       <div className="reveal-section">
