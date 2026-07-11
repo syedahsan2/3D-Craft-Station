@@ -136,8 +136,8 @@ const AboutPage = () => {
     return (
         <>
     <Helmet>
-        <title>About Us - 3D Craft Station | Creative 3D Design Studio</title>
-        <meta name="description" content="Learn about 3D Craft Station - a premium 3D design studio creating stunning character models, animations, and product visualizations for global clients." />
+        <title>About Us | 3D Craft Station - Custom STL & Character Design</title>
+        <meta name="description" content="Learn about 3D Craft Station, a creative studio bringing custom STL designs, highly detailed character sculptures, and 3D print assets to life." />
     </Helmet>
             {/* Hero Section */}
             <section className="about-hero-section">

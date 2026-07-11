@@ -143,10 +143,10 @@ const ContactPage = () => {
 
     return (
         <>
-              <Helmet>
-        <title>Contact 3D Craft Station | Get a Free Quote for 3D Design</title>
-        <meta name="description" content="Contact 3D Craft Station for professional 3D modeling, character design, animation & product visualization services. Get a free quote today!" />
-      </Helmet>
+        <Helmet>
+            <title>Contact 3D Craft Station | Get a Custom STL Design Quote</title>
+            <meta name="description" content="Contact 3D Craft Station today for a free quote on custom STL designs, print-ready 3D modeling, and custom character sculpting services." />
+        </Helmet>
             {/* Hero Section - Imagination to Reality */}
             <section className="contact-hero-section">
                 <div className="reality-left-ambient-glow"></div>
