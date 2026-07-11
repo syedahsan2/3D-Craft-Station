@@ -33,8 +33,8 @@ const HomePage = () => {
   return (
     <>
       <Helmet>
-        <title>3D Craft Station - Premium 3D Design Studio | Character Modeling & Animation</title>
-        <meta name="description" content="3D Craft Station offers professional 3D modeling, character design, animation & product visualization services. Custom 3D solutions for gaming, film & product design." />
+        <title>3D Craft Station | Print-Ready STL & 3D Design Studio</title>
+        <meta name="description" content="Professional 3D modeling and custom STL design services. High-quality 3D assets, character sculptures, and prototypes optimized for 3D printing." />
       </Helmet>
       <main>
         <div className="reveal-section">
