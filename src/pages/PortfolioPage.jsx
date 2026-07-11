@@ -176,10 +176,10 @@ const PortfolioPage = () => {
 
     return (
         <>
-              <Helmet>
-        <title>3D Portfolio - Character Modeling & Design Gallery | 3D Craft Station</title>
-        <meta name="description" content="View 3D Craft Station's portfolio of character models, 3D animations, product designs, and creative visualizations. See our best work." />
-      </Helmet>
+        <Helmet>
+          <title>3D Printing Portfolio & STL Showcase | 3D Craft Station</title>
+          <meta name="description" content="Browse 3D Craft Station's portfolio of custom STL designs, print-ready miniatures, and character sculptures optimized for 3D printing." />
+        </Helmet>
         {/* Hero Section - Services Style */}
         <section className="services-hero-section" style={{ paddingTop: '160px', minHeight: '100vh' }}>
             <div className="hero-container">
