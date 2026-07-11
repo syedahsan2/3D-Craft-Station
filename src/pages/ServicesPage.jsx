@@ -151,8 +151,8 @@ const ServicesPage = () => {
     return (
         <>
             <Helmet>
-                    <title>3D Services - Modeling, Animation, CAD Design | 3D Craft Station</title>
-                    <meta name="description" content="Explore 3D Craft Station's services including character modeling, 3D animation, CAD design, product visualization, and custom STL design." />
+              <title>3D Printing Services | Custom STL & 3D Modeling Studio</title>
+              <meta name="description" content="Explore our services including custom STL design, character modeling, and 3D printing optimization. Print-ready assets tailored for your projects." />
             </Helmet>
             {/* Hero Section */}
             <section className="services-hero-section">
