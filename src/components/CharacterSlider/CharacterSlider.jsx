@@ -112,142 +112,153 @@ const slidesData = [
         saves: '489' 
     },
 ];
-const HeroCarousel = () => {
+
+const CharacterSlider = () => {
     const trackRef = useRef(null);
+    const image3DWrapperRef = useRef(null);
+    const modal3DAreaRef = useRef(null);
     const sliderRef = useRef(null);
-    const videoRef = useRef(null);
     const autoRotateRef = useRef(null);
-    const isTransitioningRef = useRef(false);
-    const animationFrameRef = useRef(null);
+    const videoRef = useRef(null);
+    const isSliderVisibleRef = useRef(true);
     
-    const [currentIndex, setCurrentIndex] = useState(0);
+    const [step, setStep] = useState(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentSlide, setCurrentSlide] = useState(null);
-    const [isInView, setIsInView] = useState(false);
-    
+    const [radius, setRadius] = useState(330);
+
     const totalSlides = slidesData.length;
     const degreeStep = 360 / totalSlides;
-    const radius = 400;
+    const currentIndex = ((step % totalSlides) + totalSlides) % totalSlides;
 
-    // ✅ Intersection Observer
+    // Responsive radius
     useEffect(() => {
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    setIsInView(entry.isIntersecting);
-                    if (videoRef.current) {
-                        entry.isIntersecting ? videoRef.current.play() : videoRef.current.pause();
-                    }
-                });
-            },
-            { threshold: 0.1, rootMargin: '100px' }
-        );
-
-        if (sliderRef.current) {
-            observer.observe(sliderRef.current);
-        }
-
-        return () => {
-            if (sliderRef.current) {
-                observer.unobserve(sliderRef.current);
-            }
+        const updateRadius = () => {
+            const w = window.innerWidth;
+            if (w <= 480) setRadius(180);
+            else if (w <= 768) setRadius(260);
+            else if (w <= 1024) setRadius(295);
+            else setRadius(330);
         };
+
+        updateRadius();
+        window.addEventListener('resize', updateRadius);
+        return () => window.removeEventListener('resize', updateRadius);
     }, []);
 
-    // ✅ Update carousel
-    const updateCarousel = useCallback(() => {
-        if (!trackRef.current || isTransitioningRef.current || !isInView) return;
-        
-        isTransitioningRef.current = true;
-        
-        if (animationFrameRef.current) {
-            cancelAnimationFrame(animationFrameRef.current);
-        }
-        
-        animationFrameRef.current = requestAnimationFrame(() => {
-            const slides = trackRef.current.children;
-            const baseAngle = -currentIndex * degreeStep;
-            
-            trackRef.current.style.transform = `rotateY(${baseAngle}deg)`;
-            
-            Array.from(slides).forEach((slide, index) => {
-                let diff = (index - currentIndex) % totalSlides;
-                if (diff < -totalSlides/2) diff += totalSlides;
-                if (diff > totalSlides/2) diff -= totalSlides;
-                
-                const isActive = Math.abs(diff) < 0.5 || Math.abs(diff) === 0;
-                
-                if (isActive) {
-                    slide.style.transform = `rotateY(${index * degreeStep}deg) translateZ(${radius + 40}px) scale(1.15)`;
-                    slide.style.opacity = '1';
-                    slide.style.zIndex = '10';
-                    slide.style.filter = 'brightness(1)';
-                    slide.classList.add('is-active');
-                } else {
-                    slide.style.transform = `rotateY(${index * degreeStep}deg) translateZ(${radius}px) scale(0.90)`;
-                    slide.style.opacity = '1';
-                    slide.style.zIndex = '2';
-                    slide.style.filter = 'brightness(0.85)';
-                    slide.classList.remove('is-active');
-                }
-            });
-            
-            setTimeout(() => {
-                isTransitioningRef.current = false;
-            }, 50);
-        });
-    }, [currentIndex, degreeStep, totalSlides, radius, isInView]);
+    // Modal 3D transform refs
+    const rotXRef = useRef(0);
+    const rotYRef = useRef(0);
+    const zoomRef = useRef(1);
+    const isModalDraggingRef = useRef(false);
+    const dragStartRef = useRef({ x: 0, y: 0 });
+    const rotStartRef = useRef({ x: 0, y: 0 });
 
-    // ✅ Auto Rotate
-    useEffect(() => {
-        if (autoRotateRef.current) {
-            clearInterval(autoRotateRef.current);
-        }
+    // Update carousel
+    const updateCarousel = useCallback(() => {
+        if (!trackRef.current) return;
         
-        if (!isInView) return;
+        const slides = trackRef.current.children;
+        const baseAngle = -step * degreeStep;
+        
+        trackRef.current.style.transform = `rotateY(${baseAngle}deg)`;
+        
+        Array.from(slides).forEach((slide, index) => {
+            let diff = (index - currentIndex) % totalSlides;
+            if (diff < -totalSlides/2) diff += totalSlides;
+            if (diff > totalSlides/2) diff -= totalSlides;
+            
+            const isActive = Math.abs(diff) < 0.5 || Math.abs(diff) === 0;
+            
+            if (isActive) {
+                slide.style.transform = `rotateY(${index * degreeStep}deg) translateZ(${radius + 40}px) scale(1.15)`;
+                slide.style.opacity = '1';
+                slide.style.zIndex = '10';
+                slide.style.filter = 'brightness(1)';
+                slide.classList.add('is-active');
+            } else {
+                slide.style.transform = `rotateY(${index * degreeStep}deg) translateZ(${radius}px) scale(0.90)`;
+                slide.style.opacity = '1';
+                slide.style.zIndex = '2';
+                slide.style.filter = 'brightness(0.85)';
+                slide.classList.remove('is-active');
+            }
+        });
+    }, [step, degreeStep, currentIndex, totalSlides, radius]);
+
+    // Auto rotate
+    useEffect(() => {
+        if (autoRotateRef.current) clearInterval(autoRotateRef.current);
         
         autoRotateRef.current = setInterval(() => {
-            if (!isModalOpen && isInView) {
-                setCurrentIndex((prev) => (prev + 1) % totalSlides);
+            if (!isModalOpen && isSliderVisibleRef.current) {
+                setStep((prev) => prev + 1);
             }
         }, 4000);
         
         return () => {
-            if (autoRotateRef.current) {
-                clearInterval(autoRotateRef.current);
-            }
+            if (autoRotateRef.current) clearInterval(autoRotateRef.current);
         };
-    }, [isModalOpen, totalSlides, isInView]);
+    }, [isModalOpen]);
 
     useEffect(() => {
         updateCarousel();
-    }, [currentIndex, updateCarousel]);
-
-    useEffect(() => {
-        setTimeout(() => {
-            updateCarousel();
-        }, 200);
     }, [updateCarousel]);
 
+    // Video visibility
     useEffect(() => {
-        return () => {
-            if (animationFrameRef.current) {
-                cancelAnimationFrame(animationFrameRef.current);
-            }
-        };
+        const video = videoRef.current;
+        if (!video) return;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    video.play().catch(() => {});
+                } else {
+                    video.pause();
+                }
+            },
+            { threshold: 0.1 }
+        );
+
+        observer.observe(video);
+        return () => observer.disconnect();
     }, []);
 
-    const goToNext = useCallback(() => {
-        setCurrentIndex((prev) => (prev + 1) % totalSlides);
-    }, [totalSlides]);
+    // Slider visibility for auto-rotate
+    useEffect(() => {
+        const el = sliderRef.current;
+        if (!el) return;
 
-    const goToPrev = useCallback(() => {
-        setCurrentIndex((prev) => (prev - 1 + totalSlides) % totalSlides);
-    }, [totalSlides]);
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                isSliderVisibleRef.current = entry.isIntersecting;
+            },
+            { threshold: 0 }
+        );
+
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, []);
+
+    // Navigation
+    const goToNext = () => setStep((prev) => prev + 1);
+    const goToPrev = () => setStep((prev) => prev - 1);
+
+    // Modal 3D transform
+    const update3DTransform = () => {
+        if (image3DWrapperRef.current) {
+            image3DWrapperRef.current.style.transform = `rotateX(${rotXRef.current}deg) rotateY(${rotYRef.current}deg) scale(${zoomRef.current})`;
+        }
+    };
 
     const openModal = (slide) => {
         setCurrentSlide(slide);
         setIsModalOpen(true);
+        rotXRef.current = 0;
+        rotYRef.current = 0;
+        zoomRef.current = 1;
+        update3DTransform();
     };
 
     const closeModal = () => {
@@ -267,26 +278,81 @@ const HeroCarousel = () => {
         };
         document.addEventListener('keydown', handleKeyDown);
         return () => document.removeEventListener('keydown', handleKeyDown);
-    }, [isModalOpen, goToNext, goToPrev]);
+    }, [isModalOpen]);
+
+    // Modal 3D drag controls
+    useEffect(() => {
+        const area = modal3DAreaRef.current;
+        if (!area) return;
+        
+        const handleMouseDown = (e) => {
+            if (e.target.closest('.modal-close-x')) return;
+            isModalDraggingRef.current = true;
+            dragStartRef.current = { x: e.clientX, y: e.clientY };
+            rotStartRef.current = { x: rotXRef.current, y: rotYRef.current };
+            area.classList.add('grabbing');
+            e.preventDefault();
+        };
+        
+        const handleMouseMove = (e) => {
+            if (!isModalDraggingRef.current) return;
+            const deltaX = e.clientX - dragStartRef.current.x;
+            const deltaY = e.clientY - dragStartRef.current.y;
+            rotXRef.current = rotStartRef.current.x - deltaY * 0.4;
+            rotYRef.current = rotStartRef.current.y + deltaX * 0.4;
+            update3DTransform();
+        };
+        
+        const handleMouseUp = () => {
+            if (isModalDraggingRef.current) {
+                isModalDraggingRef.current = false;
+                area.classList.remove('grabbing');
+            }
+        };
+        
+        const handleWheel = (e) => {
+            e.preventDefault();
+            const zoomDelta = e.deltaY > 0 ? -0.08 : 0.08;
+            zoomRef.current = Math.max(0.5, Math.min(3, zoomRef.current + zoomDelta));
+            update3DTransform();
+        };
+        
+        area.addEventListener('mousedown', handleMouseDown);
+        window.addEventListener('mousemove', handleMouseMove);
+        window.addEventListener('mouseup', handleMouseUp);
+        area.addEventListener('wheel', handleWheel, { passive: false });
+        
+        return () => {
+            area.removeEventListener('mousedown', handleMouseDown);
+            window.removeEventListener('mousemove', handleMouseMove);
+            window.removeEventListener('mouseup', handleMouseUp);
+            area.removeEventListener('wheel', handleWheel);
+        };
+    }, []);
+
+    // Prevent body scroll when modal open
+    useEffect(() => {
+        document.body.style.overflow = isModalOpen ? 'hidden' : '';
+        return () => { document.body.style.overflow = ''; };
+    }, [isModalOpen]);
 
     return (
-        <div className="carousel-wrapper" ref={sliderRef}>
+        <div className="slider-wrapper" ref={sliderRef}>
             {/* Video Background */}
-            <div className="carousel-video-bg">
+            <div className="slider-video-bg">
                 <video 
                     ref={videoRef}
                     autoPlay 
                     loop 
                     muted 
                     playsInline
-                    preload="none"
-                    className="carousel-video"
-                    poster="/Home/top_cards/slider-bg.webp"
+                    preload="metadata"
+                    className="slider-video"
                 >
                     <source src="/Home/top_cards/banner_last_video.webm" type="video/webm" />
-                    <img src="/Home/top_cards/slider-bg.webp" alt="Background" />
+                    <img src="/Home/top_cards/slider-bg.webp" alt="Background" fetchpriority="high" className="slider-video" />
                 </video>
-                <div className="carousel-video-overlay"></div>
+                <div className="slider-video-overlay"></div>
             </div>
 
             {/* Carousel */}
@@ -301,11 +367,11 @@ const HeroCarousel = () => {
                                     className="carousel-slide"
                                     style={{
                                         transform: `rotateY(${rotation}deg) translateZ(${radius}px)`,
-                                        transition: 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s ease'
+                                        transition: 'transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.5s ease'
                                     }}
                                     onClick={() => openModal(slide)}
                                 >
-                                    <img src={slide.image} alt={slide.title} loading="lazy" decoding="async" />
+                                    <img src={slide.image} alt={slide.title} className="featured-img" loading="lazy" decoding="async" />
                                 </div>
                             );
                         })}
@@ -314,25 +380,30 @@ const HeroCarousel = () => {
             </div>
 
             {/* Controls */}
-            <div className="carousel-controls">
-                <button className="ctrl-btn prev" onClick={goToPrev}>
+            <div className="slider-controls">
+                <button className="slider-btn prev-btn" aria-label="Previous slide" onClick={goToPrev}>
                     <i className="fa-solid fa-chevron-left"></i>
                 </button>
-                <div className="carousel-indicators">
+                <div className="slider-indicators">
                     {slidesData.map((_, index) => (
                         <span 
                             key={index} 
                             className={`dot ${index === currentIndex ? 'active' : ''}`}
-                            onClick={() => setCurrentIndex(index)}
+                            onClick={() => {
+                                let diff = (index - currentIndex) % totalSlides;
+                                if (diff > totalSlides / 2) diff -= totalSlides;
+                                if (diff < -totalSlides / 2) diff += totalSlides;
+                                setStep((prev) => prev + diff);
+                            }}
                         ></span>
                     ))}
                 </div>
-                <button className="ctrl-btn next" onClick={goToNext}>
+                <button className="slider-btn next-btn" aria-label="Next slide" onClick={goToNext}>
                     <i className="fa-solid fa-chevron-right"></i>
                 </button>
             </div>
 
-            {/* ✅ Modal Component */}
+            {/* Modal */}
             <CarouselModal 
                 isOpen={isModalOpen}
                 onClose={closeModal}
@@ -342,4 +413,4 @@ const HeroCarousel = () => {
     );
 };
 
-export default HeroCarousel;
+export default CharacterSlider;

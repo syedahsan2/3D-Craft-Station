@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import './Modal.css';
 
-const Modal = ({ isOpen, onClose, slideData, slideIndex, slidesData }) => {
+const Modal = ({ isOpen, onClose, slideData }) => {
     const [rotX, setRotX] = useState(0);
     const [rotY, setRotY] = useState(0);
     const [zoom, setZoom] = useState(1);
@@ -18,16 +18,6 @@ const Modal = ({ isOpen, onClose, slideData, slideIndex, slidesData }) => {
             imageWrapperRef.current.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg) scale(${zoom})`;
         }
     }, [rotX, rotY, zoom]);
-    
-    // Reset transforms when modal opens
-    useEffect(() => {
-        if (isOpen) {
-            setRotX(0);
-            setRotY(0);
-            setZoom(1);
-            updateTransform();
-        }
-    }, [isOpen, updateTransform]);
     
     // Apply transform
     useEffect(() => {

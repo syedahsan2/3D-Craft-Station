@@ -2,23 +2,24 @@ import { useEffect, useState } from 'react';
 import ThankYouModal from '../components/ThankYouModal/ThankYouModal'; 
 import { Helmet } from 'react-helmet-async';
 
+const lines = [
+    { text: "CREATIVE SERVICES", color: "#ffffff", id: 1 },
+    { text: "THAT BRING", color: "#ffffff", id: 2 },
+    { text: "IDEAS TO LIFE", color: "#f26522", id: 3 }
+];
+
 const ServicesPage = () => {
-    const [displayedLine1, setDisplayedLine1] = useState('');
-    const [displayedLine2, setDisplayedLine2] = useState('');
-    const [displayedLine3, setDisplayedLine3] = useState('');
     const [lineIndex, setLineIndex] = useState(0);
     const [charIndex, setCharIndex] = useState(0);
     const [isDeleting, setIsDeleting] = useState(false);
     const [showThankYou, setShowThankYou] = useState(false);
     const [userName, setUserName] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [selectedService, setSelectedService] = useState('');
 
-    const lines = [
-        { text: "CREATIVE SERVICES", color: "#ffffff", id: 1 },
-        { text: "THAT BRING", color: "#ffffff", id: 2 },
-        { text: "IDEAS TO LIFE", color: "#f26522", id: 3 }
-    ];
+    // Derived typewriter values
+    const displayedLine1 = lineIndex > 0 ? lines[0].text : (lineIndex === 0 ? lines[0].text.substring(0, charIndex) : '');
+    const displayedLine2 = lineIndex > 1 ? lines[1].text : (lineIndex === 1 ? lines[1].text.substring(0, charIndex) : '');
+    const displayedLine3 = lineIndex > 2 ? lines[2].text : (lineIndex === 2 ? lines[2].text.substring(0, charIndex) : '');
 
     // Typewriter effect
     useEffect(() => {
@@ -30,17 +31,17 @@ const ServicesPage = () => {
             if (charIndex > 0) {
                 timeout = setTimeout(() => {
                     setCharIndex(charIndex - 1);
-                    updateDisplayedText(lineIndex, charIndex - 1);
                 }, 40);
             } else {
-                setIsDeleting(false);
-                setLineIndex((prev) => (prev + 1) % lines.length);
+                timeout = setTimeout(() => {
+                    setIsDeleting(false);
+                    setLineIndex((prev) => (prev + 1) % lines.length);
+                }, 500);
             }
         } else {
             if (charIndex < currentFullText.length) {
                 timeout = setTimeout(() => {
                     setCharIndex(charIndex + 1);
-                    updateDisplayedText(lineIndex, charIndex + 1);
                 }, 80);
             } else {
                 timeout = setTimeout(() => {
@@ -51,36 +52,6 @@ const ServicesPage = () => {
         
         return () => clearTimeout(timeout);
     }, [charIndex, isDeleting, lineIndex]);
-
-    const updateDisplayedText = (line, length) => {
-        switch(line) {
-            case 0:
-                setDisplayedLine1(lines[0].text.substring(0, length));
-                break;
-            case 1:
-                setDisplayedLine2(lines[1].text.substring(0, length));
-                break;
-            case 2:
-                setDisplayedLine3(lines[2].text.substring(0, length));
-                break;
-            default:
-                break;
-        }
-    };
-
-    // Reset completed lines when moving to next
-    useEffect(() => {
-        if (lineIndex === 0 && !isDeleting) {
-            setDisplayedLine2('');
-            setDisplayedLine3('');
-        } else if (lineIndex === 1 && !isDeleting) {
-            setDisplayedLine1(lines[0].text);
-            setDisplayedLine3('');
-        } else if (lineIndex === 2 && !isDeleting) {
-            setDisplayedLine1(lines[0].text);
-            setDisplayedLine2(lines[1].text);
-        }
-    }, [lineIndex, isDeleting]);
 
     // Scroll reveal animation
     useEffect(() => {
@@ -139,6 +110,7 @@ const ServicesPage = () => {
                 alert('❌ Failed to send message. Please try again.');
             }
         } catch (error) {
+            console.error('Services contact error:', error);
             alert('❌ Error connecting to server.');
         } finally {
             setIsSubmitting(false);
@@ -159,7 +131,7 @@ const ServicesPage = () => {
                 <div className="hero-container">
                     <div className="hero-content animate-on-scroll">
                         <h1 className="hero-title">
-                            <span className="typewriter-line">
+                            <span className="typewriter-line" style={{ color: '#ffffff' }}>
                                 {lineIndex === 0 ? displayedLine1 : (lineIndex > 0 ? lines[0].text : '')}
                                 {lineIndex === 0 && <span className="cursor">|</span>}
                             </span>
@@ -174,7 +146,7 @@ const ServicesPage = () => {
                                 {lineIndex === 2 && <span className="cursor">|</span>}
                             </span>
                         </h1>
-                        <p className="hero-subtitle">
+                        <p className="hero-subtitle-Portfolio">
                             From character modeling and sculpting to texturing and rigging, we deliver end-to-end 3D production services.
                         </p>
                         <button 

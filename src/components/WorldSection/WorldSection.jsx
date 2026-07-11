@@ -26,9 +26,8 @@ const WorldSection = () => {
 
         if (isDeleting) {
             if (displayText.length === 0) {
-                setIsDeleting(false);
                 timeout = setTimeout(() => {
-                    typeNext();
+                    setIsDeleting(false);
                 }, 500);
             } else {
                 timeout = setTimeout(() => {
@@ -41,17 +40,14 @@ const WorldSection = () => {
                     setDisplayText(fullText.slice(0, displayText.length + 1));
                 }, typingSpeed);
             } else if (displayText.length === fullText.length) {
-                setIsTypingComplete(true);
+                timeout = setTimeout(() => {
+                    setIsTypingComplete(true);
+                }, 0);
             }
         }
 
         return () => clearTimeout(timeout);
     }, [displayText, isDeleting, isTypingComplete]);
-
-    const typeNext = () => {
-        setDisplayText('');
-        setIsDeleting(false);
-    };
   // ✅ Navigate to Portfolio page
   const goToPortfolio = () => {
     navigate('/portfolio');

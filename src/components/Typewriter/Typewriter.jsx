@@ -22,8 +22,10 @@ const Typewriter = ({ texts, delay = 100, pauseTime = 2000 }) => {
     
     if (isDeleting) {
       if (currentText.length === 0) {
-        setIsDeleting(false);
-        setCurrentTextIndex((prev) => (prev + 1) % texts.length);
+        timeout = setTimeout(() => {
+          setIsDeleting(false);
+          setCurrentTextIndex((prev) => (prev + 1) % texts.length);
+        }, 500);
       } else {
         timeout = setTimeout(() => {
           setCurrentText(currentText.slice(0, -1));
@@ -31,7 +33,9 @@ const Typewriter = ({ texts, delay = 100, pauseTime = 2000 }) => {
       }
     } else {
       if (currentText.length === currentFullText.length) {
-        setIsWaiting(true);
+        timeout = setTimeout(() => {
+          setIsWaiting(true);
+        }, 0);
       } else {
         timeout = setTimeout(() => {
           setCurrentText(currentFullText.slice(0, currentText.length + 1));

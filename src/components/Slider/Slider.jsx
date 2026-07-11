@@ -51,7 +51,6 @@ const Slider = ({ slidesData, onCardClick }) => {
             carouselRingRef.current.style.transform = `rotateY(${newAngle}deg)`;
         }
         updateActiveCard();
-        resetAutoRotate();
     }, [anglePerSlide, updateActiveCard]);
     
     // Rotate carousel by direction
@@ -67,10 +66,16 @@ const Slider = ({ slidesData, onCardClick }) => {
         newIndex = ((newIndex % totalSlides) + totalSlides) % totalSlides;
         setActiveIndex(newIndex);
         updateActiveCard();
-        resetAutoRotate();
     }, [currentAngle, anglePerSlide, totalSlides, updateActiveCard]);
-    
+
     // Auto rotate
+    const stopAutoRotate = useCallback(() => {
+        if (autoRotateTimerRef.current) {
+            clearInterval(autoRotateTimerRef.current);
+            autoRotateTimerRef.current = null;
+        }
+    }, []);
+    
     const startAutoRotate = useCallback(() => {
         stopAutoRotate();
         autoRotateTimerRef.current = setInterval(() => {
@@ -78,19 +83,12 @@ const Slider = ({ slidesData, onCardClick }) => {
                 rotateCarousel(1);
             }
         }, 3500);
-    }, [isDragging, rotateCarousel]);
+    }, [isDragging, rotateCarousel, stopAutoRotate]);
     
-    const stopAutoRotate = () => {
-        if (autoRotateTimerRef.current) {
-            clearInterval(autoRotateTimerRef.current);
-            autoRotateTimerRef.current = null;
-        }
-    };
-    
-    const resetAutoRotate = () => {
+    const resetAutoRotate = useCallback(() => {
         stopAutoRotate();
         startAutoRotate();
-    };
+    }, [stopAutoRotate, startAutoRotate]);
     
     // Create cards
     const createCards = useCallback(() => {
@@ -124,13 +122,13 @@ const Slider = ({ slidesData, onCardClick }) => {
             if (dotsContainer) {
                 const dot = document.createElement('div');
                 dot.className = 'carousel-dot';
-                dot.addEventListener('click', () => rotateToIndex(i));
+                dot.addEventListener('click', () => { rotateToIndex(i); resetAutoRotate(); });
                 dotsContainer.appendChild(dot);
             }
         });
         
         updateActiveCard();
-    }, [slidesData, anglePerSlide, onCardClick, rotateToIndex, updateActiveCard]);
+    }, [slidesData, anglePerSlide, onCardClick, rotateToIndex, updateActiveCard, resetAutoRotate]);
     
     // Handle window resize
     useEffect(() => {
@@ -151,7 +149,7 @@ const Slider = ({ slidesData, onCardClick }) => {
         return () => {
             stopAutoRotate();
         };
-    }, [createCards, startAutoRotate]);
+    }, [createCards, startAutoRotate, stopAutoRotate]);
     
     // Mouse/Touch drag handlers
     useEffect(() => {
@@ -238,13 +236,13 @@ const Slider = ({ slidesData, onCardClick }) => {
     // Keyboard navigation
     useEffect(() => {
         const handleKeyDown = (e) => {
-            if (e.key === 'ArrowLeft') rotateCarousel(-1);
-            if (e.key === 'ArrowRight') rotateCarousel(1);
+            if (e.key === 'ArrowLeft') { rotateCarousel(-1); resetAutoRotate(); }
+            if (e.key === 'ArrowRight') { rotateCarousel(1); resetAutoRotate(); }
         };
         
         document.addEventListener('keydown', handleKeyDown);
         return () => document.removeEventListener('keydown', handleKeyDown);
-    }, [rotateCarousel]);
+    }, [rotateCarousel, resetAutoRotate]);
     
     return (
         <div className="bg-shadows">
@@ -271,11 +269,11 @@ const Slider = ({ slidesData, onCardClick }) => {
                         </div>
                     </div>
                     <div className="carousel-controls">
-                        <button className="ctrl-btn" onClick={() => rotateCarousel(-1)}>
+                        <button className="ctrl-btn" onClick={() => { rotateCarousel(-1); resetAutoRotate(); }}>
                             <i className="fa-solid fa-chevron-left"></i>
                         </button>
                         <div className="carousel-dots"></div>
-                        <button className="ctrl-btn" onClick={() => rotateCarousel(1)}>
+                        <button className="ctrl-btn" onClick={() => { rotateCarousel(1); resetAutoRotate(); }}>
                             <i className="fa-solid fa-chevron-right"></i>
                         </button>
                     </div>

@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react';
 import './HeroText.css';
 
+const typewriterTexts = [
+    'Custom STL Designs',
+    '3D Printable Models',
+    'Miniatures & Figurines',
+    'Mechanical STL Parts',
+    'Collectibles & Statues'
+];
+
 const HeroText = () => {
     const [displayText, setDisplayText] = useState('');
     const [isDeleting, setIsDeleting] = useState(false);
     const [textIndex, setTextIndex] = useState(0);
-    
-    const typewriterTexts = [
-        'Custom STL Designs',
-        '3D Printable Models',
-        'Miniatures & Figurines',
-        'Mechanical STL Parts',
-        'Collectibles & Statues'
-    ];
 
     // Typewriter effect
     useEffect(() => {
@@ -21,8 +21,10 @@ const HeroText = () => {
         
         if (isDeleting) {
             if (displayText.length === 0) {
-                setIsDeleting(false);
-                setTextIndex((prev) => (prev + 1) % typewriterTexts.length);
+                timeout = setTimeout(() => {
+                    setIsDeleting(false);
+                    setTextIndex((prev) => (prev + 1) % typewriterTexts.length);
+                }, 500);
             } else {
                 timeout = setTimeout(() => {
                     setDisplayText(displayText.slice(0, -1));

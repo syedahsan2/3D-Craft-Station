@@ -120,9 +120,14 @@ const CompleteProjects = ({ onProjectClick }) => {
 
                 <div className="projects-grid">
                     {filteredProjects.map((project) => (
-                        <div key={project.id} className="project-card">
+                        <div key={project.id} className="project-card" onClick={() => handleViewProject(project)} style={{ cursor: 'pointer' }}>
                             <div className="project-image-wrapper">
                                 <img src={project.image} alt={project.title} className="project-image" />
+                                <div className="project-overlay">
+                                    <button className="project-view-btn">
+                                        View Details
+                                    </button>
+                                </div>
                             </div>
                             <div className="project-info">
                                 <h3 className="project-title">{project.title}</h3>

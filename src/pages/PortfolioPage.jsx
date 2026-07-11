@@ -2,6 +2,12 @@ import { useEffect, useRef, useState } from 'react';
 import ThankYouModal from '../components/ThankYouModal/ThankYouModal'; 
 import { Helmet } from 'react-helmet-async';
 
+const lines = [
+    { text: "CREATING", color: "#ffffff" },
+    { text: "CHARACTERS", color: "#ff6600" },
+    { text: "THAT TELL STORIES", color: "#ffffff" }
+];
+
 const PortfolioPage = () => {
     const portfolioRef = useRef(null);
     const [showThankYou, setShowThankYou] = useState(false);
@@ -9,61 +15,46 @@ const PortfolioPage = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     // Typewriter states
-    const [displayedText, setDisplayedText] = useState('');
     const [isDeleting, setIsDeleting] = useState(false);
     const [lineIndex, setLineIndex] = useState(0);
     const [charIndex, setCharIndex] = useState(0);
     
-    const lines = [
-        { text: "CREATING", color: "#ffffff" },
-        { text: "CHARACTERS", color: "#ff6600" },
-        { text: "THAT TELL STORIES", color: "#ffffff" }
-    ];
+    // Derived typewriter value
+    const currentLine = lines[lineIndex];
+    const displayedText = currentLine ? currentLine.text.substring(0, charIndex) : '';
     
     // Typewriter effect
     useEffect(() => {
-        const currentLine = lines[lineIndex];
         if (!currentLine) return;
         
         const fullText = currentLine.text;
+        let timer;
         
         if (isDeleting) {
             if (charIndex > 0) {
-                const timer = setTimeout(() => {
+                timer = setTimeout(() => {
                     setCharIndex(charIndex - 1);
                 }, 30);
-                return () => clearTimeout(timer);
             } else {
-                setIsDeleting(false);
-                setLineIndex((prev) => (prev + 1) % lines.length);
+                timer = setTimeout(() => {
+                    setIsDeleting(false);
+                    setLineIndex((prev) => (prev + 1) % lines.length);
+                }, 500);
             }
         } else {
             if (charIndex < fullText.length) {
-                const timer = setTimeout(() => {
+                timer = setTimeout(() => {
                     setCharIndex(charIndex + 1);
                 }, 80);
-                return () => clearTimeout(timer);
             } else {
-                const timer = setTimeout(() => {
+                timer = setTimeout(() => {
                     setIsDeleting(true);
                 }, 2000);
-                return () => clearTimeout(timer);
             }
         }
-    }, [charIndex, isDeleting, lineIndex]);
-    
-    // Update displayed text
-    useEffect(() => {
-        const currentLine = lines[lineIndex];
-        if (currentLine) {
-            setDisplayedText(currentLine.text.substring(0, charIndex));
-        }
-    }, [charIndex, lineIndex]);
-    
-    // Get current line color
-    const getCurrentColor = () => {
-        return lines[lineIndex]?.color || '#ffffff';
-    };
+        
+        return () => clearTimeout(timer);
+    }, [charIndex, isDeleting, lineIndex, currentLine]);
 
     useEffect(() => {
         // Animation on scroll
@@ -88,14 +79,6 @@ const PortfolioPage = () => {
 
     // Scroll to portfolio section when down arrow is clicked
     const scrollToPortfolio = () => {
-        const portfolioSection = document.querySelector('.portfolio-container');
-        if (portfolioSection) {
-            portfolioSection.scrollIntoView({ behavior: 'smooth' });
-        }
-    };
-
-    // Scroll to next (right arrow functionality)
-    const scrollToNext = () => {
         const portfolioSection = document.querySelector('.portfolio-container');
         if (portfolioSection) {
             portfolioSection.scrollIntoView({ behavior: 'smooth' });
@@ -164,6 +147,7 @@ const PortfolioPage = () => {
                 alert('❌ Failed to send message. Please try again.');
             }
         } catch (error) {
+            console.error('Portfolio contact error:', error);
             alert('❌ Error connecting to server.');
         } finally {
             setIsSubmitting(false);
@@ -200,7 +184,7 @@ const PortfolioPage = () => {
                             {lineIndex === 2 && <span className="cursor">|</span>}
                         </span>
                     </h1>
-                    <p className="hero-subtitle">
+                    <p className="hero-subtitle-Portfolio">
                         From concept to final render, we design unique 3D characters 
                         that captivate audiences and elevate brands.
                     </p>
@@ -243,7 +227,7 @@ const PortfolioPage = () => {
                 <h2 className="grid-title animate-on-scroll">OUR FEATURED DESIGNS</h2>
                 
                 <div className="masonry-grid">
-                    {portfolioItems.map((item, index) => (
+                    {portfolioItems.map((item) => (
                         <div 
                             key={item.id} 
                             className={`grid-card ${getSizeClass(item.size)} animate-on-scroll`}

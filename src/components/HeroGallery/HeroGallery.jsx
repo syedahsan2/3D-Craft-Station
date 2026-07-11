@@ -1,15 +1,5 @@
 import './HeroGallery.css';
 
-const charactersData = [
-  { id: 1, name: "Warrior", role: "Frontline Fighter", description: "A mighty warrior skilled in melee combat, wielding massive weapons with incredible strength.", strength: "95", agility: "70", intelligence: "45", defense: "90", abilities: ["Whirlwind Slash", "Battle Cry", "Shield Block"], image: "https://assets.codepen.io/16327/portrait-number-01.webp" },
-  { id: 2, name: "Mage", role: "Arcane Spellcaster", description: "Master of the arcane arts, able to manipulate reality itself. Wields powerful spells.", strength: "30", agility: "60", intelligence: "100", defense: "50", abilities: ["Fireball", "Frost Nova", "Teleport"], image: "https://assets.codepen.io/16327/portrait-number-02.webp" },
-  { id: 3, name: "Archer", role: "Ranged Marksman", description: "Precise and deadly from afar, the archer can hit targets at incredible distances.", strength: "60", agility: "95", intelligence: "55", defense: "65", abilities: ["Piercing Arrow", "Multi-Shot", "Eagle Eye"], image: "https://assets.codepen.io/16327/portrait-number-03.webp" },
-  { id: 4, name: "Assassin", role: "Shadow Killer", description: "Silent and swift, assassins strike from the shadows. Experts in poison and critical attacks.", strength: "65", agility: "100", intelligence: "70", defense: "45", abilities: ["Stealth", "Backstab", "Poison Blade"], image: "https://assets.codepen.io/16327/portrait-number-04.webp" },
-  { id: 5, name: "Priest", role: "Divine Healer", description: "Holy servant who channels divine power to heal allies and smite undead.", strength: "40", agility: "45", intelligence: "85", defense: "60", abilities: ["Heal", "Blessing", "Purify"], image: "https://assets.codepen.io/16327/portrait-number-05.webp" },
-  { id: 6, name: "Paladin", role: "Holy Knight", description: "Righteous warriors combining martial prowess with holy magic.", strength: "85", agility: "55", intelligence: "60", defense: "95", abilities: ["Divine Shield", "Holy Light", "Judgment"], image: "https://assets.codepen.io/16327/portrait-number-06.webp" },
-  { id: 7, name: "Druid", role: "Nature's Guardian", description: "Masters of nature magic who can shape-shift into beasts.", strength: "70", agility: "75", intelligence: "80", defense: "70", abilities: ["Bear Form", "Healing Touch", "Entangling Roots"], image: "https://assets.codepen.io/16327/portrait-number-07.webp" }
-];
-
 const HeroGallery = () => {
   return (
     <div className="hero-gallery-wrapper">

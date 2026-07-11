@@ -2,6 +2,12 @@ import { useEffect, useState } from 'react';
 import ThankYouModal from '../components/ThankYouModal/ThankYouModal'; 
 import { Helmet } from 'react-helmet-async';
 
+const lines = [
+    { text: "CREATIVE MINDS,", color: "#ffffff", id: 1 },
+    { text: "POWERFUL", color: "#f26522", id: 2 },
+    { text: "DESIGNS", color: "#ffffff", id: 3 }
+];
+
 const AboutPage = () => {
     const [activeCard, setActiveCard] = useState(0);
     const [showThankYou, setShowThankYou] = useState(false);
@@ -9,18 +15,14 @@ const AboutPage = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     
     // Typewriter states
-    const [displayedLine1, setDisplayedLine1] = useState('');
-    const [displayedLine2, setDisplayedLine2] = useState('');
-    const [displayedLine3, setDisplayedLine3] = useState('');
     const [lineIndex, setLineIndex] = useState(0);
     const [charIndex, setCharIndex] = useState(0);
     const [isDeleting, setIsDeleting] = useState(false);
 
-    const lines = [
-        { text: "CREATIVE MINDS,", color: "#ffffff", id: 1 },
-        { text: "POWERFUL", color: "#f26522", id: 2 },
-        { text: "DESIGNS", color: "#ffffff", id: 3 }
-    ];
+    // Derived typewriter values
+    const displayedLine1 = lineIndex > 0 ? lines[0].text : (lineIndex === 0 ? lines[0].text.substring(0, charIndex) : '');
+    const displayedLine2 = lineIndex > 1 ? lines[1].text : (lineIndex === 1 ? lines[1].text.substring(0, charIndex) : '');
+    const displayedLine3 = lineIndex > 2 ? lines[2].text : (lineIndex === 2 ? lines[2].text.substring(0, charIndex) : '');
     
     // Typewriter effect
     useEffect(() => {
@@ -32,17 +34,17 @@ const AboutPage = () => {
             if (charIndex > 0) {
                 timeout = setTimeout(() => {
                     setCharIndex(charIndex - 1);
-                    updateDisplayedText(lineIndex, charIndex - 1);
                 }, 40);
             } else {
-                setIsDeleting(false);
-                setLineIndex((prev) => (prev + 1) % lines.length);
+                timeout = setTimeout(() => {
+                    setIsDeleting(false);
+                    setLineIndex((prev) => (prev + 1) % lines.length);
+                }, 500);
             }
         } else {
             if (charIndex < currentFullText.length) {
                 timeout = setTimeout(() => {
                     setCharIndex(charIndex + 1);
-                    updateDisplayedText(lineIndex, charIndex + 1);
                 }, 80);
             } else {
                 timeout = setTimeout(() => {
@@ -54,7 +56,7 @@ const AboutPage = () => {
         return () => clearTimeout(timeout);
     }, [charIndex, isDeleting, lineIndex]);
 
-        const handleContactSubmit = async (e) => {
+    const handleContactSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
 
@@ -84,6 +86,7 @@ const AboutPage = () => {
                 alert('❌ Failed to send message. Please try again.');
             }
         } catch (error) {
+            console.error('Contact error:', error);
             alert('❌ Error connecting to server.');
         } finally {
             setIsSubmitting(false);
@@ -93,36 +96,6 @@ const AboutPage = () => {
     const closeThankYou = () => {
         setShowThankYou(false);
     };
-
-    const updateDisplayedText = (line, length) => {
-        switch(line) {
-            case 0:
-                setDisplayedLine1(lines[0].text.substring(0, length));
-                break;
-            case 1:
-                setDisplayedLine2(lines[1].text.substring(0, length));
-                break;
-            case 2:
-                setDisplayedLine3(lines[2].text.substring(0, length));
-                break;
-            default:
-                break;
-        }
-    };
-
-    // Reset completed lines
-    useEffect(() => {
-        if (lineIndex === 0 && !isDeleting) {
-            setDisplayedLine2('');
-            setDisplayedLine3('');
-        } else if (lineIndex === 1 && !isDeleting) {
-            setDisplayedLine1(lines[0].text);
-            setDisplayedLine3('');
-        } else if (lineIndex === 2 && !isDeleting) {
-            setDisplayedLine1(lines[0].text);
-            setDisplayedLine2(lines[1].text);
-        }
-    }, [lineIndex, isDeleting]);
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -170,8 +143,8 @@ const AboutPage = () => {
             <section className="about-hero-section">
                 <div className="minds-hero-container">
                     <div className="minds-content-panel animate-on-scroll">
-                        <h1 className="minds-main-title">
-                            <span className="typewriter-line">
+                        <h1 className="hero-title">
+                            <span className="typewriter-line" style={{ color: '#ffffff' }}>
                                 {lineIndex === 0 ? displayedLine1 : (lineIndex > 0 ? lines[0].text : '')}
                                 {lineIndex === 0 && <span className="cursor">|</span>}
                             </span>

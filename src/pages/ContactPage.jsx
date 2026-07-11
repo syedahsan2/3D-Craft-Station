@@ -2,11 +2,14 @@ import { useEffect, useState } from 'react';
 import ThankYouModal from '../components/ThankYouModal/ThankYouModal';
 import { Helmet } from 'react-helmet-async';
 
+const lines = [
+    { text: "LET'S CREATE SOMETHING", color: "#000000", id: 1 },
+    { text: "EXTRAORDINARY", color: "#f26522", id: 2 },
+    { text: "TOGETHER", color: "#000000", id: 3 }
+];
+
 const ContactPage = () => {
     // Typewriter states
-    const [displayedLine1, setDisplayedLine1] = useState('');
-    const [displayedLine2, setDisplayedLine2] = useState('');
-    const [displayedLine3, setDisplayedLine3] = useState('');
     const [lineIndex, setLineIndex] = useState(0);
     const [charIndex, setCharIndex] = useState(0);
     const [isDeleting, setIsDeleting] = useState(false);
@@ -18,11 +21,10 @@ const ContactPage = () => {
     const [showThankYou, setShowThankYou] = useState(false);
     const [userName, setUserName] = useState('');
 
-    const lines = [
-        { text: "LET'S CREATE SOMETHING", color: "#000000", id: 1 },
-        { text: "EXTRAORDINARY", color: "#f26522", id: 2 },
-        { text: "TOGETHER", color: "#000000", id: 3 }
-    ];
+    // Derived typewriter values
+    const displayedLine1 = lineIndex > 0 ? lines[0].text : (lineIndex === 0 ? lines[0].text.substring(0, charIndex) : '');
+    const displayedLine2 = lineIndex > 1 ? lines[1].text : (lineIndex === 1 ? lines[1].text.substring(0, charIndex) : '');
+    const displayedLine3 = lineIndex > 2 ? lines[2].text : (lineIndex === 2 ? lines[2].text.substring(0, charIndex) : '');
 
     // Typewriter effect
     useEffect(() => {
@@ -33,17 +35,17 @@ const ContactPage = () => {
             if (charIndex > 0) {
                 timeout = setTimeout(() => {
                     setCharIndex(charIndex - 1);
-                    updateDisplayedText(lineIndex, charIndex - 1);
                 }, 40);
             } else {
-                setIsDeleting(false);
-                setLineIndex((prev) => (prev + 1) % lines.length);
+                timeout = setTimeout(() => {
+                    setIsDeleting(false);
+                    setLineIndex((prev) => (prev + 1) % lines.length);
+                }, 500);
             }
         } else {
             if (charIndex < currentFullText.length) {
                 timeout = setTimeout(() => {
                     setCharIndex(charIndex + 1);
-                    updateDisplayedText(lineIndex, charIndex + 1);
                 }, 80);
             } else {
                 timeout = setTimeout(() => {
@@ -54,35 +56,6 @@ const ContactPage = () => {
         
         return () => clearTimeout(timeout);
     }, [charIndex, isDeleting, lineIndex]);
-
-    const updateDisplayedText = (line, length) => {
-        switch(line) {
-            case 0:
-                setDisplayedLine1(lines[0].text.substring(0, length));
-                break;
-            case 1:
-                setDisplayedLine2(lines[1].text.substring(0, length));
-                break;
-            case 2:
-                setDisplayedLine3(lines[2].text.substring(0, length));
-                break;
-            default: break;
-        }
-    };
-
-    // Reset completed lines
-    useEffect(() => {
-        if (lineIndex === 0 && !isDeleting) {
-            setDisplayedLine2('');
-            setDisplayedLine3('');
-        } else if (lineIndex === 1 && !isDeleting) {
-            setDisplayedLine1(lines[0].text);
-            setDisplayedLine3('');
-        } else if (lineIndex === 2 && !isDeleting) {
-            setDisplayedLine1(lines[0].text);
-            setDisplayedLine2(lines[1].text);
-        }
-    }, [lineIndex, isDeleting]);
 
     // Form fade-in animation
     useEffect(() => {

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import ThankYouModal from '../ThankYouModal/ThankYouModal';
 import './Footer.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPaperPlane, faChevronRight, faLocationDot, faPhone, faEnvelope, faClock } from '@fortawesome/free-solid-svg-icons';
+import { faChevronRight, faLocationDot, faPhone, faEnvelope, faClock } from '@fortawesome/free-solid-svg-icons';
 import { faFacebookF, faInstagram } from '@fortawesome/free-brands-svg-icons';
 
 const Footer = () => {
@@ -44,6 +44,7 @@ const Footer = () => {
                 alert('❌ Failed to subscribe. Please try again.');
             }
         } catch (error) {
+            console.error('Newsletter error:', error);
             alert('❌ Error connecting to server. Please try again.');
         } finally {
             setIsSubmitting(false);
